@@ -16,13 +16,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+
+  <!-- Bootstrap time Picker -->
+  <link rel="stylesheet" href="plugins/timepicker/bootstrap-timepicker.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="plugins/select2/select2.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-  <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
-        page. However, you can choose any other skin. Make sure you
-        apply the skin class to the body tag so the changes take effect.
-  -->
-  <link rel="stylesheet" href="dist/css/skins/skin-purple.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -167,16 +170,34 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <div class="input-group-addon">
                     <i class="fa fa-medkit"></i>
                   </div>
-                  <select class="form-control select2" multiple="multiple" data-placeholder="Select a Specialization">
-                    <option>Dentistry</option>
-                    <option>EENT</option>
-                    <option>Dentistry</option>
-                    <option>EENT</option>
-                    <option>Dentistry</option>
-                    <option>EENT</option>
-                    <option>Dentistry</option>
-                    <option>EENT</option>
-                  </select>
+                    <select class="form-control select2" multiple="multiple" placeholder="Select Specialization">
+                      <option>Dentistry</option>
+                      <option>EENT</option>
+                      <option>Sample 2</option>
+                      <option>Sample 3</option>
+                    </select>
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+                  </span>
+                </div>
+
+              </div>
+
+              <div class="form-group">
+                <label>Insurances Covered:</label>
+                
+                 <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-medkit"></i>
+                  </div>
+                    <select class="form-control select2" multiple="multiple" placeholder="Select Insurances">
+                      <option>Medicare</option>
+                      <option>Intellicare</option>
+                      <option>MediCard</option>
+                    </select>
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+                  </span>
                 </div>
 
               </div>
@@ -266,7 +287,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
         <!-- /.box-body -->
         <div class="box-footer">
-        
+          <i>Insert instruction here</i>
         </div>
       </div>
 
@@ -324,7 +345,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-****************************************** SECOND SECTION->
             <div class="col-md-6">
                 
-               
+               <div class="form-group">
+                  <label for="exampleInputPassword1">Password:</label>
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                      <i class="fa fa-lock"></i>
+                    </div>
+                    <input type="password" class="form-control" id="password" placeholder="Password">
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <label for="exampleInputPassword1">Confirm Password:</label>
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                      <i class="fa fa-lock"></i>
+                    </div>
+                    <input type="password" class="form-control" id="password" placeholder="Confirm Password">
+                  </div>
+              </div>
+
+
+
             </div>
 
           </div>
@@ -395,11 +437,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<!-- Page script -->
 <script>
   $(function () {
     //Initialize Select2 Elements
     $(".select2").select2();
-
+    $(".select2").select2({
+      placeholder: "Select a Specialization",
+      allowClear: true
+    });
     //Datemask dd/mm/yyyy
     $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
     //Datemask2 mm/dd/yyyy
@@ -407,54 +453,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     //Money Euro
     $("[data-mask]").inputmask();
 
-    //Date range picker
-    $('#reservation').daterangepicker();
-    //Date range picker with time picker
-    $('#reservationtime').daterangepicker({timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A'});
-    //Date range as a button
-    $('#daterange-btn').daterangepicker(
-        {
-          ranges: {
-            'Today': [moment(), moment()],
-            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-          },
-          startDate: moment().subtract(29, 'days'),
-          endDate: moment()
-        },
-        function (start, end) {
-          $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-        }
-    );
-
-    //Date picker
-    $('#datepicker').datepicker({
-      autoclose: true
-    });
-
-    //iCheck for checkbox and radio inputs
-    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-      checkboxClass: 'icheckbox_minimal-blue',
-      radioClass: 'iradio_minimal-blue'
-    });
-    //Red color scheme for iCheck
-    $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
-      checkboxClass: 'icheckbox_minimal-red',
-      radioClass: 'iradio_minimal-red'
-    });
-    //Flat red color scheme for iCheck
-    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-      checkboxClass: 'icheckbox_flat-green',
-      radioClass: 'iradio_flat-green'
-    });
-
-    //Colorpicker
-    $(".my-colorpicker1").colorpicker();
-    //color picker with addon
-    $(".my-colorpicker2").colorpicker();
 
     //Timepicker
     $(".timepicker").timepicker({
