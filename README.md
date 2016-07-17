@@ -1,6 +1,6 @@
 Thesis Project by: 
 
-Gerald Martin Madarang
+Gerald Martin Madarang and
 Mary Joahnne Filosopo
 
 
