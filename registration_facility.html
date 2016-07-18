@@ -245,7 +245,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <div class="input-group-addon">
                       <i class="fa fa-map"></i>
                     </div>
-                    <input type="text" class="form-control" placeholder="Longhitude" readonly>
+                    <input type="text" class="form-control" id="longhi" placeholder="Longhitude" readonly>
                   </div>
                 </div>
 
@@ -255,7 +255,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <div class="input-group-addon">
                       <i class="fa fa-map-o"></i>
                     </div>
-                    <input type="text" class="form-control" placeholder="Latitude" readonly>
+                    <input type="text" class="form-control" id="lati" placeholder="Latitude" readonly>
                   </div>
                 </div>
 
@@ -461,6 +461,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   
   
     function initialize() {
+      document.getElementById("longhi").innerHTML = "hi";
       var latlng = new google.maps.LatLng(7.057964, 125.585403);
       var options = {
         zoom: 13,
@@ -475,7 +476,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                  "<option value='bar' SELECTED>bar</option>" +
                  "<option value='restaurant'>restaurant</option>" +
                  "</select> </td></tr>" +
-                 "<tr><td></td><td><input type='button' value='Save & Close' onclick='saveData()'/></td></tr>";
+                 "<tr><td></td><td><input type='button' value='Save & Close' onclick='insertData()'/></td></tr>";
     infowindow = new google.maps.InfoWindow({
      content: html
     });
@@ -509,7 +510,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     }
 
     function insertData(){
-      var country = "";
+      var lat = marker.getPosition().lat();
+      var long = marker.getPosition().lng();
+      document.getElementById("longhi").value = ""+long;
+      document.getElementById("lati").value = ""+lat;
+      alert("hi" + lat + "long " + long);
     }
 
     function downloadUrl(url, callback) {
