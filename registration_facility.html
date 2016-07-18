@@ -38,7 +38,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             type="text/javascript"></script>
 </head>
 
-<body class="hold-transition skin-purple layout-top-nav">
+<body class="hold-transition skin-purple layout-top-nav" onload="initialize()">
 
 <div class="wrapper">
 
@@ -162,47 +162,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-****************************************** SECOND SECTION->
             <!-- /.col -->
             <div class="col-md-6">
-              
+
               <div class="form-group">
                 <label>Specialization:</label>
-                
-                 <div class="input-group">
-                  <div class="input-group-addon">
-                    <i class="fa fa-medkit"></i>
-                  </div>
-                    <select class="form-control select2" multiple="multiple" placeholder="Select Specialization">
-                      <option>Dentistry</option>
-                      <option>EENT</option>
-                      <option>Sample 2</option>
-                      <option>Sample 3</option>
-                    </select>
-                  <span class="input-group-btn">
-                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i></button>
-                  </span>
-                </div>
-
+                <select class="form-control select2" multiple="multiple" data-placeholder="Select Specialization" style="width: 100%;">
+                  <option>Dentistry</option>
+                  <option>EENT</option>
+                  <option>Sample 2</option>
+                  <option>Sample 3</option>
+                </select>
               </div>
 
               <div class="form-group">
                 <label>Insurances Covered:</label>
-                
-                 <div class="input-group">
-                  <div class="input-group-addon">
-                    <i class="fa fa-medkit"></i>
-                  </div>
-                    <select class="form-control select2" multiple="multiple" placeholder="Select Insurances">
-                      <option>Medicare</option>
-                      <option>Intellicare</option>
-                      <option>MediCard</option>
-                    </select>
-                  <span class="input-group-btn">
-                    <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i></button>
-                  </span>
-                </div>
-
+                <select class="form-control select2" multiple="multiple" placeholder="Select Insurances" style="width: 100%;">
+                  <option>Medicare</option>
+                  <option>Intellicare</option>
+                  <option>MediCard</option>
+                </select>
               </div>
-              <!-- /.form-group -->
-             
+
+              
+                           
             </div>
             <!-- /.col -->
           </div>
@@ -231,7 +212,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             <!-****************************************** FIRST SECTION->
             <div class="col-md-6">
-                <div id="map" style="width: 50%; height: 50%"></div>
+                <div id="map" style="width: 500px; height: 500px"></div>
                 <div id="message"></div>
             </div>
 
@@ -345,7 +326,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-****************************************** SECOND SECTION->
             <div class="col-md-6">
                 
-               <div class="form-group">
+
+              <div class="form-group">
+                  <label>Username:</label>
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                      <i class="fa fa-user"></i>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Username">
+                  </div>
+                </div>
+
+                <div class="form-group">
                   <label for="exampleInputPassword1">Password:</label>
                   <div class="input-group">
                     <div class="input-group-addon">
