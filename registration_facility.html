@@ -34,7 +34,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATN0ljqJSiqBz7nO_arntrrdMjyoSTsXk"
+  <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyATN0ljqJSiqBz7nO_arntrrdMjyoSTsXk"
+            type="text/javascript"></script>-->
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiAxt9bglMA2DTxUsQAz-MbdN1lCZwhpk"
             type="text/javascript"></script>
 </head>
 
@@ -455,42 +458,75 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <script type="text/javascript">
 /*GOOGLE MAP*/
-    var marker;
-    var infowindow;
+    
 
-  
-  
+    var marker;
+
     function initialize() {
-      document.getElementById("longhi").innerHTML = "hi";
+      
       var latlng = new google.maps.LatLng(7.057964, 125.585403);
+     
       var options = {
-        zoom: 13,
+        /*zoom: 13,
         center: latlng,
         mapTypeId: google.maps.MapTypeId.SATELLITE
+        */
+        zoom: 13,
+        center: new google.maps.LatLng(7.057964, 125.585403),
+         // disableDefaultUI: true,
+        zoomControl: true,
+        zoomControlOptions: {
+            style: google.maps.ZoomControlStyle.SMALL
+          },
+        mapTypeId: 'terrain',
+        draggableCursor:'crosshair',
+        draggingCursor: 'move'
       }
       var map = new google.maps.Map(document.getElementById("map"), options);
-      var html = "<table>" +
-                 "<tr><td>Property Name: </td> <td><input type='text' id='name'/> </td> </tr>" +
-                 "<tr><td>Address: </td> <td><input type='text' id='address'/></td> </tr>" +
-                 "<tr><td>Property Type: </td> <td><select id='type'>" +
-                 "<option value='bar' SELECTED>bar</option>" +
-                 "<option value='restaurant'>restaurant</option>" +
-                 "</select> </td></tr>" +
-                 "<tr><td></td><td><input type='button' value='Save & Close' onclick='insertData()'/></td></tr>";
-    infowindow = new google.maps.InfoWindow({
-     content: html
-    });
+          
 
-    google.maps.event.addListener(map, "click", function(event) {
-        marker = new google.maps.Marker({
-          position: event.latLng,
-          map: map
+      google.maps.event.addListener(map, 'click', function(event) {
+         //placeMarker(event.latLng);
+          marker = new google.maps.Marker({
+        position: event.latLng,
+        map: map,
+        draggable: true,
+        animation: google.maps.Animation.DROP
         });
-        google.maps.event.addListener(marker, "click", function() {
-          infowindow.open(map, marker);
-        });
-    });
+
+
+          //place the latlng into the inputs
+          //var lat = marker.getPosition().lat();
+          //var long = marker.getPosition().lng();
+          document.getElementById("longhi").value = event.latLng.lng();
+          document.getElementById("lati").value = event.latLng.lat();
+      });
+
+      
+
     }
+
+
+    function placeMarker(location){
+      var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+ 
+      if(marker)
+      {
+        marker.setPosition(location);
+      }
+      else
+      {
+        marker = new google.maps.Marker({
+        position: location,
+        map: map,
+        draggable: true,
+        animation: google.maps.Animation.DROP
+        });
+
+
+      }
+    }
+  
 
     function saveData() {
       var name = escape(document.getElementById("name").value);
