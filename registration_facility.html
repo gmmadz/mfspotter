@@ -16,7 +16,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-
+<!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="plugins/iCheck/all.css">
   <!-- Bootstrap time Picker -->
   <link rel="stylesheet" href="plugins/timepicker/bootstrap-timepicker.min.css">
   <!-- Select2 -->
@@ -39,6 +40,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiAxt9bglMA2DTxUsQAz-MbdN1lCZwhpk"
             type="text/javascript"></script>
+<style>
+  #map { margin: 20px 0; padding: 0; height: 300px; float: left; width: 100%; }
+</style>
 </head>
 
 <body class="hold-transition skin-purple layout-top-nav" onload="initialize()">
@@ -164,7 +168,63 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-****************************************** SECOND SECTION->
             <!-- /.col -->
             <div class="col-md-6">
+            <label>Opening Days:</label>
+              <div class="form-group">
+                
+                  <div class="col-md-1">
+                  <label>
+                    <input type="checkbox" class="minimal">
+                    <i>Sun </i>
+                  </label>
+                  </div>
 
+                  <div class="col-md-1">
+                  <label>
+                    <input type="checkbox" class="minimal">
+                    <i>Mon </i>
+                  </label>
+                  </div>
+
+                  <div class="col-md-1">
+                  <label>
+                    <input type="checkbox" class="minimal">
+                    <i>Tue </i>
+                  </label>
+                  </div>
+
+                  <div class="col-md-1">
+                  <label>
+                    <input type="checkbox" class="minimal">
+                    <i>Wed </i>
+                  </label>
+                  </div>
+
+                  <div class="col-md-1">
+                  <label>
+                    <input type="checkbox" class="minimal">
+                    <i>Thu </i>
+                  </label>
+                  </div>
+
+                  <div class="col-md-1">
+                  <label>
+                    <input type="checkbox" class="minimal">
+                    <i>Fri </i>
+                  </label>
+                  </div>
+
+                  <div class="col-md-1">
+                  <label>
+                    <input type="checkbox" class="minimal">
+                    <i>Sat </i>
+                  </label>
+                  </div>
+                
+                </br></br>
+
+               
+
+              </div>
               <div class="form-group">
                 <label>Specialization:</label>
 
@@ -215,33 +275,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             <!-****************************************** FIRST SECTION->
             <div class="col-md-6">
-                <div id="map" style="width: 500px; height: 500px"></div>
+                <div id="map" style="position: relative; overflow: hidden; transform: translateZ(0px); background-color: rgb(229, 227, 223);"></div>
                 <div id="message"></div>
             </div>
 
             <!-****************************************** SECOND SECTION->
             <div class="col-md-6">
                 
-                <div class="form-group">
-                  <label>Country:</label>
-                  <div class="input-group">
-                  <div class="input-group-addon">
-                    <i class="fa fa-map-marker"></i>
-                  </div>
-                    <input type="text" class="form-control" placeholder="Country" value="Philippines" readonly>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label>Province:</label>
-                  <div class="input-group">
-                    <div class="input-group-addon">
-                      <i class="fa fa-map-pin"></i>
-                    </div>
-                    <input type="text" class="form-control" placeholder="Province" readonly>
-                  </div>
-                </div>
-
                 <div class="form-group">
                   <label>Longhitude:</label>
                   <div class="input-group">
@@ -262,6 +302,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </div>
                 </div>
 
+                <div class="form-group">
+                  <label>Address:</label>
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                      <i class="fa fa-map-pin"></i>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Address">
+                  </div>
+                </div>
+
             </div>
 
           </div>
@@ -271,7 +321,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
         <!-- /.box-body -->
         <div class="box-footer">
-          <i>Insert instruction here</i>
+          <i>Plot the location of the facility.</i>
         </div>
       </div>
 
@@ -423,6 +473,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="plugins/timepicker/bootstrap-timepicker.min.js"></script>
 <!-- SlimScroll 1.3.0 -->
 <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
+
 <!-- iCheck 1.0.1 -->
 <script src="plugins/iCheck/icheck.min.js"></script>
 <!-- FastClick -->
@@ -432,6 +483,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
 <!-- Page script -->
+
 <script>
   $(function () {
     //Initialize Select2 Elements
@@ -453,6 +505,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
       showInputs: false
     });
   });
+
+    //iCheck for checkbox and radio inputs
+    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+      checkboxClass: 'icheckbox_minimal-blue',
+      radioClass: 'iradio_minimal-blue'
+    });
 </script>
 
 
@@ -464,7 +522,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     function initialize() {
       
-      var latlng = new google.maps.LatLng(7.057964, 125.585403);
+      //var latlng = new google.maps.LatLng(7.057964, 125.585403);
      
       var options = {
         /*zoom: 13,
@@ -483,24 +541,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
         draggingCursor: 'move'
       }
       var map = new google.maps.Map(document.getElementById("map"), options);
-
-          
+      var geocoder = new google.maps.Geocoder;
+      var infowindow = new google.maps.InfoWindow;   
 
       google.maps.event.addListener(map, 'click', function(event) {
          //placeMarker(event.latLng);
           marker = new google.maps.Marker({
-        position: event.latLng,
-        map: map,
-        draggable: true,
-        animation: google.maps.Animation.DROP
-        });
-
-
+          position: event.latLng,
+          map: map,
+          draggable: true,
+          animation: google.maps.Animation.DROP
+          });
           //place the latlng into the inputs
-          //var lat = marker.getPosition().lat();
-          //var long = marker.getPosition().lng();
           document.getElementById("longhi").value = event.latLng.lng();
           document.getElementById("lati").value = event.latLng.lat();
+          geocodeLatLng(geocoder, map, infowindow);
       });
 
       
@@ -518,7 +573,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       else
       {
         marker = new google.maps.Marker({
-        position: location,
+        position: location.latLng,
         map: map,
         draggable: true,
         animation: google.maps.Animation.DROP
@@ -528,6 +583,32 @@ scratch. This page gets rid of all links and provides the needed markup only.
       }
     }
   
+
+    /*function geocodeLatLng(geocoder, map, infowindow) {
+        var input = "7.057964, 125.585403";
+        var latlngStr = input.split(',', 2);
+        var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+        var latlng = {lat: parseFloat(document.getElementById("longhi").value), lng: parseFloat(document.getElementById("longhi").value)};
+       
+        geocoder.geocode({'location': latlng}, function(results, status) {
+          if (status === google.maps.GeocoderStatus.OK) {
+            if (results[1]) {
+              map.setZoom(11);
+              var marker = new google.maps.Marker({
+                position: latlng,
+                map: map
+              });
+              infowindow.setContent(results[1].formatted_address);
+              infowindow.open(map, marker);
+            } else {
+              window.alert('No results found');
+            }
+          } else {
+            window.alert('Geocoder failed due to: ' + status);
+          }
+        });
+      }
+    */
 
     function saveData() {
       var name = escape(document.getElementById("name").value);
