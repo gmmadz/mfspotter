@@ -469,14 +469,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         mapTypeId: google.maps.MapTypeId.SATELLITE
       }
       var map = new google.maps.Map(document.getElementById("map"), options);
-      var html = "<table>" +
-                 "<tr><td>Property Name: </td> <td><input type='text' id='name'/> </td> </tr>" +
-                 "<tr><td>Address: </td> <td><input type='text' id='address'/></td> </tr>" +
-                 "<tr><td>Property Type: </td> <td><select id='type'>" +
-                 "<option value='bar' SELECTED>bar</option>" +
-                 "<option value='restaurant'>restaurant</option>" +
-                 "</select> </td></tr>" +
-                 "<tr><td></td><td><input type='button' value='Save & Close' onclick='insertData()'/></td></tr>";
+      var html ="<input type='button' value='Place' onclick='insertData()'/>";
     infowindow = new google.maps.InfoWindow({
      content: html
     });
@@ -484,7 +477,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     google.maps.event.addListener(map, "click", function(event) {
         marker = new google.maps.Marker({
           position: event.latLng,
-          map: map
+          draggable: true,
+          map: map,
+          title: "Click to Place"
         });
         google.maps.event.addListener(marker, "click", function() {
           infowindow.open(map, marker);
