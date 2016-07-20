@@ -43,6 +43,46 @@
 
 </head>
 
+
+
+<?php
+      include ("config.php");
+      if(isset($_POST['submitted']))
+      {
+        $facilityName = $_POST['fname'];
+        $telephoneNumber = $_POST['telnum'];
+        $address = $_POST['address'];
+        $longhitude = $_POST['lng'];
+        $latitude = $_POST['lat'];
+           echo '<script>alert("'.$address.'");</script>';
+
+      $q = "INSERT INTO facility(facilityName, telephoneNumber,address, longhitude, latitude) VALUES ('$facilityName', '$telephoneNumber', '$address', '$longhitude', '$latitude')";
+      
+      if (mysqli_query($conn, $q)) {
+      echo "New record created successfully";
+      } 
+      else {
+          echo "Error: " . $q . "<br>" . mysqli_error($conn);
+      }
+
+      mysqli_close($conn);
+      echo '<script>alert("HE");</script>';
+    }
+      
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
 <body class="hold-transition skin-purple layout-top-nav" onload="initialize()">
 
 <div class="wrapper">
@@ -82,7 +122,7 @@
     <section class="content">
 
     <!FORM ACTION START->
-   <!-- <form action="sampleselect.php" method="post">-->
+  <form name = "addFacility" enctype="multipart/form-data" role="form" method="post" >
 
       <!-****************************************** GENERAL INFORMATION ******************************************->
       <div class="box box-solid box-primary">
@@ -106,7 +146,7 @@
                   <div class="input-group-addon">
                     <i class="fa fa-hospital-o"></i>
                   </div>
-                  <input type="email" class="form-control" id="facilityName" placeholder="Facility Name">
+                  <input type="text" class="form-control" id="facilityName" name="fname" placeholder="Facility Name">
                 </div>
               </div>
 
@@ -119,7 +159,7 @@
                   <div class="input-group-addon">
                     <i class="fa fa-phone"></i>
                   </div>
-                  <input type="text" class="form-control" id="telnumber" data-inputmask='"mask": "(999) 999-9999"' data-mask placeholder="Telephone Number">
+                  <input type="text" class="form-control" id="telnumber" name="telnum" data-inputmask='"mask": "(999) 999-9999"' data-mask placeholder="Telephone Number">
                 </div>
 
               </div>
@@ -309,7 +349,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-map"></i>
                     </div>
-                    <input type="text" class="form-control" id="longhi" placeholder="Longhitude" readonly>
+                    <input type="text" class="form-control" id="longhi" name="lng" placeholder="Longhitude" readonly>
                   </div>
                 </div>
 
@@ -319,7 +359,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-map-o"></i>
                     </div>
-                    <input type="text" class="form-control" id="lati" placeholder="Latitude" readonly>
+                    <input type="text" class="form-control" id="lati" name="lat" placeholder="Latitude" readonly>
                   </div>
                 </div>
 
@@ -329,7 +369,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-map-pin"></i>
                     </div>
-                    <input type="text" class="form-control" placeholder="Address">
+                    <input type="text" class="form-control" name="address" placeholder="Address">
                   </div>
                 </div>
 
@@ -451,12 +491,13 @@
 
         <div class="col-md-12">
           <button type="submit" name="register" id="registerFacility" class="btn btn-block btn-lg btn-danger">Register Facility</button>
+          <input type="hidden" name="submitted" value="TRUE" />
         </div>
 
 
       </div>
 
-  <!--  </form>-->
+  </form>
 
           
 
@@ -477,6 +518,10 @@
     <strong>Copyright &copy; 2016 <a href="#">MF Spotter</a>.</strong> All rights reserved.
   </footer>
 
+
+<php?
+
+?>
 
 
 </div>
@@ -544,10 +589,10 @@
       radioClass: 'iradio_minimal-blue'
     });
 
-    $("#buttonsample").click(function() {
+   /* $("#buttonsample").click(function() {
      alert("Selected value is: "+ $("#select2_insurances").select2("val"));
- 
-    });
+
+    });*/
     
 </script>
 
