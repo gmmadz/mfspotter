@@ -82,7 +82,7 @@
     <section class="content">
 
     <!FORM ACTION START->
-    <form action="../../index.html" method="post">
+   <!-- <form action="sampleselect.php" method="post">-->
 
       <!-****************************************** GENERAL INFORMATION ******************************************->
       <div class="box box-solid box-primary">
@@ -138,7 +138,7 @@
               <!-INSURANCES->
               <div class="form-group">
                 <label>Insurances Covered:</label>
-                <select class="form-control input-group select2" multiple="multiple" placeholder="Select Insurances" style="width: 100%;">
+                <select id="select2_insurances" class="form-control input-group select2" multiple="multiple" placeholder="Select Insurances" style="width: 100%;">
     <?php
                   include ("config.php");
                   $q = "SELECT insurancesID, insuranceName FROM insurances";
@@ -150,13 +150,14 @@
                     }
 
                   }
+    //$("#select2_insurances").select2("val") TO GET THE VALUE
     mysqli_close($conn);             
     ?>
                 </select>
                
               </div>
 
-                          
+                   <button id="buttonsample">clickme</button>       
             </div>
 
 
@@ -455,7 +456,7 @@
 
       </div>
 
-    </form>
+  <!--  </form>-->
 
           
 
@@ -542,6 +543,12 @@
       checkboxClass: 'icheckbox_minimal-blue',
       radioClass: 'iradio_minimal-blue'
     });
+
+    $("#buttonsample").click(function() {
+     alert("Selected value is: "+ $("#select2_insurances").select2("val"));
+ 
+    });
+    
 </script>
 
 
@@ -613,76 +620,7 @@
 
       }
     }
-  
 
-    /*function geocodeLatLng(geocoder, map, infowindow) {
-        var input = "7.057964, 125.585403";
-        var latlngStr = input.split(',', 2);
-        var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
-        var latlng = {lat: parseFloat(document.getElementById("longhi").value), lng: parseFloat(document.getElementById("longhi").value)};
-       
-        geocoder.geocode({'location': latlng}, function(results, status) {
-          if (status === google.maps.GeocoderStatus.OK) {
-            if (results[1]) {
-              map.setZoom(11);
-              var marker = new google.maps.Marker({
-                position: latlng,
-                map: map
-              });
-              infowindow.setContent(results[1].formatted_address);
-              infowindow.open(map, marker);
-            } else {
-              window.alert('No results found');
-            }
-          } else {
-            window.alert('Geocoder failed due to: ' + status);
-          }
-        });
-      }
-    */
-
-    function saveData() {
-      var name = escape(document.getElementById("name").value);
-      var address = escape(document.getElementById("address").value);
-      var type = document.getElementById("type").value;
-      var latlng = marker.getPosition();
-
-      var url = "phpsqlinfo_addrow.php?name=" + name + "&address=" + address +
-                "&type=" + type + "&lat=" + latlng.lat() + "&lng=" + latlng.lng();
-      downloadUrl(url, function(data, responseCode) {
-        if (responseCode == 200 && data.length >= 1) {
-          infowindow.close();
-          document.getElementById("message").innerHTML = "Location added.";
-        }
-      });
-    
-    }
-
-    function insertData(){
-      var lat = marker.getPosition().lat();
-      var long = marker.getPosition().lng();
-      document.getElementById("longhi").value = ""+long;
-      document.getElementById("lati").value = ""+lat;
-      alert("hi" + lat + "long " + long);
-    }
-
-    function downloadUrl(url, callback) {
-      var request = window.ActiveXObject ?
-          new ActiveXObject('Microsoft.XMLHTTP') :
-          new XMLHttpRequest;
-
-      request.onreadystatechange = function() {
-        if (request.readyState == 4) {
-          request.onreadystatechange = doNothing;
-          callback(request.responseText, request.status);
-        }
-      };
-
-      request.open('GET', url, true);
-      request.send(null);
-    }
-
-    function doNothing() {}
 </script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
