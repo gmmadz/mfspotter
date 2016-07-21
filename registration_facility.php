@@ -54,7 +54,7 @@
         $address = $_POST['address'];
         $longhitude = $_POST['lng'];
         $latitude = $_POST['lat'];
-           echo '<script>alert("'.$address.'");</script>';
+           echo '<script>alert($("#select2_insurances").select2("val"));</script>';
 
       $q = "INSERT INTO facility(facilityName, telephoneNumber,address, longhitude, latitude) VALUES ('$facilityName', '$telephoneNumber', '$address', '$longhitude', '$latitude')";
       
