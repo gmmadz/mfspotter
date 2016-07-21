@@ -46,9 +46,9 @@
 
 
 <?php
-      include ("config.php");
-      if(isset($_POST['submitted']))
-      {
+    include ("config.php");
+    if(isset($_POST['submitted']))
+    {
         $facilityName = $_POST['fname'];
         $telephoneNumber = $_POST['telnum'];
         $address = $_POST['address'];
@@ -66,8 +66,20 @@
       }
 
       mysqli_close($conn);
-      echo '<script>alert("HE");</script>';
+
+
+      // $sampleGet = "<script>$('#select2_insurances').select2('val')</script>";
+
+      //echo "<script> alert($('#select2_insurances').select2('val')); </script>";
+
+
     }
+    else
+    {
+      echo "error";
+    }
+
+    
       
 ?>
 
@@ -170,7 +182,18 @@
                 <label>Specialization:</label>
 
                 <select name="specialization" class="form-control select2" multiple="multiple" data-placeholder="Select Specialization" style="width: 100%;">
-                  <option></option>
+
+    <?php
+                  include("config.php");
+                  $q = "SELECT * FROM specialization";
+                  $result = mysqli_query($conn, $q);
+                  if (mysqli_num_rows($result)>0){
+                    while($row = mysqli_fetch_assoc($result)){
+                      echo '<option value="' . $row['specializationID'] . '">' . $row['specialization'] . '</option>';
+                    }
+                  }
+    mysqli_close($conn);             
+    ?>
                 </select>
 
               </div>
@@ -197,7 +220,7 @@
                
               </div>
 
-                   <button id="buttonsample">clickme</button>       
+                   <button id="buttonsample">clickme</button>      
             </div>
 
 
@@ -561,6 +584,7 @@
 <script src="dist/js/demo.js"></script>
 <!-- Page script -->
 
+
 <script>
   $(function () {
     //Initialize Select2 Elements
@@ -589,12 +613,15 @@
       radioClass: 'iradio_minimal-blue'
     });
 
-   /* $("#buttonsample").click(function() {
+   $("#buttonsample").click(function() {
      alert("Selected value is: "+ $("#select2_insurances").select2("val"));
 
-    });*/
+    });
+
+
     
 </script>
+
 
 
 <script type="text/javascript">
@@ -667,6 +694,10 @@
     }
 
 </script>
+
+
+
+
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. Slimscroll is required when using the
