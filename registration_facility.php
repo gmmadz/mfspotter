@@ -46,7 +46,12 @@
 
 
 <?php
-    include ("config.php");
+    //include ("config.php");
+
+    $mysqli = new mysqli('localhost', 'root', 'usbw', 'mfspotter');
+    $mysqli->autocommit(false);
+
+
     if(isset($_POST['submitted']))
     {
         $facilityName = $_POST['fname'];
@@ -54,32 +59,66 @@
         $address = $_POST['address'];
         $longhitude = $_POST['lng'];
         $latitude = $_POST['lat'];
-           echo '<script>alert($("#select2_insurances").select2("val"));</script>';
 
-      $q = "INSERT INTO facility(facilityName, telephoneNumber,address, longhitude, latitude) VALUES ('$facilityName', '$telephoneNumber', '$address', '$longhitude', '$latitude')";
-      
-      if (mysqli_query($conn, $q)) {
-      echo "New record created successfully";
-      } 
-      else {
-          echo "Error: " . $q . "<br>" . mysqli_error($conn);
-      }
+        $userType = "staff";
+        $username = $_POST['usn'];
+        $password = $_POST['pw'];
+        $fn = $_POST['fname'];
+        $mn = $_POST['mname'];   
+        $ln = $_POST['lname'];      
 
-      mysqli_close($conn);
+        //INSERT INTO FACILITY
+        $mysqli->query("INSERT INTO facility(facilityName, telephoneNumber,address, longhitude, latitude) VALUES ('$facilityName', '$telephoneNumber', '$address', '$longhitude', '$latitude')");
+
+        //GENERATE FACILITY ID
+        $facID = $mysqli->insert_id;
+
+        //GENERATE INSURANCES ID FROM SELECT2 TAG
+        $insID = isset($_POST['selected_insurances']) ? $_POST['selected_insurances'] : false;
 
 
-      // $sampleGet = "<script>$('#select2_insurances').select2('val')</script>";
+        if($insID)
+        {
+          foreach ($insID as $i)
+          {
+            $mysqli->query("INSERT INTO insurancescovered(facilityID, insuranceID) VALUES('".$facID."', '".$i."')");
+          }
+        }
+        
 
-      //echo "<script> alert($('#select2_insurances').select2('val')); </script>";
+        //INSERT INTO USERS
+        $mysqli->query("INSERT INTO user(userType, username, password, firstName, middleName, lastName) VALUES('".$userType."', '".$username."', '".$password."', '".$fn."', '".$mn."', '".$ln."')");
 
+
+        //GENERATE USERID
+        $usrID = $mysqli->insert_id;
+
+
+        //ASSOCIATE FACILITY AND USER TABLES
+        $mysqli->query("INSERT INTO facilityhasstaff(facilityID, userID) VALUES('".$facID."', '".$usrID."')");
+        
+        $mysqli->commit();
+              
+
+
+
+              /* $q = "INSERT INTO facility(facilityName, telephoneNumber,address, longhitude, latitude) VALUES ('$facilityName', '$telephoneNumber', '$address', '$longhitude', '$latitude')";
+                
+                if (mysqli_query($conn, $q)) {
+                echo "New record created successfully";
+                } 
+                else {
+                    echo "Error: " . $q . "<br>" . mysqli_error($conn);
+                }
+
+                mysqli_close($conn);
+
+                // $sampleGet = "<script>$('#select2_insurances').select2('val')</script>";
+
+                //echo "<script> alert($('#select2_insurances').select2('val')); </script>";
+              }*/
 
     }
-    else
-    {
-      echo "error";
-    }
-
-    
       
 ?>
 
@@ -201,7 +240,7 @@
               <!-INSURANCES->
               <div class="form-group">
                 <label>Insurances Covered:</label>
-                <select id="select2_insurances" class="form-control input-group select2" multiple="multiple" placeholder="Select Insurances" style="width: 100%;">
+                <select name="selected_insurances[]" id="select2_insurances" class="form-control input-group select2" multiple="multiple" placeholder="Select Insurances" style="width: 100%;">
     <?php
                   include ("config.php");
                   $q = "SELECT insurancesID, insuranceName FROM insurances";
@@ -213,14 +252,13 @@
                     }
 
                   }
-    //$("#select2_insurances").select2("val") TO GET THE VALUE
     mysqli_close($conn);             
     ?>
                 </select>
                
               </div>
 
-                   <button id="buttonsample">clickme</button>      
+     
             </div>
 
 
@@ -431,7 +469,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-user"></i>
                     </div>
-                    <input type="text" class="form-control" placeholder="First Name">
+                    <input name="fname" type="text" class="form-control" placeholder="First Name">
                   </div>
                 </div>
 
@@ -441,7 +479,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-user"></i>
                     </div>
-                    <input type="text" class="form-control" placeholder="Middle Name">
+                    <input name="mname" type="text" class="form-control" placeholder="Middle Name">
                   </div>
                 </div>
 
@@ -451,7 +489,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-user"></i>
                     </div>
-                    <input type="text" class="form-control" placeholder="Last Name">
+                    <input name="lname" type="text" class="form-control" placeholder="Last Name">
                   </div>
                 </div>
 
@@ -469,7 +507,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-user"></i>
                     </div>
-                    <input type="text" class="form-control" placeholder="Username">
+                    <input name="usn" type="text" class="form-control" placeholder="Username">
                   </div>
                 </div>
 
@@ -479,7 +517,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-lock"></i>
                     </div>
-                    <input type="password" class="form-control" id="password" placeholder="Password">
+                    <input name="pw" type="password" class="form-control" id="password" placeholder="Password">
                   </div>
               </div>
 
@@ -489,7 +527,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-lock"></i>
                     </div>
-                    <input type="password" class="form-control" id="password" placeholder="Confirm Password">
+                    <input name="cpw" type="password" class="form-control" id="password" placeholder="Confirm Password">
                   </div>
               </div>
 
