@@ -1,9 +1,9 @@
 <?php
 
-$dbhost="localhost"; // hostname
-$dbuser="root"; // username 
-$dbpass="usbw"; // password
-$dbname="mfspotter"; // database name
+$dbhost="localhost"; 
+$dbuser="root"; 
+$dbpass="usbw";
+$dbname="mfspotter"; 
 
 $conn = mysqli_connect($dbhost,$dbuser,$dbpass);
 mysqli_select_db($conn,$dbname);
