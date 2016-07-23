@@ -71,6 +71,9 @@
         $ot = isset($_POST['opentime']) ? $_POST['opentime'] : false;
         $ct = isset($_POST['closetime']) ? $_POST['closetime'] : false;
 
+        $insID = isset($_POST['selected_insurances']) ? $_POST['selected_insurances'] : false;
+        $specID = isset($_POST['selected_specialization']) ? $_POST['selected_specialization'] : false;
+
         //INSERT INTO FACILITY
         $mysqli->query("INSERT INTO facility(facilityName, telephoneNumber,address, longhitude, latitude) VALUES ('$facilityName', '$telephoneNumber', '$address', '$longhitude', '$latitude')");
 
@@ -78,7 +81,7 @@
         $facID = $mysqli->insert_id;
 
         //GENERATE INSURANCES ID FROM SELECT2 TAG
-        $insID = isset($_POST['selected_insurances']) ? $_POST['selected_insurances'] : false;
+       
 
 
         //INSERT INTO DAYS
@@ -100,6 +103,15 @@
             $mysqli->query("INSERT INTO insurancescovered(facilityID, insuranceID) VALUES('".$facID."', '".$i."')");
           }
         }
+
+        //INSERT INTO SPECIALIZATION
+        if($specID)
+        {
+          foreach($specID as $s)
+          {
+            $mysqli->query("INSERT INTO hasspecialization(specializationID, facilityID) VALUES('".$s."', '".$facID."')");
+          }
+        }
         
 
         //INSERT INTO USERS
@@ -115,33 +127,9 @@
         
         $mysqli->commit();
               
-
-
-
-              /* $q = "INSERT INTO facility(facilityName, telephoneNumber,address, longhitude, latitude) VALUES ('$facilityName', '$telephoneNumber', '$address', '$longhitude', '$latitude')";
-                
-                if (mysqli_query($conn, $q)) {
-                echo "New record created successfully";
-                } 
-                else {
-                    echo "Error: " . $q . "<br>" . mysqli_error($conn);
-                }
-
-                mysqli_close($conn);
-
-                // $sampleGet = "<script>$('#select2_insurances').select2('val')</script>";
-
-                //echo "<script> alert($('#select2_insurances').select2('val')); </script>";
-              }
-              */
     }
       
 ?>
-
-
-
-
-
 
 
 
@@ -232,7 +220,7 @@
 
                 <label>Specialization:</label>
 
-                <select name="specialization" class="form-control select2" multiple="multiple" data-placeholder="Select Specialization" style="width: 100%;">
+                <select name="selected_specialization[]" class="form-control select2" multiple="multiple" data-placeholder="Select Specialization" style="width: 100%;">
 
     <?php
                   include("config.php");
@@ -747,12 +735,5 @@
 
 </script>
 
-
-
-
-<!-- Optionally, you can add Slimscroll and FastClick plugins.
-     Both of these plugins are recommended to enhance the
-     user experience. Slimscroll is required when using the
-     fixed layout. -->
 </body>
 </html>
