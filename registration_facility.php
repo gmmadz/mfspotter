@@ -65,7 +65,11 @@
         $password = $_POST['pw'];
         $fn = $_POST['fname'];
         $mn = $_POST['mname'];   
-        $ln = $_POST['lname'];      
+        $ln = $_POST['lname'];  
+
+        $days = isset($_POST['days']) ? $_POST['days'] : false;
+        $ot = isset($_POST['opentime']) ? $_POST['opentime'] : false;
+        $ct = isset($_POST['closetime']) ? $_POST['closetime'] : false;
 
         //INSERT INTO FACILITY
         $mysqli->query("INSERT INTO facility(facilityName, telephoneNumber,address, longhitude, latitude) VALUES ('$facilityName', '$telephoneNumber', '$address', '$longhitude', '$latitude')");
@@ -77,6 +81,18 @@
         $insID = isset($_POST['selected_insurances']) ? $_POST['selected_insurances'] : false;
 
 
+        //INSERT INTO DAYS
+        if($days && $ot && $ct)
+        {
+          foreach($days as $d)
+          {
+            $mysqli->query("INSERT INTO operatingperiod(facilityID, dayofweek, timeopened, timeclosed) VALUES('".$facID."', '".$d."', '".$ot."', '".$ct."')");
+          }
+
+        }
+
+
+        //INSERT INTO INSURANCES
         if($insID)
         {
           foreach ($insID as $i)
@@ -116,16 +132,11 @@
                 // $sampleGet = "<script>$('#select2_insurances').select2('val')</script>";
 
                 //echo "<script> alert($('#select2_insurances').select2('val')); </script>";
-              }*/
-
+              }
+              */
     }
       
 ?>
-
-
-
-
-
 
 
 
@@ -173,7 +184,8 @@
     <section class="content">
 
     <!FORM ACTION START->
-  <form name = "addFacility" enctype="multipart/form-data" role="form" method="post" >
+  <form name = "addFacility" enctype="multipart/form-data" role="form" method="post" data-toggle="validator">
+ 
 
       <!-****************************************** GENERAL INFORMATION ******************************************->
       <div class="box box-solid box-primary">
@@ -197,7 +209,7 @@
                   <div class="input-group-addon">
                     <i class="fa fa-hospital-o"></i>
                   </div>
-                  <input type="text" class="form-control" id="facilityName" name="fname" placeholder="Facility Name">
+                  <input type="text" class="form-control" id="facilityName" name="fname" placeholder="Facility Name" required>
                 </div>
               </div>
 
@@ -210,7 +222,7 @@
                   <div class="input-group-addon">
                     <i class="fa fa-phone"></i>
                   </div>
-                  <input type="text" class="form-control" id="telnumber" name="telnum" data-inputmask='"mask": "(999) 999-9999"' data-mask placeholder="Telephone Number">
+                  <input type="text" class="form-control" id="telnumber" name="telnum" data-inputmask='"mask": "(999) 999-9999"' data-mask placeholder="Telephone Number" required>
                 </div>
 
               </div>
@@ -273,7 +285,7 @@
                 <div class="form-group">
                   <div class="col-md-1">
                     <label>
-                      <input type="checkbox" class="minimal"> Sun
+                      <input type="checkbox" class="minimal" name="days[]" value="0"> Sun
                     </label>
                   </div>
                 </div>
@@ -281,7 +293,7 @@
                 <div class="form-group">
                   <div class="col-md-1">
                     <label>
-                      <input type="checkbox" class="minimal"> Mon
+                      <input type="checkbox" class="minimal" name="days[]" value="1"> Mon
                     </label>
                   </div>
                 </div>
@@ -289,7 +301,7 @@
                 <div class="form-group">
                   <div class="col-md-1">
                     <label>
-                      <input type="checkbox" class="minimal"> Tue
+                      <input type="checkbox" class="minimal" name="days[]" value="2"> Tue
                     </label>
                   </div>
                 </div>
@@ -297,7 +309,7 @@
                 <div class="form-group">
                   <div class="col-md-1">
                     <label>
-                      <input type="checkbox" class="minimal"> Wed
+                      <input type="checkbox" class="minimal" name="days[]" value="3"> Wed
                     </label>
                   </div>
                 </div>
@@ -305,7 +317,7 @@
                 <div class="form-group">
                   <div class="col-md-1">
                     <label>
-                      <input type="checkbox" class="minimal"> Thu
+                      <input type="checkbox" class="minimal" name="days[]" value="4"> Thu
                     </label>
                   </div>
                 </div>
@@ -313,7 +325,7 @@
                 <div class="form-group">
                   <div class="col-md-1">
                     <label>
-                      <input type="checkbox" class="minimal"> Fri
+                      <input type="checkbox" class="minimal" name="days[]" value="5"> Fri
                     </label>
                   </div>
                 </div>
@@ -321,7 +333,7 @@
                 <div class="form-group">
                   <div class="col-md-1">
                     <label>
-                      <input type="checkbox" class="minimal"> Sat
+                      <input type="checkbox" class="minimal" name="days[]" value="6"> Sat
                     </label>
                   </div>
                 </div>
@@ -342,7 +354,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-clock-o"></i>
                     </div>
-                    <input type="text" class="form-control timepicker">
+                    <input type="text" class="form-control timepicker" name="opentime" required>
                   </div>
                
                 </div>
@@ -358,7 +370,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-clock-o"></i>
                     </div>
-                    <input type="text" class="form-control timepicker">
+                    <input type="text" class="form-control timepicker" name="closetime" required>
                   </div>
                   
                 </div>
@@ -410,7 +422,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-map"></i>
                     </div>
-                    <input type="text" class="form-control" id="longhi" name="lng" placeholder="Longhitude" readonly>
+                    <input type="text" class="form-control" id="longhi" name="lng" placeholder="Longhitude" required readonly >
                   </div>
                 </div>
 
@@ -420,7 +432,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-map-o"></i>
                     </div>
-                    <input type="text" class="form-control" id="lati" name="lat" placeholder="Latitude" readonly>
+                    <input type="text" class="form-control" id="lati" name="lat" placeholder="Latitude" required readonly >
                   </div>
                 </div>
 
@@ -430,7 +442,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-map-pin"></i>
                     </div>
-                    <input type="text" class="form-control" name="address" placeholder="Address">
+                    <input type="text" class="form-control" name="address" placeholder="Address" required>
                   </div>
                 </div>
 
@@ -469,7 +481,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-user"></i>
                     </div>
-                    <input name="fname" type="text" class="form-control" placeholder="First Name">
+                    <input name="fname" type="text" class="form-control" placeholder="First Name" required>
                   </div>
                 </div>
 
@@ -479,7 +491,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-user"></i>
                     </div>
-                    <input name="mname" type="text" class="form-control" placeholder="Middle Name">
+                    <input name="mname" type="text" class="form-control" placeholder="Middle Name" required>
                   </div>
                 </div>
 
@@ -489,7 +501,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-user"></i>
                     </div>
-                    <input name="lname" type="text" class="form-control" placeholder="Last Name">
+                    <input name="lname" type="text" class="form-control" placeholder="Last Name" required>
                   </div>
                 </div>
 
@@ -507,7 +519,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-user"></i>
                     </div>
-                    <input name="usn" type="text" class="form-control" placeholder="Username">
+                    <input name="usn" type="text" class="form-control" placeholder="Username" required>
                   </div>
                 </div>
 
@@ -517,7 +529,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-lock"></i>
                     </div>
-                    <input name="pw" type="password" class="form-control" id="password" placeholder="Password">
+                    <input name="pw" type="password" class="form-control" id="inputPassword" placeholder="Password" required>
                   </div>
               </div>
 
@@ -527,7 +539,8 @@
                     <div class="input-group-addon">
                       <i class="fa fa-lock"></i>
                     </div>
-                    <input name="cpw" type="password" class="form-control" id="password" placeholder="Confirm Password">
+                    <input name="cpw" type="password" class="form-control" data-match="#inputPassword" data-match-error="Password don't match!" placeholder="Confirm Password" required>
+
                   </div>
               </div>
 
@@ -651,10 +664,11 @@
       radioClass: 'iradio_minimal-blue'
     });
 
-   $("#buttonsample").click(function() {
+   /*$("#buttonsample").click(function() {
      alert("Selected value is: "+ $("#select2_insurances").select2("val"));
 
-    });
+    });*/
+
 
 
     
