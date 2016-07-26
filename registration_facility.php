@@ -43,6 +43,96 @@
 
 </head>
 
+
+
+<?php
+    //include ("config.php");
+
+    $mysqli = new mysqli('localhost', 'root', 'usbw', 'mfspotter');
+    $mysqli->autocommit(false);
+
+
+    if(isset($_POST['submitted']))
+    {
+        $facilityName = $_POST['fname'];
+        $telephoneNumber = $_POST['telnum'];
+        $address = $_POST['address'];
+        $longhitude = $_POST['lng'];
+        $latitude = $_POST['lat'];
+
+        $userType = "staff";
+        $username = $_POST['usn'];
+        $password = $_POST['pw'];
+        $fn = $_POST['fname'];
+        $mn = $_POST['mname'];   
+        $ln = $_POST['lname'];  
+
+        $days = isset($_POST['days']) ? $_POST['days'] : false;
+        $ot = isset($_POST['opentime']) ? $_POST['opentime'] : false;
+        $ct = isset($_POST['closetime']) ? $_POST['closetime'] : false;
+
+        $insID = isset($_POST['selected_insurances']) ? $_POST['selected_insurances'] : false;
+        $specID = isset($_POST['selected_specialization']) ? $_POST['selected_specialization'] : false;
+
+        //INSERT INTO FACILITY
+        $mysqli->query("INSERT INTO facility(facilityName, telephoneNumber,address, longhitude, latitude) VALUES ('$facilityName', '$telephoneNumber', '$address', '$longhitude', '$latitude')");
+
+        //GENERATE FACILITY ID
+        $facID = $mysqli->insert_id;
+
+        //GENERATE INSURANCES ID FROM SELECT2 TAG
+       
+
+
+        //INSERT INTO DAYS
+        if($days && $ot && $ct)
+        {
+          foreach($days as $d)
+          {
+            $mysqli->query("INSERT INTO operatingperiod(facilityID, dayofweek, timeopened, timeclosed) VALUES('".$facID."', '".$d."', '".$ot."', '".$ct."')");
+          }
+
+        }
+
+
+        //INSERT INTO INSURANCES
+        if($insID)
+        {
+          foreach ($insID as $i)
+          {
+            $mysqli->query("INSERT INTO insurancescovered(facilityID, insuranceID) VALUES('".$facID."', '".$i."')");
+          }
+        }
+
+        //INSERT INTO SPECIALIZATION
+        if($specID)
+        {
+          foreach($specID as $s)
+          {
+            $mysqli->query("INSERT INTO hasspecialization(specializationID, facilityID) VALUES('".$s."', '".$facID."')");
+          }
+        }
+        
+
+        //INSERT INTO USERS
+        $mysqli->query("INSERT INTO user(userType, username, password, firstName, middleName, lastName) VALUES('".$userType."', '".$username."', '".$password."', '".$fn."', '".$mn."', '".$ln."')");
+
+
+        //GENERATE USERID
+        $usrID = $mysqli->insert_id;
+
+
+        //ASSOCIATE FACILITY AND USER TABLES
+        $mysqli->query("INSERT INTO facilityhasstaff(facilityID, userID) VALUES('".$facID."', '".$usrID."')");
+        
+        $mysqli->commit();
+              
+    }
+      
+?>
+
+
+
 <body class="hold-transition skin-purple layout-top-nav" onload="initialize()">
 
 <div class="wrapper">
@@ -82,7 +172,8 @@
     <section class="content">
 
     <!FORM ACTION START->
-    <form action="../../index.html" method="post">
+  <form name = "addFacility" enctype="multipart/form-data" role="form" method="post" data-toggle="validator">
+ 
 
       <!-****************************************** GENERAL INFORMATION ******************************************->
       <div class="box box-solid box-primary">
@@ -106,7 +197,7 @@
                   <div class="input-group-addon">
                     <i class="fa fa-hospital-o"></i>
                   </div>
-                  <input type="email" class="form-control" id="facilityName" placeholder="Facility Name">
+                  <input type="text" class="form-control" id="facilityName" name="fname" placeholder="Facility Name" required>
                 </div>
               </div>
 
@@ -119,20 +210,29 @@
                   <div class="input-group-addon">
                     <i class="fa fa-phone"></i>
                   </div>
-                  <input type="text" class="form-control" id="telnumber" data-inputmask='"mask": "(999) 999-9999"' data-mask placeholder="Telephone Number">
+                  <input type="text" class="form-control" id="telnumber" name="telnum" data-inputmask='"mask": "(999) 999-9999"' data-mask placeholder="Telephone Number" required>
                 </div>
 
               </div>
 
               <!-SPECIALIZATION->
               <div class="form-group">
+
                 <label>Specialization:</label>
 
-                <select class="form-control select2" multiple="multiple" data-placeholder="Select Specialization" style="width: 100%;">
-                  <option>Dentistry</option>
-                  <option>EENT</option>
-                  <option>Sample 2</option>
-                  <option>Sample 3</option>
+                <select name="selected_specialization[]" class="form-control select2" multiple="multiple" data-placeholder="Select Specialization" style="width: 100%;">
+
+    <?php
+                  include("config.php");
+                  $q = "SELECT * FROM specialization";
+                  $result = mysqli_query($conn, $q);
+                  if (mysqli_num_rows($result)>0){
+                    while($row = mysqli_fetch_assoc($result)){
+                      echo '<option value="' . $row['specializationID'] . '">' . $row['specialization'] . '</option>';
+                    }
+                  }
+    mysqli_close($conn);             
+    ?>
                 </select>
 
               </div>
@@ -140,15 +240,25 @@
               <!-INSURANCES->
               <div class="form-group">
                 <label>Insurances Covered:</label>
-                <select class="form-control input-group select2" multiple="multiple" placeholder="Select Insurances" style="width: 100%;">
-                  <option>Medicare</option>
-                  <option>Intellicare</option>
-                  <option>MediCard</option>
+                <select name="selected_insurances[]" id="select2_insurances" class="form-control input-group select2" multiple="multiple" placeholder="Select Insurances" style="width: 100%;">
+    <?php
+                  include ("config.php");
+                  $q = "SELECT insurancesID, insuranceName FROM insurances";
+                  $result = mysqli_query($conn, $q);
+                  if (mysqli_num_rows($result) > 0) {
+    
+                    while($row = mysqli_fetch_assoc($result)) {
+                      echo '<option value="'. $row['insurancesID'] . '">' . $row['insuranceName'] . '</option>';
+                    }
+
+                  }
+    mysqli_close($conn);             
+    ?>
                 </select>
                
               </div>
 
-                          
+     
             </div>
 
 
@@ -163,7 +273,7 @@
                 <div class="form-group">
                   <div class="col-md-1">
                     <label>
-                      <input type="checkbox" class="minimal"> Sun
+                      <input type="checkbox" class="minimal" name="days[]" value="0"> Sun
                     </label>
                   </div>
                 </div>
@@ -171,7 +281,7 @@
                 <div class="form-group">
                   <div class="col-md-1">
                     <label>
-                      <input type="checkbox" class="minimal"> Mon
+                      <input type="checkbox" class="minimal" name="days[]" value="1"> Mon
                     </label>
                   </div>
                 </div>
@@ -179,7 +289,7 @@
                 <div class="form-group">
                   <div class="col-md-1">
                     <label>
-                      <input type="checkbox" class="minimal"> Tue
+                      <input type="checkbox" class="minimal" name="days[]" value="2"> Tue
                     </label>
                   </div>
                 </div>
@@ -187,7 +297,7 @@
                 <div class="form-group">
                   <div class="col-md-1">
                     <label>
-                      <input type="checkbox" class="minimal"> Wed
+                      <input type="checkbox" class="minimal" name="days[]" value="3"> Wed
                     </label>
                   </div>
                 </div>
@@ -195,7 +305,7 @@
                 <div class="form-group">
                   <div class="col-md-1">
                     <label>
-                      <input type="checkbox" class="minimal"> Thu
+                      <input type="checkbox" class="minimal" name="days[]" value="4"> Thu
                     </label>
                   </div>
                 </div>
@@ -203,7 +313,7 @@
                 <div class="form-group">
                   <div class="col-md-1">
                     <label>
-                      <input type="checkbox" class="minimal"> Fri
+                      <input type="checkbox" class="minimal" name="days[]" value="5"> Fri
                     </label>
                   </div>
                 </div>
@@ -211,7 +321,7 @@
                 <div class="form-group">
                   <div class="col-md-1">
                     <label>
-                      <input type="checkbox" class="minimal"> Sat
+                      <input type="checkbox" class="minimal" name="days[]" value="6"> Sat
                     </label>
                   </div>
                 </div>
@@ -232,7 +342,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-clock-o"></i>
                     </div>
-                    <input type="text" class="form-control timepicker">
+                    <input type="text" class="form-control timepicker" name="opentime" required>
                   </div>
                
                 </div>
@@ -248,7 +358,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-clock-o"></i>
                     </div>
-                    <input type="text" class="form-control timepicker">
+                    <input type="text" class="form-control timepicker" name="closetime" required>
                   </div>
                   
                 </div>
@@ -300,7 +410,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-map"></i>
                     </div>
-                    <input type="text" class="form-control" id="longhi" placeholder="Longhitude" readonly>
+                    <input type="text" class="form-control" id="longhi" name="lng" placeholder="Longhitude" required readonly >
                   </div>
                 </div>
 
@@ -310,7 +420,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-map-o"></i>
                     </div>
-                    <input type="text" class="form-control" id="lati" placeholder="Latitude" readonly>
+                    <input type="text" class="form-control" id="lati" name="lat" placeholder="Latitude" required readonly >
                   </div>
                 </div>
 
@@ -320,7 +430,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-map-pin"></i>
                     </div>
-                    <input type="text" class="form-control" placeholder="Address">
+                    <input type="text" class="form-control" name="address" placeholder="Address" required>
                   </div>
                 </div>
 
@@ -359,7 +469,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-user"></i>
                     </div>
-                    <input type="text" class="form-control" placeholder="First Name">
+                    <input name="fname" type="text" class="form-control" placeholder="First Name" required>
                   </div>
                 </div>
 
@@ -369,7 +479,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-user"></i>
                     </div>
-                    <input type="text" class="form-control" placeholder="Middle Name">
+                    <input name="mname" type="text" class="form-control" placeholder="Middle Name" required>
                   </div>
                 </div>
 
@@ -379,7 +489,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-user"></i>
                     </div>
-                    <input type="text" class="form-control" placeholder="Last Name">
+                    <input name="lname" type="text" class="form-control" placeholder="Last Name" required>
                   </div>
                 </div>
 
@@ -397,7 +507,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-user"></i>
                     </div>
-                    <input type="text" class="form-control" placeholder="Username">
+                    <input name="usn" type="text" class="form-control" placeholder="Username" required>
                   </div>
                 </div>
 
@@ -407,7 +517,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-lock"></i>
                     </div>
-                    <input type="password" class="form-control" id="password" placeholder="Password">
+                    <input name="pw" type="password" class="form-control" id="inputPassword" placeholder="Password" required>
                   </div>
               </div>
 
@@ -417,7 +527,8 @@
                     <div class="input-group-addon">
                       <i class="fa fa-lock"></i>
                     </div>
-                    <input type="password" class="form-control" id="password" placeholder="Confirm Password">
+                    <input name="cpw" type="password" class="form-control" data-match="#inputPassword" data-match-error="Password don't match!" placeholder="Confirm Password" required>
+
                   </div>
               </div>
 
@@ -442,12 +553,13 @@
 
         <div class="col-md-12">
           <button type="submit" name="register" id="registerFacility" class="btn btn-block btn-lg btn-danger">Register Facility</button>
+          <input type="hidden" name="submitted" value="TRUE" />
         </div>
 
 
       </div>
 
-    </form>
+  </form>
 
           
 
@@ -468,6 +580,10 @@
     <strong>Copyright &copy; 2016 <a href="#">MF Spotter</a>.</strong> All rights reserved.
   </footer>
 
+
+<php?
+
+?>
 
 
 </div>
@@ -507,6 +623,7 @@
 <script src="dist/js/demo.js"></script>
 <!-- Page script -->
 
+
 <script>
   $(function () {
     //Initialize Select2 Elements
@@ -534,7 +651,17 @@
       checkboxClass: 'icheckbox_minimal-blue',
       radioClass: 'iradio_minimal-blue'
     });
+
+   /*$("#buttonsample").click(function() {
+     alert("Selected value is: "+ $("#select2_insurances").select2("val"));
+
+    });*/
+
+
+
+    
 </script>
+
 
 
 <script type="text/javascript">
@@ -605,80 +732,8 @@
 
       }
     }
-  
 
-    /*function geocodeLatLng(geocoder, map, infowindow) {
-        var input = "7.057964, 125.585403";
-        var latlngStr = input.split(',', 2);
-        var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
-        var latlng = {lat: parseFloat(document.getElementById("longhi").value), lng: parseFloat(document.getElementById("longhi").value)};
-       
-        geocoder.geocode({'location': latlng}, function(results, status) {
-          if (status === google.maps.GeocoderStatus.OK) {
-            if (results[1]) {
-              map.setZoom(11);
-              var marker = new google.maps.Marker({
-                position: latlng,
-                map: map
-              });
-              infowindow.setContent(results[1].formatted_address);
-              infowindow.open(map, marker);
-            } else {
-              window.alert('No results found');
-            }
-          } else {
-            window.alert('Geocoder failed due to: ' + status);
-          }
-        });
-      }
-    */
-
-    function saveData() {
-      var name = escape(document.getElementById("name").value);
-      var address = escape(document.getElementById("address").value);
-      var type = document.getElementById("type").value;
-      var latlng = marker.getPosition();
-
-      var url = "phpsqlinfo_addrow.php?name=" + name + "&address=" + address +
-                "&type=" + type + "&lat=" + latlng.lat() + "&lng=" + latlng.lng();
-      downloadUrl(url, function(data, responseCode) {
-        if (responseCode == 200 && data.length >= 1) {
-          infowindow.close();
-          document.getElementById("message").innerHTML = "Location added.";
-        }
-      });
-    
-    }
-
-    function insertData(){
-      var lat = marker.getPosition().lat();
-      var long = marker.getPosition().lng();
-      document.getElementById("longhi").value = ""+long;
-      document.getElementById("lati").value = ""+lat;
-      alert("hi" + lat + "long " + long);
-    }
-
-    function downloadUrl(url, callback) {
-      var request = window.ActiveXObject ?
-          new ActiveXObject('Microsoft.XMLHTTP') :
-          new XMLHttpRequest;
-
-      request.onreadystatechange = function() {
-        if (request.readyState == 4) {
-          request.onreadystatechange = doNothing;
-          callback(request.responseText, request.status);
-        }
-      };
-
-      request.open('GET', url, true);
-      request.send(null);
-    }
-
-    function doNothing() {}
 </script>
-<!-- Optionally, you can add Slimscroll and FastClick plugins.
-     Both of these plugins are recommended to enhance the
-     user experience. Slimscroll is required when using the
-     fixed layout. -->
+
 </body>
 </html>
