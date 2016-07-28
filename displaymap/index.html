@@ -24,9 +24,10 @@
         mapTypeId: 'roadmap'
       });
       var infoWindow = new google.maps.InfoWindow;
-
+      var searchUrl = 'aw.php?lat=' + 7.057964 + '&lng=' + 125.585403+ '&radius=' + 50;
+    
       // Change this depending on the name of your PHP file
-      downloadUrl("display.php", function(data) {
+      downloadUrl(searchUrl, function(data) {
         var xml = data.responseXML;
         var markers = xml.documentElement.getElementsByTagName("marker");
         for (var i = 0; i < markers.length; i++) {

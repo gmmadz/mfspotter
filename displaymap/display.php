@@ -4,7 +4,9 @@
 $username="root";
 $password="usbw";
 $database="mfspotter";
-
+$center_lat = $_GET["lat"];
+$center_lng = $_GET["lng"];
+$radius = $_GET["radius"];
 function parseToXML($htmlStr)
 {
 $xmlStr=str_replace('<','&lt;',$htmlStr);
