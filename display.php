@@ -28,8 +28,30 @@ if (!$db_selected) {
 }
 
 // Select all the rows in the markers table
-$query = sprintf("SELECT address, facilityName, latitude, longhitude, ( 3959 * acos( cos( radians('%s') ) * cos( radians( latitude ) ) * cos( radians( longhitude ) - radians('%s') ) + sin( radians('%s') ) * sin( radians( latitude ) ) ) ) AS distance FROM facility HAVING distance < '%s' ORDER BY distance LIMIT 0 , 20",
+//$query = sprintf("SELECT address, facilityName, latitude, longhitude, ( 3959 * acos( cos( radians('%s') ) * cos( radians( latitude ) ) * cos( radians( longhitude ) - radians('%s') ) + sin( radians('%s') ) * sin( radians( latitude ) ) ) ) AS distance FROM facility HAVING distance < '%s' ORDER BY distance LIMIT 0 , 20",
  
+$query = " SELECT z.facilityname,
+        z.latitude, z.longhitude,
+        p.distance_unit
+                 * DEGREES(ACOS(COS(RADIANS(p.latpoint))
+                 * COS(RADIANS(z.latitude))
+                 * COS(RADIANS(p.longpoint) - RADIANS(z.longhitude))
+                 + SIN(RADIANS(p.latpoint))
+                 * SIN(RADIANS(z.latitude)))) AS distance_in_km
+  FROM facility AS z
+  JOIN (   /* these are the query parameters */
+        SELECT  42.81  AS latpoint,  -70.81 AS longpoint,
+                50.0 AS radius,      111.045 AS distance_unit
+    ) AS p ON 1=1
+  WHERE z.latitude
+     BETWEEN p.latpoint  - (p.radius / p.distance_unit)
+         AND p.latpoint  + (p.radius / p.distance_unit)
+    AND z.longhitude
+     BETWEEN p.longpoint - (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint))))
+         AND p.longpoint + (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint))))
+  ORDER BY distance_in_km
+  LIMIT 10";
+
 
 $result = mysql_query($query);
 if (!$result) {
