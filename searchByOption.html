@@ -32,6 +32,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiAxt9bglMA2DTxUsQAz-MbdN1lCZwhpk"
+              type="text/javascript"></script>
+  <style>
+    #map { margin: 20px 0; padding: 0; height: 300px; float: left; width: 100%; }
+  </style>
+
 
   <style>
     .header-text{
@@ -85,28 +91,80 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="box-body">
           <div class="row">
 
-            <!-************* LEFT SIDE SECTION->cdgsdgsdsdgdgsgds
+            <!-****************************************** MAP SECTION->
+            <div class="col-md-6">
+                <div id="map" style="position: relative; overflow: hidden; transform: translateZ(0px); background-color: rgb(229, 227, 223);"></div>
+                <div id="message"></div>
+            </div>
+
+            <!-************* SEARCH SECTION->  
             <div class="col-md-4">
-                
-              <label>Search:</label>
-              <div class="input-group">
-                <div class="input-group-btn">
-                  <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">All
-                    <span class="fa fa-caret-down"></span></button>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                  </ul>
-                </div>
               
-              <!-- /btn-group -->
-                <input type="text" class="form-control">
+                <form class="form-horizontal">
+              
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" style="color: orange; ">Radius</label>
+
+                    <div class="col-xs-3">
+                      <select class="form-control">
+                      <option>option 1</option>
+                      <option>option 2</option>
+                      <option>option 3</option>
+                      <option>option 4</option>
+                      <option>option 5</option>
+                    </select>
+                    </div>
+
+                     <label class="control-label" style="color: orange; ">km</label>
+                  </div>
+
+                </form>
+
+              
+              <!-************ SEARCH BY OPTIONS AND LOCATION->
+
+              <button type="button" class="btn btn-block btn-danger btn-lg">Search from current location</button>
+
+              <br>
+
+              <!- IDENTIFY LOCATION ->
+              <div class="box box-solid box-warning">
+              <div class="box-header with-border">
+                  
+              <div class="box-tools pull-right">
+                  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+              </div>
+              
+              <h3 class="box-title">Identify Location</h3>
+
+                  
               </div>
 
+            <div class="box-body">
+              <div class="row">
+
+                <!-****************************************** SECTION->
+                
+                <div class="input-group margin col-xs-8">
+                <input type="text" class="form-control">
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-info">Go!</button>
+                    </span>
+                 </div>
+
+              </div>
+              <!-- /.row -->
             </div>
+
+        <!-- /.box-body -->
+
+            <div class="box-footer">
+              <button type="button" class="btn btn-block btn-danger">Next Page</button>
+            </div>
+            
+            </div>
+            </div>
+        <!--/ .box-body and row of identify location -->
 
           </div>
 
@@ -133,7 +191,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       Anything you want
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2016 <a href="#">Company</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2016 <a href="#">MFSpotter</a>.</strong> All rights reserved.
   </footer>
 
   <!-- Control Sidebar -->
@@ -154,4 +212,78 @@ scratch. This page gets rid of all links and provides the needed markup only.
      user experience. Slimscroll is required when using the
      fixed layout. -->
 </body>
+
+
+<script type="text/javascript">
+/*GOOGLE MAP*/
+    
+
+    var marker;
+
+    function initialize() {
+      
+      //var latlng = new google.maps.LatLng(7.057964, 125.585403);
+     
+      var options = {
+        /*zoom: 13,
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.SATELLITE
+        */
+        zoom: 13,
+        center: new google.maps.LatLng(7.057964, 125.585403),
+         // disableDefaultUI: true,
+        zoomControl: true,
+        zoomControlOptions: {
+            style: google.maps.ZoomControlStyle.SMALL
+          },
+        mapTypeId: 'terrain',
+        draggableCursor:'crosshair',
+        draggingCursor: 'move'
+      }
+      var map = new google.maps.Map(document.getElementById("map"), options);
+      var geocoder = new google.maps.Geocoder;
+      var infowindow = new google.maps.InfoWindow;   
+
+      google.maps.event.addListener(map, 'click', function(event) {
+         //placeMarker(event.latLng);
+          marker = new google.maps.Marker({
+          position: event.latLng,
+          map: map,
+          draggable: true,
+          animation: google.maps.Animation.DROP
+          });
+          //place the latlng into the inputs
+          document.getElementById("longhi").value = event.latLng.lng();
+          document.getElementById("lati").value = event.latLng.lat();
+          //geocodeLatLng(geocoder, map, infowindow);
+      });
+
+      
+
+    }
+
+
+    function placeMarker(location){
+      var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+ 
+      if(marker)
+      {
+        marker.setPosition(location);
+      }
+      else
+      {
+        marker = new google.maps.Marker({
+        position: location.latLng,
+        map: map,
+        draggable: true,
+        animation: google.maps.Animation.DROP
+        });
+
+
+      }
+    }
+
+</script>
+
+
 </html>
