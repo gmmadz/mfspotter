@@ -1,8 +1,32 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
     <title>with ajax</title>
+
+
+
+
+     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+
+
+
+
+
+
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiAxt9bglMA2DTxUsQAz-MbdN1lCZwhpk"
             type="text/javascript"></script>
     <script type="text/javascript">
@@ -26,6 +50,7 @@
         center: new google.maps.LatLng(7.1907, 125.4553),
         zoom: 9,
         mapTypeId: 'roadmap',
+        icon: "marker/marker.png",
         mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU}
       });
       infoWindow = new google.maps.InfoWindow();
@@ -69,6 +94,7 @@
     function getCurrentLocation() {
         var map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: -34.397, lng: 150.644},
+          icon: "marker/marker.png",
           zoom: 10
         });
         var infoWindow = new google.maps.InfoWindow({map: map});
@@ -103,101 +129,18 @@
                               'Error: Your browser doesn\'t support geolocation.');
       }
 
-/*
-   //**************************************************************************GET CURRENT LOCATION METHOD
-   function searchLocationsNear(center) {
-     clearLocations();
-
-     var radius = document.getElementById('radiusSelect').value;
-     var searchUrl = 'display.php?lat=' + center.lat() + '&lng=' + center.lng() + '&radius=' + radius;
-     
-     downloadUrl(searchUrl, function(data) {
-       var xml = parseXml(data);
-       var markerNodes = xml.documentElement.getElementsByTagName("marker");
-       var bounds = new google.maps.LatLngBounds();
-       for (var i = 0; i < markerNodes.length; i++) {
-         var name = markerNodes[i].getAttribute("name");
-         var address = markerNodes[i].getAttribute("address");
-         var distance = parseFloat(markerNodes[i].getAttribute("distance"));
-         var latlng = new google.maps.LatLng(
-              parseFloat(markerNodes[i].getAttribute("lat")),
-              parseFloat(markerNodes[i].getAttribute("lng")));
-
-         createOption(name, distance, i);
-         createMarker(latlng, name, address);
-         bounds.extend(latlng);
-       }
-       map.fitBounds(bounds);
-       locationSelect.style.visibility = "visible";
-       locationSelect.onchange = function() {
-         var markerNum = locationSelect.options[locationSelect.selectedIndex].value;
-         google.maps.event.trigger(markers[markerNum], 'click');
-       };
-      });
-    }
-
-    function createMarker(latlng, name, address) {
-      var html = "<b>" + name + "</b> <br/>" + address;
-      var marker = new google.maps.Marker({
-        map: map,
-        position: latlng
-      });
-      google.maps.event.addListener(marker, 'click', function() {
-        infoWindow.setContent(html);
-        infoWindow.open(map, marker);
-      });
-      markers.push(marker);
-    }
-
-    function createOption(name, distance, num) {
-      var option = document.createElement("option");
-      option.value = num;
-      option.innerHTML = name + "(" + distance.toFixed(1) + ")";
-      locationSelect.appendChild(option);
-    }
-
-    function downloadUrl(url, callback) {
-      var request = window.ActiveXObject ?
-          new ActiveXObject('Microsoft.XMLHTTP') :
-          new XMLHttpRequest;
-
-      request.onreadystatechange = function() {
-        if (request.readyState == 4) {
-          request.onreadystatechange = doNothing;
-          callback(request.responseText, request.status);
-        }
-      };
-
-      request.open('GET', url, true);
-      request.send(null);
-    }
-
-    function parseXml(str) {
-      if (window.ActiveXObject) {
-        var doc = new ActiveXObject('Microsoft.XMLDOM');
-        doc.loadXML(str);
-        return doc;
-      } else if (window.DOMParser) {
-        return (new DOMParser).parseFromString(str, 'text/xml');
-      }
-    }
-
-    function doNothing() {}
-
-    
-*/
-
-
+//**************************************************************************GET CURRENT LOCATION METHOD
 function searchLocationsNear() {
       var map = new google.maps.Map(document.getElementById("map"), {
         center: new google.maps.LatLng(7.057964, 125.585403),
         zoom: 13,
         animation: google.maps.Animation.DROP,
+        icon: "marker/marker.png",
         mapTypeId: 'roadmap'
       });
 
       var radius = document.getElementById('radiusSelect').value;
-      alert(radius);
+     
       var infoWindow = new google.maps.InfoWindow;
       var searchUrl = 'display.php?lat=' + '7.057964' + '&lng=' + '125.585403'+ '&radius=' + radius;
       // Change this depending on the name of your PHP file
@@ -212,7 +155,7 @@ function searchLocationsNear() {
               parseFloat(markers[i].getAttribute("lat")),
               parseFloat(markers[i].getAttribute("lng")));
           var html = "<b>" + name + "</b> <br/>" + address;
-          var icon = customIcons[type] || {};
+          var icon = customIcons[0] || {};
           var marker = new google.maps.Marker({
             map: map,
             position: point,
@@ -221,6 +164,18 @@ function searchLocationsNear() {
           bindInfoWindow(marker, map, infoWindow, html);
         }
       });
+
+
+      $.ajax({  
+                     url:"displayTable.php",  
+                     method:"post",  
+                     data:{lati:'7.057964', longi:'125.585403', radi: radius},  
+                     dataType:"text",  
+                     success:function(data)  
+                     {  
+                          $('#result').html(data);  
+                     }  
+                });  
     }
 
     function bindInfoWindow(marker, map, infoWindow, html) {
@@ -255,20 +210,87 @@ function searchLocationsNear() {
   </head>
 
   <body style="margin:0px; padding:0px;" onload="load()">
-    <div>
-     <input type="text" id="addressInput" size="10"/>
-    <select id="radiusSelect">
-    <option value="1" selected>1mi</option>
-      <option value="25" selected>25mi</option>
-      <option value="100">100mi</option>
-      <option value="200">200mi</option>
-    </select>
+   <div class="box-body">
+    <div class="row"> 
+      <div class="col-md-6">
+        <div>
+         <input type="text" id="addressInput" size="10"/>
+        <select id="radiusSelect">
+        <option value="1" selected>1mi</option>
+          <option value="25" selected>25mi</option>
+          <option value="100">100mi</option>
+          <option value="200">200mi</option>
+        </select>
 
-    <input type="button" onclick="searchLocationsNear()" value="Search"/>
-     <input type="button" onclick="getCurrentLocation()" value="Search From Current Locatiom"/>
+        <input type="button" onclick="searchLocationsNear()" value="Search"/>
+         <input type="button" onclick="getCurrentLocation()" value="Search From Current Locatiom"/>
+        </div>
+        <div><select id="locationSelect" style="width:100%;visibility:hidden"></select></div>
+        <div id="map" style="width: 100%; height: 80%"></div>
+      </div>
+
+  <div class="col-md-6">   
+    <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">List of Facilities</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body" id="result">
+             
+            </div>
     </div>
+  </div>
 
-    <div><select id="locationSelect" style="width:100%;visibility:hidden"></select></div>
-    <div id="map" style="width: 100%; height: 80%"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- jQuery 2.2.3 -->
+<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+<!-- page script -->
+<script>
+  $(function () {
+    $("#example1").DataTable();
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false
+    });
+  });
+</script>
+
+
+
+
+
   </body>
 </html>

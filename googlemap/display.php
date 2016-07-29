@@ -4,7 +4,7 @@
 $username="root";
 $password="usbw";
 $database="mfspotter";
-
+$output ='';
 $center_lat = $_GET["lat"];
 $center_lng = $_GET["lng"];
 $radius = $_GET["radius"];
@@ -90,5 +90,43 @@ while ($row = @mysql_fetch_assoc($result)){
 
 // End XML file
 echo '</markers>';
+
+
+if(mysqli_num_rows($result) > 0)  
+ {  
+     
+      $output .= '<table id="example1" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Facility Name</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                    <th>Address</th>
+                    <th>Distance</th>
+                  </tr>
+                </thead>';  
+      while($row = mysqli_fetch_array($result))  
+      {  
+           $output .= '  
+                <tbody>
+                      <td>"'.$row['facilityName'].'"</td>
+                      <td>"'.$row['latitude'].'"</td>
+                      <td>"'.$row['longitude'].'"</td>
+                      <td>"'.$row['address'].'"</td>
+                      <td>"'.$row['distance'].'"</td>
+                </tbody>  
+           ';  
+      }  
+      echo $output + '</table>';  
+ }  
+ else  
+ {  
+      echo 'Data Not Found';  
+ }  
+
+
+
+
+
 
 ?>

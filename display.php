@@ -8,6 +8,8 @@ $database="mfspotter";
 $center_lat = $_GET["lat"];
 $center_lng = $_GET["lng"];
 $radius = $_GET["radius"];
+
+
 function parseToXML($htmlStr)
 {
 $xmlStr=str_replace('<','&lt;',$htmlStr);
@@ -41,32 +43,8 @@ $query = sprintf("SELECT address, facilityName, latitude, longhitude, ( 3959 * a
   mysql_real_escape_string($center_lat),
   mysql_real_escape_string($radius));
 $result = mysql_query($query);
-/*
- 
-$query = " SELECT z.facilityname,
-        z.latitude, z.longhitude,
-        p.distance_unit
-                 * DEGREES(ACOS(COS(RADIANS(p.latpoint))
-                 * COS(RADIANS(z.latitude))
-                 * COS(RADIANS(p.longpoint) - RADIANS(z.longhitude))
-                 + SIN(RADIANS(p.latpoint))
-                 * SIN(RADIANS(z.latitude)))) AS distance_in_km
-  FROM facility AS z
-  JOIN (   
-        SELECT  7.1907  AS latpoint,  125.4553 AS longpoint,
-                25.0 AS radius,      111.045 AS distance_unit
-    ) AS p ON 1=1
-  WHERE z.latitude
-     BETWEEN p.latpoint  - (p.radius / p.distance_unit)
-         AND p.latpoint  + (p.radius / p.distance_unit)
-    AND z.longhitude
-     BETWEEN p.longpoint - (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint))))
-         AND p.longpoint + (p.radius / (p.distance_unit * COS(RADIANS(p.latpoint))))
-  ORDER BY distance_in_km
-  LIMIT 10";
-*/
 
-$result = mysql_query($query);
+
 if (!$result) {
   die('Invalid query: ' . mysql_error());
 }
@@ -90,5 +68,9 @@ while ($row = @mysql_fetch_assoc($result)){
 
 // End XML file
 echo '</markers>';
+
+
+
+
 
 ?>
