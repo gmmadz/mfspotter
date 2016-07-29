@@ -21,10 +21,12 @@
       var map = new google.maps.Map(document.getElementById("map"), {
         center: new google.maps.LatLng(7.057964, 125.585403),
         zoom: 13,
+        animation: google.maps.Animation.DROP,
         mapTypeId: 'roadmap'
       });
+
       var infoWindow = new google.maps.InfoWindow;
-      var searchUrl = 'display.php?lat=' + '7.057964' + '&lng=' + '125.585403'+ '&radius=' + '25';
+      var searchUrl = 'display.php?lat=' + '7.057964' + '&lng=' + '125.585403'+ '&radius=' + '15';
       // Change this depending on the name of your PHP file
       downloadUrl(searchUrl, function(data) {
         var xml = data.responseXML;
@@ -32,7 +34,7 @@
         for (var i = 0; i < markers.length; i++) {
           var name = markers[i].getAttribute("name");
           var address = markers[i].getAttribute("address");
-          var type = markers[i].getAttribute("type");
+          var type = markers[i].getAttribute("distance");
           var point = new google.maps.LatLng(
               parseFloat(markers[i].getAttribute("lat")),
               parseFloat(markers[i].getAttribute("lng")));

@@ -84,7 +84,7 @@ while ($row = @mysql_fetch_assoc($result)){
   echo 'address="' . parseToXML($row['address']) . '" ';
   echo 'lat="' . $row['latitude'] . '" ';
   echo 'lng="' . $row['longhitude'] . '" ';
-  echo 'type="ba" ';
+  echo 'type="'. $row['distance'] . '" ';
   echo '/>';
 }
 
