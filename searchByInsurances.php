@@ -4,10 +4,7 @@
 
     <title>Search By Insurance</title>
 
-
-
-
-     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
@@ -24,12 +21,10 @@
   <!-- Select2 -->
   <link rel="stylesheet" href="plugins/select2/select2.min.css">
 
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiAxt9bglMA2DTxUsQAz-MbdN1lCZwhpk" type="text/javascript"></script>
+    
 
 
-
-
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiAxt9bglMA2DTxUsQAz-MbdN1lCZwhpk"
-            type="text/javascript"></script>
     <script type="text/javascript">
     //<![CDATA[
     var map;
@@ -91,47 +86,10 @@
      locationSelect.appendChild(option);
    }
 
-   //**************************************************************************GET CURRENT LOCATION METHOD
-    function getCurrentLocation() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          icon: "marker/marker.png",
-          zoom: 10
-        });
-        var infoWindow = new google.maps.InfoWindow({map: map});
 
-        // Try HTML5 geolocation.
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-
-            };
-
-            infoWindow.setPosition(pos);
-            infoWindow.setContent('Location found.' + pos.lat + " " + pos.lng);
-            map.setCenter(pos);
-            searchLocationsNear(pos);
-
-          }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-          });
-        } else {
-          // Browser doesn't support Geolocation
-          handleLocationError(false, infoWindow, map.getCenter());
-        }
-      }
-
-    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-                              'Error: The Geolocation service failed.' :
-                              'Error: Your browser doesn\'t support geolocation.');
-      }
 
 //**************************************************************************GET CURRENT LOCATION METHOD
-function searchLocationsNear() {
+function searchInsurances() {
       var map = new google.maps.Map(document.getElementById("map"), {
         center: new google.maps.LatLng(7.057964, 125.585403),
         zoom: 13,
@@ -141,9 +99,11 @@ function searchLocationsNear() {
       });
 
       
-      var $selectedInsurance = $("#select2_insurances").val();
+      var selectedInsurance = $("#select2_insurances").val();
+      alert(selectedInsurance);
+
       var infoWindow = new google.maps.InfoWindow;
-      var searchUrl = 'display.php?lat=' + '7.057964' + '&lng=' + '125.585403'+ '&radius=' + radius;
+      var searchUrl = 'searchByInsurances_Map.php?insurances=' + 'selectedInsurance';
       // Change this depending on the name of your PHP file
       downloadUrl(searchUrl, function(data) {
         var xml = data.responseXML;
@@ -168,9 +128,9 @@ function searchLocationsNear() {
 
 
       $.ajax({  
-                     url:"searchByInsurances.php",  
+                     url:"searchByInsurances_Table.php",  
                      method:"post",  
-                     data:{lati:'7.057964', longi:'125.585403', radi: radius},  
+                     data:{insuarray: selectedInsurance},  
                      dataType:"text",  
                      success:function(data)  
                      {  
@@ -206,13 +166,16 @@ function searchLocationsNear() {
 
 
 
-    //]]>
+
   </script>
   </head>
 
   <body style="margin:0px; padding:0px;" onload="load()">
   <form name = "search" enctype="multipart/form-data" role="form" method="post" data-toggle="validator">
+  <div class="box box-solid box-primary">
+   
    <div class="box-body">
+    
     <div class="row"> 
       <div class="col-md-6">
           <div class="form-group">
@@ -235,28 +198,30 @@ function searchLocationsNear() {
                
              
 
-                  <input type="button" onclick="searchLocationsNear()" value="Search"/>
+                  <input type="button" onclick="searchInsurances()" value="Search"/>
           </div>
                   <div><select id="locationSelect" style="width:100%;visibility:hidden"></select></div>
                   <div id="map" style="width: 100%; height: 80%"></div>
       </div>
 
-  <div class="col-md-6">   
-    <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">List of Facilities</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body" id="result">
-             
-            </div>
+    <div class="col-md-6">   
+      <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">List of Facilities</h3>
+              </div>
+              <!-- /.box-header -->
+              <div class="box-body" id="result">
+               
+              </div>
+      </div>
+    </div>
+
+
+      </div>
     </div>
   </div>
 
 
-
-
-</form>
 </body>
 
 
@@ -310,6 +275,8 @@ function searchLocationsNear() {
     });
   });
 </script>
+
+
 
 
 

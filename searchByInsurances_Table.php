@@ -6,17 +6,16 @@ $username="root";
 $password="usbw";
 $database="mfspotter";
 $output ='';
-$insurancesArray= $_POST['insuarray'];
+$insurancesArray= implode(",",$_POST['insuarray']);
+
 
 $connect = mysqli_connect("localhost", $username, $password, $database);  
 
-$query = sprintf("SELECT f.facilityName AS Facility_Name, GROUP_CONCAT(i.insuranceName SEPARATOR ', ') As Insurances_Covered
+$query = "SELECT f.facilityName AS Facility_Name, GROUP_CONCAT(i.insuranceName SEPARATOR ', ') As Insurances_Covered
 					FROM facility f, insurances i, insurancesCovered ic
 					WHERE f.facilityID = ic.facilityID AND i.insurancesID = ic.insuranceID
-					AND i.insurancesID IN ('%s')
-					GROUP BY f.facilityName");
-
-  mysql_real_escape_string($insurancesArray);
+					AND i.insurancesID IN ('".$insurancesArray."')
+					GROUP BY f.facilityName";
 
  $result = mysqli_query($connect, $query); 
 
