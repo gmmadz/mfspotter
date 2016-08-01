@@ -17,6 +17,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="plugins/select2/select2.min.css">
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="plugins/iCheck/all.css">
+  <!-- Bootstrap time Picker -->
+  <link rel="stylesheet" href="plugins/timepicker/bootstrap-timepicker.min.css">
+
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
@@ -33,7 +40,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <![endif]-->
 
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiAxt9bglMA2DTxUsQAz-MbdN1lCZwhpk"
-              type="text/javascript"></script>
+            type="text/javascript"></script>
   <style>
     #map { margin: 20px 0; padding: 0; height: 300px; float: left; width: 100%; }
   </style>
@@ -104,7 +111,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div id="message"></div>
             </div>
 
-            <!-************* SEARCH SECTION->  
+            <!- Search Radius ->  
             <div class="col-md-4">
               
                 <form class="form-horizontal">
@@ -132,30 +139,144 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
               <button type="button" class="btn btn-block btn-danger btn-lg">Search from current location</button>
 
-              <br>
+              </br>
 
-              <!- IDENTIFY LOCATION ->
+              <!-********************** DEFINE AREA OF SEARCH ->
               <div class="panel box box-solid box-warning">
                 <div class="box-header with-border">
                   <h4 class="box-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                      Identify Location
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                      Define Area of Search
                     </a>
                   </h4>
                 </div>
 
-                <div id="collapseOne" class="panel-collapse collapse">
+                <div id="collapseTwo" class="panel-collapse collapse">
                   <div class="box-body">
                     <div class="row">
 
-                      <!-****************************************** SECTION->
-                      
-                      <div class="input-group margin col-xs-8">
-                      <input type="text" class="form-control">
+                    <!- Identify Location->
+                    <center><div class="input-group margin col-xs-8">
+                      <input type="text" class="form-control" placeholder="Identify Location">
                           <span class="input-group-btn">
                             <button type="button" class="btn btn-info">Go!</button>
                           </span>
+                    </div>
+                    </center>
+
+                    <!- Select a medical treatment->
+                      
+                    <div class="form-group col-xs-12">
+                      <select class="form-control select2" multiple="multiple" data-placeholder="Select a Medical Treatment" style="width: 100%;">
+                        <option>Dentist</option>
+                        <option>Dermatology</option>
+                        <option>Nutritionist</option>
+                        <option>Opthalmology(Eye)</option>
+                        <option>Optometrist(Eye)</option>
+                        <option>Orthodontic(Teeth)</option>
+                        <option>Pedetrician</option>
+                      </select>
+                    </div>
+                    <!-- /.form-group -->
+
+                    <!- Select schedule->
+
+                    
+                    <div class="form-group">
+                     
+                      <div class="form-group">
+                        <div class="col-md-1">
+                          <label>
+                            <input type="checkbox" class="minimal"> Sun
+                          </label>
+                        </div>
                       </div>
+
+                      <div class="form-group">
+                        <div class="col-md-1">
+                          <label>
+                            <input type="checkbox" class="minimal"> Mon
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="col-md-1">
+                          <label>
+                            <input type="checkbox" class="minimal"> Tue
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="col-md-1">
+                          <label>
+                            <input type="checkbox" class="minimal"> Wed
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="col-md-1">
+                          <label>
+                            <input type="checkbox" class="minimal"> Thu
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="col-md-1">
+                          <label>
+                            <input type="checkbox" class="minimal"> Fri
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="col-md-1">
+                          <label>
+                            <input type="checkbox" class="minimal"> Sat
+                          </label>
+                        </div>
+                      </div>
+                        
+                    </div>
+                
+                    </br></br></br>
+
+                    <!- Identify time ->
+
+                    <div class="bootstrap-timepicker">
+                
+                    <div class="form-group col-xs-12">
+                      <label>Opening Time:</label>
+
+                      <div class="input-group">
+                        <div class="input-group-addon">
+                          <i class="fa fa-clock-o"></i>
+                        </div>
+                        <input type="text" class="form-control timepicker">
+                      </div>
+                   
+                    </div>
+             
+                  </div>
+
+                  <!-CLOSING TIME->
+                  <div class="bootstrap-timepicker">
+                    <div class="form-group col-xs-12">
+                      <label>Closing Time:</label>
+
+                      <div class="input-group">
+                        <div class="input-group-addon">
+                          <i class="fa fa-clock-o"></i>
+                        </div>
+                        <input type="text" class="form-control timepicker">
+                      </div>
+                      
+                    </div>
+                    
+                  </div>
 
                     </div>
                     <!-- /.row -->
@@ -163,7 +284,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <!-- /.box-body -->
 
                   <div class="box-footer">
-                    <button type="button" class="btn btn-block btn-danger">Next Page</button>
+                    <button type="button" class="btn btn-block btn-danger">Search</button>
                   </div>
               
                 </div>
@@ -171,6 +292,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
               </div>
               <!--/ panelbox -->
+
+
+
+
+
+
+
+
+
 
             </div>
             <!--/ col-md-4 -->
@@ -214,13 +344,36 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/app.min.js"></script>
-
+<!-- Select2 -->
+<script src="plugins/select2/select2.full.min.js"></script>
+<!-- iCheck 1.0.1 -->
+<script src="plugins/iCheck/icheck.min.js"></script>
+<!-- bootstrap time picker -->
+<script src="plugins/timepicker/bootstrap-timepicker.min.js"></script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. Slimscroll is required when using the
      fixed layout. -->
-</body>
 
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $(".select2").select2();
+
+    //iCheck for checkbox and radio inputs
+    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+      checkboxClass: 'icheckbox_minimal-blue',
+      radioClass: 'iradio_minimal-blue'
+    });
+
+    //Timepicker
+    $(".timepicker").timepicker({
+      showInputs: false
+    });
+
+  });
+
+</script>
 
 <script type="text/javascript">
 /*GOOGLE MAP*/
@@ -290,8 +443,77 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
       }
     }
+  
 
+    /*function geocodeLatLng(geocoder, map, infowindow) {
+        var input = "7.057964, 125.585403";
+        var latlngStr = input.split(',', 2);
+        var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+        var latlng = {lat: parseFloat(document.getElementById("longhi").value), lng: parseFloat(document.getElementById("longhi").value)};
+       
+        geocoder.geocode({'location': latlng}, function(results, status) {
+          if (status === google.maps.GeocoderStatus.OK) {
+            if (results[1]) {
+              map.setZoom(11);
+              var marker = new google.maps.Marker({
+                position: latlng,
+                map: map
+              });
+              infowindow.setContent(results[1].formatted_address);
+              infowindow.open(map, marker);
+            } else {
+              window.alert('No results found');
+            }
+          } else {
+            window.alert('Geocoder failed due to: ' + status);
+          }
+        });
+      }
+    */
+
+    function saveData() {
+      var name = escape(document.getElementById("name").value);
+      var address = escape(document.getElementById("address").value);
+      var type = document.getElementById("type").value;
+      var latlng = marker.getPosition();
+
+      var url = "phpsqlinfo_addrow.php?name=" + name + "&address=" + address +
+                "&type=" + type + "&lat=" + latlng.lat() + "&lng=" + latlng.lng();
+      downloadUrl(url, function(data, responseCode) {
+        if (responseCode == 200 && data.length >= 1) {
+          infowindow.close();
+          document.getElementById("message").innerHTML = "Location added.";
+        }
+      });
+    
+    }
+
+    function insertData(){
+      var lat = marker.getPosition().lat();
+      var long = marker.getPosition().lng();
+      document.getElementById("longhi").value = ""+long;
+      document.getElementById("lati").value = ""+lat;
+      alert("hi" + lat + "long " + long);
+    }
+
+    function downloadUrl(url, callback) {
+      var request = window.ActiveXObject ?
+          new ActiveXObject('Microsoft.XMLHTTP') :
+          new XMLHttpRequest;
+
+      request.onreadystatechange = function() {
+        if (request.readyState == 4) {
+          request.onreadystatechange = doNothing;
+          callback(request.responseText, request.status);
+        }
+      };
+
+      request.open('GET', url, true);
+      request.send(null);
+    }
+
+    function doNothing() {}
 </script>
 
-
+</body>
 </html>
