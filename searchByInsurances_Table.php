@@ -5,7 +5,7 @@
 $username="root";
 $password="usbw";
 $database="mfspotter";
-$output ='';
+$output='';
 $insurancesArray= implode(",",$_POST['insuarray']);
 
 
@@ -14,7 +14,7 @@ $connect = mysqli_connect("localhost", $username, $password, $database);
 $query = "SELECT f.facilityName AS Facility_Name, GROUP_CONCAT(i.insuranceName SEPARATOR ', ') As Insurances_Covered
 					FROM facility f, insurances i, insurancesCovered ic
 					WHERE f.facilityID = ic.facilityID AND i.insurancesID = ic.insuranceID
-					AND i.insurancesID IN ('".$insurancesArray."')
+					AND i.insurancesID IN ('$insurancesArray')
 					GROUP BY f.facilityName";
 
  $result = mysqli_query($connect, $query); 

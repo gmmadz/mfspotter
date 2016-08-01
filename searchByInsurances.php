@@ -100,10 +100,12 @@ function searchInsurances() {
 
       
       var selectedInsurance = $("#select2_insurances").val();
-      alert(selectedInsurance);
+      
 
       var infoWindow = new google.maps.InfoWindow;
-      var searchUrl = 'searchByInsurances_Map.php?insurances=' + 'selectedInsurance';
+      var searchUrl = 'searchByInsurances_Map.php?insurances=' + selectedInsurance;
+      alert(searchUrl);
+
       // Change this depending on the name of your PHP file
       downloadUrl(searchUrl, function(data) {
         var xml = data.responseXML;
