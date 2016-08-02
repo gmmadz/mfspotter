@@ -165,7 +165,19 @@ function searchInsurances() {
 
     function doNothing() {}
 
+    function getCheckBoxes(checkboxName){
+      var checkboxes = document.getElementsByName(checkboxName);
+      var checkboxesChecked = [];
 
+      for (var i=0; i<checkboxes.length; i++){
+        if (checkboxes[i].checked){
+          checkboxesChecked.push(checkboxes[i]);
+        }
+      }
+
+      return checkboxesChecked.length > 0 ? checkboxesChecked : null;
+
+    }
 
 
   </script>
@@ -180,26 +192,105 @@ function searchInsurances() {
     <div class="row"> 
       <div class="col-md-6">
           <div class="form-group">
-                <label>Insurances Covered:</label>
-                <select name="selected_insurances[]" id="select2_insurances" class="form-control input-group select2" multiple="multiple" placeholder="Select Insurances" style="width: 100%;">
-    <?php
-                  include ("config.php");
-                  $q = "SELECT insurancesID, insuranceName FROM insurances";
-                  $result = mysqli_query($conn, $q);
-                  if (mysqli_num_rows($result) > 0) {
-    
-                    while($row = mysqli_fetch_assoc($result)) {
-                      echo '<option value="'. $row['insurancesID'] . '">' . $row['insuranceName'] . '</option>';
-                    }
-
-                  }
-    mysqli_close($conn);             
-    ?>
-                </select>
+  <div class="form-group">
                
+                <div class="form-group">
+                  <div class="col-md-1">
+                    <label>
+                      <input type="checkbox" class="minimal" name="days[]" value="0"> Sun
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-1">
+                    <label>
+                      <input type="checkbox" class="minimal" name="days[]" value="1"> Mon
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-1">
+                    <label>
+                      <input type="checkbox" class="minimal" name="days[]" value="2"> Tue
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-1">
+                    <label>
+                      <input type="checkbox" class="minimal" name="days[]" value="3"> Wed
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-1">
+                    <label>
+                      <input type="checkbox" class="minimal" name="days[]" value="4"> Thu
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-1">
+                    <label>
+                      <input type="checkbox" class="minimal" name="days[]" value="5"> Fri
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-1">
+                    <label>
+                      <input type="checkbox" class="minimal" name="days[]" value="6"> Sat
+                    </label>
+                  </div>
+                </div>
+                  
+              </div>
+       
+
+              </br></br></br>
+
+
+               <!-OPENING TIME->
+              <div class="bootstrap-timepicker">
+                
+                <div class="form-group">
+                  <label>Opening Time:</label>
+
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                      <i class="fa fa-clock-o"></i>
+                    </div>
+                    <input type="text" class="form-control timepicker" name="opentime" required>
+                  </div>
+               
+                </div>
+         
+              </div>
+
+              <!-CLOSING TIME->
+              <div class="bootstrap-timepicker">
+                <div class="form-group">
+                  <label>Closing Time:</label>
+
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                      <i class="fa fa-clock-o"></i>
+                    </div>
+                    <input type="text" class="form-control timepicker" name="closetime" required>
+                  </div>
+                  
+                </div>
+                
+              </div>
              
 
-                  <input type="button" onclick="searchInsurances()" value="Search"/>
+                  <input type="button" onClick="getCheckboxes(" value="Search"/>
           </div>
                   <div><select id="locationSelect" style="width:100%;visibility:hidden"></select></div>
                   <div id="map" style="width: 100%; height: 80%"></div>
