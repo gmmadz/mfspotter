@@ -212,24 +212,31 @@ function searchLocationsNear() {
   </script>
   </head>
 
-<body class="hold-transition skin-green layout-top-nav" style="margin:0px; padding:0px;" onload="load()">
+  <body class="hold-transition skin-green sidebar-mini" style="margin:0px; padding:0px;" onload="load()">
 
-<!-- Site wrapper -->
-<div class="wrapper">
+  <!-- Site wrapper -->
+  <div class="wrapper">
 
-  <!-Main Header->
-  <header class="main-header">
-    
-    <nav class="navbar navbar-static-top">
-      <div class="navbar-header">
-        <a href="../mfspotter/Landing.html" class="navbar-brand"><b>MF</b>Spotter</a>
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
-          <i class="fa fa-bars"></i>
-        </button>
-      </div>
-          
-      <!-Menu on the left side->
-       
+    <!-Main Header->
+    <header class="main-header">
+
+       <!-- Logo -->
+      <a href="../mfspotter/Landing.html" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini"><b>MF</b>S</span>
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg"><b>MF</b>Spotter</span>
+      </a>
+
+      <!-- Header Navbar: style can be found in header.less -->
+      <nav class="navbar navbar-static-top">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+
+   
+        <!-Menu on the left side->
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse pull-right" id="navbar-collapse">
           <ul class="nav navbar-nav">
@@ -240,242 +247,119 @@ function searchLocationsNear() {
         </div>
         <!-- /.navbar-collapse -->
 
-    </nav>
+      </nav>
 
-  </header>
+    </header>
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Searching a Medical Facility
-      </h1>
-    </section>
-
-
-    <!- Main content -->
-    <section class="content">
-      <div class="box box-solid box-success">
+    <!-Sidebar ->
+    <aside class="main-sidebar">
+      <!-- sidebar: style can be found in sidebar.less -->
+      <section class="sidebar">
+        <!-- Sidebar user panel -->
+        <div class="user-panel">
+          <div class="pull-left image">
+            <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          </div>
+          <div class="pull-left info">
+            <p>Gerald Martin Madarang</p>
+            <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+          </div>
+        </div>
         
-        <div class="box-body">
-          <div class="row">
+
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu">
+          <li class="header">SEARCH OPTIONS</li>
+          
+          <li>
+            <a href="pages/widgets.html">
+              <i class="fa fa-location-arrow"></i> <span>Location</span>
+              <span class="pull-right-container">
+              </span>
+            </a>
+          </li>
+
+           <li>
+            <a href="pages/widgets.html">
+              <i class="fa fa-user-md"></i> <span>Specialization</span>
+              <span class="pull-right-container">
+              </span>
+            </a>
+          </li>
+
+           <li>
+            <a href="pages/widgets.html">
+              <i class="fa fa-medkit"></i> <span>Insurance</span>
+              <span class="pull-right-container">
+              </span>
+            </a>
+          </li>
+
+           <li>
+            <a href="pages/widgets.html">
+              <i class="fa fa-book"></i> <span>Schedule</span>
+              <span class="pull-right-container">
+              </span>
+            </a>
+          </li>
+
+
+        </ul>
+      </section>
+      <!-- /.sidebar -->
+    </aside>
+
+
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          Searching a Medical Facility
+        </h1>
+      </section>
+
+
+      <!- Main content -->
+      <section class="content">
+        <div class="box box-solid box-success">
+      
+          <div class="box-body">
+            <div class="row"> 
 
             <!-****************************************** MAP SECTION->
-            <div class="col-md-6">
-                <div id="map" style="position: relative; overflow: hidden; transform: translateZ(0px); background-color: rgb(229, 227, 223);"></div>
-                <div id="message"></div>
-            </div>
-
-            <!- Search Radius ->  
-            <div class="col-md-4">
-              
-                <form class="form-horizontal">
-              
-                  <div class="form-group">
-                    <label class="col-sm-2 control-label" style="color: orange; ">Radius</label>
-
-                    <div class="col-xs-3">
-                      <select class="form-control">
-                      <option>option 1</option>
-                      <option>option 2</option>
-                      <option>option 3</option>
-                      <option>option 4</option>
-                      <option>option 5</option>
-                    </select>
-                    </div>
-
-                     <label class="control-label" style="color: orange; ">km</label>
-                  </div>
-
-                </form>
-
-              
-              <!-************ SEARCH BY OPTIONS AND LOCATION->
-
-              <button type="button" class="btn btn-block btn-danger btn-lg">Search from current location</button>
-
+             <div class="col-md-6"> 
+              <div><select id="locationSelect" style="width:100%;visibility:hidden"></select></div>
+                <div id="map" style="width: 100%; height: 80%"></div>
+             </div>
+                
+              <!-****************************************** TABLE SECTION->  
               </br>
-
-              <!-********************** DEFINE AREA OF SEARCH ->
-              <div class="panel box box-solid box-warning">
-                <div class="box-header with-border">
-                  <h4 class="box-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                      Define Area of Search
-                    </a>
-                  </h4>
+              <div class="col-md-6">   
+                <div class="box">
+                    <div class="box-header">
+                      <h3 class="box-title">List of Facilities</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body" id="result"></div>
                 </div>
-
-                <div id="collapseTwo" class="panel-collapse collapse">
-                  <div class="box-body">
-                    <div class="row">
-
-                    <!- Identify Location->
-                    <center><div class="input-group margin col-xs-8">
-                      <input type="text" class="form-control" placeholder="Identify Location">
-                          <span class="input-group-btn">
-                            <button type="button" class="btn btn-info">Go!</button>
-                          </span>
-                    </div>
-                    </center>
-
-                    <!- Select a medical treatment->
-                      
-                    <div class="form-group col-xs-12">
-                      <select class="form-control select2" multiple="multiple" data-placeholder="Select a Medical Treatment" style="width: 100%;">
-                        <option>Dentist</option>
-                        <option>Dermatology</option>
-                        <option>Nutritionist</option>
-                        <option>Opthalmology(Eye)</option>
-                        <option>Optometrist(Eye)</option>
-                        <option>Orthodontic(Teeth)</option>
-                        <option>Pedetrician</option>
-                      </select>
-                    </div>
-                    <!-- /.form-group -->
-
-                    <!- Select schedule->
-
-                    
-                    <div class="form-group">
-                     
-                      <div class="form-group">
-                        <div class="col-md-1">
-                          <label>
-                            <input type="checkbox" class="minimal"> Sun
-                          </label>
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <div class="col-md-1">
-                          <label>
-                            <input type="checkbox" class="minimal"> Mon
-                          </label>
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <div class="col-md-1">
-                          <label>
-                            <input type="checkbox" class="minimal"> Tue
-                          </label>
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <div class="col-md-1">
-                          <label>
-                            <input type="checkbox" class="minimal"> Wed
-                          </label>
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <div class="col-md-1">
-                          <label>
-                            <input type="checkbox" class="minimal"> Thu
-                          </label>
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <div class="col-md-1">
-                          <label>
-                            <input type="checkbox" class="minimal"> Fri
-                          </label>
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <div class="col-md-1">
-                          <label>
-                            <input type="checkbox" class="minimal"> Sat
-                          </label>
-                        </div>
-                      </div>
-                        
-                    </div>
-                
-                    </br></br></br>
-
-                    <!- Identify time ->
-
-                    <div class="bootstrap-timepicker">
-                
-                    <div class="form-group col-xs-12">
-                      <label>Opening Time:</label>
-
-                      <div class="input-group">
-                        <div class="input-group-addon">
-                          <i class="fa fa-clock-o"></i>
-                        </div>
-                        <input type="text" class="form-control timepicker">
-                      </div>
-                   
-                    </div>
-             
-                  </div>
-
-                  <!-CLOSING TIME->
-                  <div class="bootstrap-timepicker">
-                    <div class="form-group col-xs-12">
-                      <label>Closing Time:</label>
-
-                      <div class="input-group">
-                        <div class="input-group-addon">
-                          <i class="fa fa-clock-o"></i>
-                        </div>
-                        <input type="text" class="form-control timepicker">
-                      </div>
-                      
-                    </div>
-                    
-                  </div>
-
-                    </div>
-                    <!-- /.row -->
-                  </div>
-                  <!-- /.box-body -->
-
-                  <div class="box-footer">
-                    <button type="button" class="btn btn-block btn-danger">Search</button>
-                  </div>
-              
-                </div>
-                <!--/ collapseOne  -->
-
               </div>
-              <!--/ panelbox -->
-
-
-
-
-
-
-
-
-
 
             </div>
-            <!--/ col-md-4 -->
-          
+            <!-- /.row -->
           </div>
-          <!-- /.row -->
-        </div>
-        <!-- /.box-body -->
+          <!-- /.box-body -->
 
         <div class="box-footer">
           <i>Insert instruction here</i>
         </div>
+    </div>
+    <!-- / end of Main content -->
 
+  </section>
 
-      </div>
-      <!-- / end of Main content -->
-    </section>
-
-  </div>
+ </div>
   <!-- /.content-wrapper -->
 
   <!-- Main Footer -->
@@ -491,6 +375,8 @@ function searchLocationsNear() {
   <!-- Control Sidebar -->
 
   <!-- ./wrapper -->
+
+<!-- REQUIRED JS SCRIPTS -->
 
 <!-- jQuery 2.2.3 -->
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
