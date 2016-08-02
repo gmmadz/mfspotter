@@ -131,6 +131,8 @@
       function clickme(){
         document.getElementById('btntest').onclick = function(){
           var selchb = getSelectedChbox(this.form);  
+          //ADD VALIDATION IF VARIABLE IS BLANK
+
           var close = $("#closetime").val();
           var open = $("#opentime").val();
 
@@ -169,10 +171,6 @@
               bindInfoWindow(marker, map, infoWindow, html);
             }
           });
-
-
-
-
 
 
             $.ajax({  
