@@ -150,15 +150,17 @@
                 </select>
                 <label class="control-label">km</label>
               </div>
-
+              </br>
+              <!--
               <button type="button" class="btn btn-block btn-danger" onclick="searchLocationsNear()">Search</button>
 
               <button type="button" class="btn btn-block btn-danger btn-lg" onclick="getCurrentLocation()">Search from current location</button>
-
+              -->
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-outline">Save changes</button>
+              <button type="button" class="btn btn-outline" onclick="searchLocationsNear()">Search</button>
+              <button type="button" class="btn btn-outline"  onclick="getCurrentLocation()">Search from current location</button>
             </div>
           </div>
           <!-- /.modal-content -->
@@ -219,6 +221,20 @@
                 <div class="form-group">
                   <label>Insurances Covered:</label>
                   <select name="selected_insurances[]" id="select2_insurances" class="form-control input-group select2" multiple="multiple" placeholder="Select Insurances" style="width: 100%;">
+
+                  <?php
+                  include ("config.php");
+                  $q = "SELECT insurancesID, insuranceName FROM insurances";
+                  $result = mysqli_query($conn, $q);
+                  if (mysqli_num_rows($result) > 0) {
+    
+                    while($row = mysqli_fetch_assoc($result)) {
+                      echo '<option value="'. $row['insurancesID'] . '">' . $row['insuranceName'] . '</option>';
+                    }
+
+                  }
+                  mysqli_close($conn);             
+                  ?>
                   </select>
                 </div>
 
@@ -246,12 +262,14 @@
             </div>
             <div class="modal-body">
               <div class="box-body">
+                <form name = "search" enctype="multipart/form-data" role="form" method="post" data-toggle="validator">
+
                 <div class="form-group">
                      
                   <div class="form-group">
                     <div class="col-md-1">
                       <label>
-                        <input type="checkbox" class="minimal"> Sun
+                        <input type="checkbox" class="minimal" name="days[]" value="0"> Sun
                       </label>
                     </div>
                   </div>
@@ -259,7 +277,7 @@
                   <div class="form-group">
                     <div class="col-md-1">
                       <label>
-                        <input type="checkbox" class="minimal"> Mon
+                        <input type="checkbox" class="minimal" name="days[]" value="1"> Mon
                       </label>
                     </div>
                   </div>
@@ -267,7 +285,7 @@
                   <div class="form-group">
                     <div class="col-md-1">
                       <label>
-                        <input type="checkbox" class="minimal"> Tue
+                        <input type="checkbox" class="minimal" name="days[]" value="2"> Tue
                       </label>
                     </div>
                   </div>
@@ -275,7 +293,7 @@
                   <div class="form-group">
                     <div class="col-md-1">
                       <label>
-                        <input type="checkbox" class="minimal"> Wed
+                        <input type="checkbox" class="minimal" name="days[]" value="3"> Wed
                       </label>
                     </div>
                   </div>
@@ -283,7 +301,7 @@
                   <div class="form-group">
                     <div class="col-md-1">
                       <label>
-                        <input type="checkbox" class="minimal"> Thu
+                        <input type="checkbox" class="minimal" name="days[]" value="4"> Thu
                       </label>
                     </div>
                   </div>
@@ -291,7 +309,7 @@
                   <div class="form-group">
                     <div class="col-md-1">
                       <label>
-                        <input type="checkbox" class="minimal"> Fri
+                        <input type="checkbox" class="minimal" name="days[]" value="5"> Fri
                       </label>
                     </div>
                   </div>
@@ -299,18 +317,17 @@
                   <div class="form-group">
                     <div class="col-md-1">
                       <label>
-                        <input type="checkbox" class="minimal"> Sat
+                        <input type="checkbox" class="minimal" name="days[]" value="6"> Sat
                       </label>
                     </div>
                   </div>
                         
-                  </div>
+                </div> <!-- /.form group -->
                 
-                  </br></br></br>
+                </br></br></br>
 
-                  <!- Identify time ->
-
-                  <div class="bootstrap-timepicker">
+                <!- Identify time ->
+                <div class="bootstrap-timepicker">
               
                   <div class="form-group col-xs-12">
                     <label>Opening Time:</label>
@@ -319,15 +336,15 @@
                       <div class="input-group-addon">
                         <i class="fa fa-clock-o"></i>
                       </div>
-                      <input type="text" class="form-control timepicker">
+                      <input type="text" class="form-control timepicker" id="opentime" name="opentime" required>
                     </div>
                  
                   </div>
            
-                  </div>
+                </div>
 
-                  <!-CLOSING TIME->
-                  <div class="bootstrap-timepicker">
+                <!-CLOSING TIME->
+                <div class="bootstrap-timepicker">
                   <div class="form-group col-xs-12">
                     <label>Closing Time:</label>
 
@@ -335,17 +352,18 @@
                       <div class="input-group-addon">
                         <i class="fa fa-clock-o"></i>
                       </div>
-                      <input type="text" class="form-control timepicker">
+                      <input type="text" class="form-control timepicker"  id="closetime" name="closetime" required>
                     </div>
                     
                   </div>
                     
-                  </div>
-              </div>
-            </div>
+                </div>
+
+              </div> <!-- /.box body -->
+            </div> <!-- /. modal body -->
             <div class="modal-footer">
               <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-outline">Save changes</button>
+              <button type="button" class="btn btn-outline" id="btntest" onclick="clickme()">Search</button>
             </div>
           </div>
           <!-- /.modal-content -->
@@ -444,10 +462,28 @@
 <script src="plugins/iCheck/icheck.min.js"></script>
 <!-- bootstrap time picker -->
 <script src="plugins/timepicker/bootstrap-timepicker.min.js"></script>
+
+<!-- InputMask -->
+<script src="plugins/input-mask/jquery.inputmask.js"></script>
+<script src="plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<!-- date-range-picker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="plugins/daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap datepicker -->
+<script src="plugins/datepicker/bootstrap-datepicker.js"></script>
+<!-- bootstrap color picker -->
+<script src="plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
+
+<!-- FUNCTIONS -->
 <!-- location search functions -->
 <script src="plugins/googlemap/location.js"></script>
 <!-- Search Insurance Function -->
 <script src="plugins/googlemap/searchInsuranceFunc.js"></script>
+<!-- Search Schedule Function -->
+<script src="plugins/googlemap/searchScheduleFunc.js"></script>
+
+
 <!-- page script -->
 <script>
   $(function () {
@@ -472,7 +508,8 @@
 
     //Timepicker
     $(".timepicker").timepicker({
-      showInputs: false
+      showInputs: false,
+      showMeridian: false
     });
 
 
