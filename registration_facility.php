@@ -139,18 +139,29 @@
 
   <!-Main Header->
   <header class="main-header">
+    
     <nav class="navbar navbar-static-top">
-      <div class="container">
-
-        <div class="navbar-header">
-          <a href="../../index2.html" class="navbar-brand"><b>Med</b>Spotter</a>
-         
-        </div>
-
-       
+      <div class="navbar-header">
+        <a href="../mfspotter/Landing.html" class="navbar-brand"><b>MF</b>Spotter</a>
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+          <i class="fa fa-bars"></i>
+        </button>
       </div>
-      <!-- /.container-fluid -->
+          
+      <!-Menu on the left side->
+       
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse pull-right" id="navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="#">About</a></li>
+            <li><a href="#">Log In</a></li>
+          </ul>
+          
+        </div>
+        <!-- /.navbar-collapse -->
+
     </nav>
+
   </header>
 
 

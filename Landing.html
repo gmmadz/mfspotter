@@ -39,7 +39,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     height: 700px;
     width: 100%;
     margin:auto;
-    position: relative;
+    position: absolute;
   }
   </style>
 
@@ -50,17 +50,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <div class="wrapper">
 
   <!-Main Header->
-  <header class="main-header">
+   <header class="main-header">
+    
     <nav class="navbar navbar-static-top">
-       <div class="container">
-        <div class="navbar-header">
-          <a href="../../Landing.html" class="navbar-brand"><b>MF</b>Spotter</a>
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
-            <i class="fa fa-bars"></i>
-          </button>
-        </div>
+      <div class="navbar-header">
+        <a href="../mfspotter/Landing.html" class="navbar-brand"><b>MF</b>Spotter</a>
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+          <i class="fa fa-bars"></i>
+        </button>
+      </div>
           
-        <!-Menu on the left side->
+      <!-Menu on the left side->
        
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse pull-right" id="navbar-collapse">
@@ -80,11 +80,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
 
-<<<<<<< HEAD
+
     <!- Main content -->
-=======
+
     <!- Main content --> 
->>>>>>> b9841d1c76231399d4a61d308e95ba8a2f000a61
 
       <!-- Your Page Content Here -->
 
@@ -95,7 +94,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
               <button type="button" class="btn bg-navy margin"><h3>Find the Nearest Medical Facility</h3></button>
               <br>
-              <button type="button" class="btn bg-orange margin"><h3>Find Medical Facility by Options</h3></button>
+              <button id="medOption" type="button" class="btn bg-orange margin"><h3>Find Medical Facility by Options</h3></button>
 
             </div>
           </div>
@@ -233,6 +232,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/app.min.js"></script>
+
+<script type="text/javascript">
+    document.getElementById("medOption").onclick = function () {
+        location.href = "/mfspotter/searchCenter2.php";
+    };
+</script>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
