@@ -58,14 +58,79 @@
         <div class="collapse navbar-collapse pull-right" id="navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="#">About</a></li>
-            <li><a href="#">Log In</a></li>
-          </ul>
+          <!-- User Account: style can be found in dropdown.less -->
+
+          <?php
+  
+            include("config.php");
+            
+            if( isset($_COOKIE['usname']) && isset($_COOKIE['pword']))
+            {
+                
+                $user = $_COOKIE['usname'];
+                $password = $_COOKIE['pword'];
+
+                $selectQuery = "SELECT * FROM user WHERE username = '$user'";
+                $SelectSql = @mysqli_query($conn, $selectQuery);
+                $row = mysqli_fetch_array($SelectSql);
+
+                $firstname = $row['firstName'];
+                $lastname = $row['lastName'];
+                $usertype = $row['userType'];
+
+                echo '<li class="dropdown user user-menu">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                        <span class="hidden-xs">'.$firstname.' '.$lastname .'</span>
+                      </a>
+                      <ul class="dropdown-menu">
+                        <!-- User image -->
+                        <li class="user-header">
+                          <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+
+                          <p>
+                            Alexander Pierce
+                            <small>'. $usertype .'</small>
+                          </p>
+                        </li>';            
+            }
+              
+            else
+            {
+              echo "<script>alert('Not Logged in!')</script>";
+              redirect('login.php');
+            }
+              
+            
+            function redirect($url)
+            {
+              echo '<META HTTP-EQUIV=Refresh CONTENT="1; URL='.$url.'">';
+              die();
+            }
+            mysqli_close($conn);
+            
+          ?>
           
-        </div>
-        <!-- /.navbar-collapse -->
+             
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                </div>
+                <div class="pull-right">
+                  <a href="logout.php" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+          
+        </ul>
+      </div>
+        <!-- /.navbar -->
 
-      </nav>
+    </nav>
 
+  </header>
     </header>
 
     <!-Sidebar ->

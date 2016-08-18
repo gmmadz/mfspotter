@@ -11,7 +11,7 @@ $database="mfspotter";
 
 $connect = mysqli_connect("localhost", $username, $password, $database);  
 
-$query = sprintf("SELECT address, facilityName, latitude, longhitude, ( 3959 * acos( cos( radians('%s') ) * cos( radians( latitude ) ) * cos( radians( longhitude ) - radians('%s') ) + sin( radians('%s') ) * sin( radians( latitude ) ) ) ) AS distance FROM facility HAVING distance < '%s' ORDER BY distance LIMIT 0 , 20",
+$query = sprintf("SELECT facilityID, address, facilityName, latitude, longhitude, ( 3959 * acos( cos( radians('%s') ) * cos( radians( latitude ) ) * cos( radians( longhitude ) - radians('%s') ) + sin( radians('%s') ) * sin( radians( latitude ) ) ) ) AS distance FROM facility HAVING distance < '%s' ORDER BY distance LIMIT 0 , 20",
   mysql_real_escape_string($lati),
   mysql_real_escape_string($longi),
   mysql_real_escape_string($lati),
@@ -36,7 +36,7 @@ if(mysqli_num_rows($result) > 0)
       {  
            $output .= '  
                 <tbody>
-                      <td>'.$row['facilityName'].'</td>
+                      <td><a href ="test.php?id='. $row['facilityID'] .'">'.$row['facilityName'].'</a></td>
                       <td>'.$row['latitude'].'</td>
                       <td>'.$row['longhitude'].'</td>
                       <td>'.$row['address'].'</td>
