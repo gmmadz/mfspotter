@@ -6,6 +6,8 @@
   $password="usbw";
   $database="mfspotter";
 
+  $operating_period = array();
+
   $connect = mysqli_connect("localhost", $username, $password, $database);  
 
   $query = "SELECT * FROM `facility` WHERE facilityID = " . $facility_id . " ";
@@ -25,19 +27,34 @@
   }
 
   //OPERATING HOURS
-  $query2 = "SELECT * FROM `operatingperiod` WHERE facilityID = " . $facility_id . " ";
+  $query2 = "SELECT * FROM operatingperiod WHERE facilityID = " . $facility_id . " ";
 
   $result2 = mysqli_query($connect, $query2); 
 
   if(mysqli_num_rows($result2) > 0)  
   {  
-    while($row2 = mysqli_fetch_array($result)) 
+    while($row2 = mysqli_fetch_array($result2)) 
     {
-      
-      
-    }  
-  }
+      $operating_period[] = array($row2['dayofweek'],$row2['timeOpened'], $row2['timeClosed']);
 
+    }  
+
+  } 
+
+  //INSURANNCES COVERED
+  $query3 = "SELECT * FROM insurances WHERE insurancesID IN ( SELECT insurancesID FROM insurancescovered WHERE facilityID = " . $facility_id . " )";
+
+  $result3 = mysqli_query($connect, $query3); 
+
+  if(mysqli_num_rows($result3) > 0)  
+  {  
+    while($row3 = mysqli_fetch_array($result3)) 
+    {
+      $insurance_name[] = $row3['insuranceName'];
+
+    }  
+
+  } 
 
 ?>
 <!DOCTYPE html>
@@ -203,8 +220,64 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <b>Rating</b> <a class="pull-right">star goes here</a>
                 </li>
                 <li class="list-group-item">
-                  <b>Operating Hours</b> <a class="pull-right"> <?php echo $facility_days ?></br> 9:00am - 12:00pm Sat</a>
-                  </br> </br>
+                  <b>Operating Hours</b> <a class="pull-right">
+                  <?php
+                    for($row = 0; $row < count($operating_period); $row++){
+
+                      for($col = 0; $col < 3; $col++)
+                      {
+
+                        //FOR THE DAYS
+                        if($operating_period[$row][$col] == 0)
+                        {
+                          $operating_period[$row][$col] = "Su";
+                          $days[] = $operating_period[$row][$col];
+
+                        }
+                        else if($operating_period[$row][$col] == 1)
+                        {
+                          $operating_period[$row][$col] = "Mo";
+                          $days[] = $operating_period[$row][$col];
+                        }
+                        else if($operating_period[$row][$col] == 2)
+                        {
+                          $operating_period[$row][$col] = "Tu";
+                          $days[] = $operating_period[$row][$col];
+                        }
+                        else if($operating_period[$row][$col] == 3)
+                        {
+                          $operating_period[$row][$col] = "We";
+                          $days[] = $operating_period[$row][$col];
+                        }
+                        else if($operating_period[$row][$col] == 4)
+                        {
+                          $operating_period[$row][$col] = "Th";
+                          $days[] = $operating_period[$row][$col];
+                        }
+                        else if($operating_period[$row][$col] == 5)
+                        {
+                          $operating_period[$row][$col] = "Fr";
+                          $days[] = $operating_period[$row][$col];
+                        }
+                        else if($operating_period[$row][$col] == 6)
+                        {
+                          $operating_period[$row][$col] = "Sa";
+                          $days[] = $operating_period[$row][$col];
+                        }
+      
+
+                        echo ''. $operating_period[$row][$col] . ' ';
+                      }
+                      echo '<br/>';
+
+                    }
+
+
+                  ?>
+
+
+                  </a>
+                  </br> </br></br>
                 </li>
                 <li class="list-group-item">
                   <b>Telephone Number</b> <a class="pull-right"><?php echo $facility_tel ?></a>
@@ -241,9 +314,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <strong><i class="fa fa-pencil margin-r-5"></i> Insurances Included</strong>
 
               <p>
-                <span class="label label-success">Medicare</span>
-                <span class="label label-success">Intellicare</span>
-                <span class="label label-success">Medicard</span>
+                <?php
+                  foreach($insurance_name as $i)
+                  {
+                    echo '<span class="label label-success">'. $i .'</span> ';
+
+                  }
+              
+                ?>
               </p>
 
             </div>

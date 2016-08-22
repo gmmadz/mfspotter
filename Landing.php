@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -56,7 +57,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     
     <nav class="navbar navbar-static-top">
       <div class="navbar-header">
-        <a href="../mfspotter/Landing.html" class="navbar-brand"><b>MF</b>Spotter</a>
+        <a href="/mfspotter/Landing.html" class="navbar-brand"><b>MF</b>Spotter</a>
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
           <i class="fa fa-bars"></i>
         </button>
@@ -71,44 +72,33 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- User Account: style can be found in dropdown.less -->
 
           <?php
-  
-            include("config.php");
-            
-            if( isset($_COOKIE['usname']) && isset($_COOKIE['pword']))
+            session_start();
+
+            if(!(isset($_SESSION['username'])) && !(isset($_SESSION['password'])))
             {
+              echo "<script>alert('Not Logged in!')</script>";
+              redirect('login.php');
                 
-                $user = $_COOKIE['usname'];
-                $password = $_COOKIE['pword'];
-
-                $selectQuery = "SELECT * FROM user WHERE username = '$user'";
-                $SelectSql = @mysqli_query($conn, $selectQuery);
-                $row = mysqli_fetch_array($SelectSql);
-
-                $firstname = $row['firstName'];
-                $lastname = $row['lastName'];
-                $usertype = $row['userType'];
-
-                echo '<li class="dropdown user user-menu">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                        <span class="hidden-xs">'.$firstname.' '.$lastname .'</span>
-                      </a>
-                      <ul class="dropdown-menu">
-                        <!-- User image -->
-                        <li class="user-header">
-                          <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-
-                          <p>
-                            Alexander Pierce
-                            <small>'. $usertype .'</small>
-                          </p>
-                        </li>';            
             }
               
             else
             {
-              echo "<script>alert('Not Logged in!')</script>";
-              redirect('login.php');
+
+              echo '<li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                      <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                      <span class="hidden-xs">'.$_SESSION["firstname"].' '.$_SESSION["lastname"] .'</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <!-- User image -->
+                      <li class="user-header">
+                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+
+                        <p>
+                          Alexander Pierce
+                          <small>'. $_SESSION["usertype"] .'</small>
+                        </p>
+                      </li>';            
             }
               
             
@@ -117,7 +107,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               echo '<META HTTP-EQUIV=Refresh CONTENT="1; URL='.$url.'">';
               die();
             }
-            mysqli_close($conn);
+
             
           ?>
           
