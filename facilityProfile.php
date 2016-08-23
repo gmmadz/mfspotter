@@ -264,8 +264,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/user1-128x128.jpg" alt="user image">
                         <span class="username">
                           <a href="#">Rate Equipment</a>
-                          <a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
+                          
                         </span>
+
+                            <div class="stars stars-example-fontawesome">
+                              <select class="qty-service-rating" name="qty-service-rating">
+                                  <option value="1">1</option>
+                                  <option value="2">2</option>
+                                  <option value="3">3</option>
+                                  <option value="4">4</option>
+                                  <option value="5">5</option>
+                                  <option value="6">6</option>
+                                  <option value="7">7</option>
+                                  <option value="8">8</option>
+                                  <option value="9">9</option>
+                                  <option value="10">10</option>
+                              </select>
+                              <span class="title">Quality of Service</span>
+                          </div>
                     <span class="description"></span>
                   </div>
                   <!-- /.user-block -->

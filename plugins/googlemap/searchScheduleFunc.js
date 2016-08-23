@@ -59,7 +59,7 @@ function getSelectedChbox(frm) {
             }
           });
 
-
+          alert(selchb);
             $.ajax({  
                      url:"searchBySchedule_Table.php",  
                      method:"post",  
