@@ -1,14 +1,15 @@
 <?php
-	include("Landing.php");
 
-		if(isset($_COOKIE['usname']) && isset($_COOKIE['pword']))
-		{
-			//UNSET COOKIES
-			setcookie('usname', "$user", time()-129600, '/');
-			setcookie('pword', "$password", time()-129600, '/');
-			
-			redirect("login.php");
-			
-		}
+	include("Landing.php");
+	session_start();
+	
+	if((isset($_SESSION['username'])) && (isset($_SESSION['password'])))
+	{
+		// remove all session variables
+		session_unset(); 
+		
+		redirect("login.php");
+		
+	}
 		
 ?>

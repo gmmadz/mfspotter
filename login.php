@@ -70,8 +70,15 @@
           else
           { 
 
-            setcookie('usname', "$user", time()+129600, '/');
-            setcookie('pword', "$password", time()+129600, '/');
+            session_start();
+            // Set session variables
+            $_SESSION["username"] = $user;
+            $_SESSION["password"] = $password;
+            $_SESSION["firstname"] = $row['firstName'];
+            $_SESSION["middlename"] = $row['middleName'];
+            $_SESSION["lastname"] = $row['lastName'];
+            $_SESSION["usertype"] = $row['userType'];
+
             
             redirect("Landing.php");
           }
