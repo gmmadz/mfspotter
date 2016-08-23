@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 26, 2016 at 03:36 AM
+-- Generation Time: Aug 23, 2016 at 05:37 AM
 -- Server version: 5.6.13
 -- PHP Version: 5.4.17
 
@@ -25,6 +25,31 @@ USE `mfspotter`;
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `comment`
+--
+
+CREATE TABLE IF NOT EXISTS `comment` (
+  `commentID` int(11) NOT NULL AUTO_INCREMENT,
+  `userID` int(11) NOT NULL,
+  `facilityID` int(11) NOT NULL,
+  `comment` varchar(500) NOT NULL,
+  `dateRated` date NOT NULL,
+  `timeRated` time NOT NULL,
+  PRIMARY KEY (`commentID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Dumping data for table `comment`
+--
+
+INSERT INTO `comment` (`commentID`, `userID`, `facilityID`, `comment`, `dateRated`, `timeRated`) VALUES
+(1, 16, 25, 'Hi :)))))))', '2016-08-23', '12:25:00'),
+(3, 17, 25, 'Gwapa ko', '2016-08-23', '12:30:00'),
+(5, 18, 25, 'Im a pig', '2016-08-24', '12:15:00');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `facility`
 --
 
@@ -35,6 +60,7 @@ CREATE TABLE IF NOT EXISTS `facility` (
   `longhitude` double DEFAULT NULL,
   `latitude` double DEFAULT NULL,
   `address` varchar(40) NOT NULL,
+  `facilityPicture` blob NOT NULL,
   PRIMARY KEY (`facilityID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=31 ;
 
@@ -42,21 +68,21 @@ CREATE TABLE IF NOT EXISTS `facility` (
 -- Dumping data for table `facility`
 --
 
-INSERT INTO `facility` (`facilityID`, `facilityName`, `telephoneNumber`, `longhitude`, `latitude`, `address`) VALUES
-(1, 'Sample1', '(123) 456-7890', 125.68084716796875, 7.0702295954887475, 'Davao'),
-(2, 'Sample1', '(456) 789-8765', 125.59879302978516, 7.062904226490174, 'asdad'),
-(5, 'wawa', '(123) 456-7665', 125.61630249023438, 7.0651188851749716, 'Davao'),
-(13, 'autoco', '(234) 576-5432', 125.58815002441406, 7.057282352971582, 'auto'),
-(14, 'bonnga', '(123) 245-6543', 125.61922073364258, 7.067163176082755, 'Davao'),
-(15, 'warwar', '(123) 456-7543', 125.62591552734375, 7.072444219068159, 'dav'),
-(16, 'rerere', '(222) 222-2222', 125.62248229980469, 7.068355674936543, 'rererere'),
-(22, 'asdsad', '(213) 424-3423', 125.61226844787598, 7.058730417833918, 'ada'),
-(25, 'wawaw', '(234) 567-8987', 125.61887741088867, 7.068355674936543, 'wawawa'),
-(26, 'POPO', '(000) 000-0000', 125.62162399291992, 7.067333533250265, 'POPOPOPO'),
-(27, 'UYUYUY', '(000) 000-0000', 125.62076568603516, 7.060008118360919, 'UYUYUY'),
-(28, 'TRTR', '(444) 444-4444', 125.63089370727539, 7.0496160517644455, 'TRTRTRTR'),
-(29, 'QWQW', '(222) 222-2222', 125.6205940246582, 7.0697185270010126, 'QWQW'),
-(30, 'wawawawa', '(243) 456-7867', 125.29220581054688, 6.98776992815563, 'wawawa');
+INSERT INTO `facility` (`facilityID`, `facilityName`, `telephoneNumber`, `longhitude`, `latitude`, `address`, `facilityPicture`) VALUES
+(1, 'Sample1', '(123) 456-7890', 125.68084716796875, 7.0702295954887475, 'Davao', ''),
+(2, 'Sample1', '(456) 789-8765', 125.59879302978516, 7.062904226490174, 'asdad', ''),
+(5, 'wawa', '(123) 456-7665', 125.61630249023438, 7.0651188851749716, 'Davao', ''),
+(13, 'autoco', '(234) 576-5432', 125.58815002441406, 7.057282352971582, 'auto', ''),
+(14, 'bonnga', '(123) 245-6543', 125.61922073364258, 7.067163176082755, 'Davao', ''),
+(15, 'warwar', '(123) 456-7543', 125.62591552734375, 7.072444219068159, 'dav', ''),
+(16, 'rerere', '(222) 222-2222', 125.62248229980469, 7.068355674936543, 'rererere', ''),
+(22, 'asdsad', '(213) 424-3423', 125.61226844787598, 7.058730417833918, 'ada', ''),
+(25, 'wawaw', '(234) 567-8987', 125.61887741088867, 7.068355674936543, 'wawawa', ''),
+(26, 'POPO', '(000) 000-0000', 125.62162399291992, 7.067333533250265, 'POPOPOPO', ''),
+(27, 'UYUYUY', '(000) 000-0000', 125.62076568603516, 7.060008118360919, 'UYUYUY', ''),
+(28, 'TRTR', '(444) 444-4444', 125.63089370727539, 7.0496160517644455, 'TRTRTRTR', ''),
+(29, 'QWQW', '(222) 222-2222', 125.6205940246582, 7.0697185270010126, 'QWQW', ''),
+(30, 'wawawawa', '(243) 456-7867', 125.29220581054688, 6.98776992815563, 'wawawa', '');
 
 -- --------------------------------------------------------
 
@@ -249,7 +275,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `middleName` varchar(30) DEFAULT NULL,
   `lastName` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
 
 --
 -- Dumping data for table `user`
@@ -265,7 +291,10 @@ INSERT INTO `user` (`userID`, `userType`, `username`, `password`, `firstName`, `
 (12, 'staff', 'YUYU', 'YUYUY', 'UYUYUY', 'UYUY', 'UYUYU'),
 (13, 'staff', 'TRT', 'RTRTR', 'TRTR', 'RTR', 'TRTR'),
 (14, 'staff', 'WQWQ', 'WQWQWQ', 'QWQW', 'QWQ', 'WQWQWQ'),
-(15, 'staff', 'aawaw', 'wawwawawaw', 'wawawawa', 'waawawaw', 'waawawa');
+(15, 'staff', 'aawaw', 'wawwawawaw', 'wawawawa', 'waawawaw', 'waawawa'),
+(16, 'User', 'joan', 'joan', 'Joan', 'Perez', 'Filosopo'),
+(17, 'user', 'gmmadz', 'gmmadz', 'Gems', 'Conanan', 'Madarang'),
+(18, 'User', 'dan', 'dan', 'Dan', 'Buta', 'Vicente');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

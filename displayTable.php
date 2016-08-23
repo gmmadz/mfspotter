@@ -36,7 +36,7 @@ if(mysqli_num_rows($result) > 0)
       {  
            $output .= '  
                 <tbody>
-                      <td><a href ="facilityProfile.php?id='. $row['facilityID'] .'">'.$row['facilityName'].'</a></td>
+                      <td><a href ="test.php?id='. $row['facilityID'] .'">'.$row['facilityName'].'</a></td>
                       <td>'.$row['latitude'].'</td>
                       <td>'.$row['longhitude'].'</td>
                       <td>'.$row['address'].'</td>

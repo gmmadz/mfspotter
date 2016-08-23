@@ -41,7 +41,7 @@
 
   } 
 
-  //INSURANNCES COVERED
+  //INSURANCES COVERED
   $query3 = "SELECT * FROM insurances WHERE insurancesID IN ( SELECT insurancesID FROM insurancescovered WHERE facilityID = " . $facility_id . " )";
 
   $result3 = mysqli_query($connect, $query3); 
@@ -55,6 +55,12 @@
     }  
 
   } 
+
+
+
+  //COMMENTS
+
+
 
 ?>
 <!DOCTYPE html>
@@ -115,47 +121,36 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="collapse navbar-collapse pull-right" id="navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="#">About</a></li>
-          <!-- User Account: style can be found in dropdown.less -->
+         <!-- User Account: style can be found in dropdown.less -->
 
           <?php
-  
-            include("config.php");
-            
-            if( isset($_COOKIE['usname']) && isset($_COOKIE['pword']))
+            session_start();
+
+            if(!(isset($_SESSION['username'])) && !(isset($_SESSION['password'])))
             {
+              echo "<script>alert('Not Logged in!')</script>";
+              redirect('login.php');
                 
-                $user = $_COOKIE['usname'];
-                $password = $_COOKIE['pword'];
-
-                $selectQuery = "SELECT * FROM user WHERE username = '$user'";
-                $SelectSql = @mysqli_query($conn, $selectQuery);
-                $row = mysqli_fetch_array($SelectSql);
-
-                $firstname = $row['firstName'];
-                $lastname = $row['lastName'];
-                $usertype = $row['userType'];
-
-                echo '<li class="dropdown user user-menu">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                        <span class="hidden-xs">'.$firstname.' '.$lastname .'</span>
-                      </a>
-                      <ul class="dropdown-menu">
-                        <!-- User image -->
-                        <li class="user-header">
-                          <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-
-                          <p>
-                            Alexander Pierce
-                            <small>'. $usertype .'</small>
-                          </p>
-                        </li>';            
             }
               
             else
             {
-              echo "<script>alert('Not Logged in!')</script>";
-              redirect('login.php');
+
+              echo '<li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                      <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                      <span class="hidden-xs">'.$_SESSION["firstname"].' '.$_SESSION["lastname"] .'</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <!-- User image -->
+                      <li class="user-header">
+                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+
+                        <p>
+                          Alexander Pierce
+                          <small>'. $_SESSION["usertype"] .'</small>
+                        </p>
+                      </li>';            
             }
               
             
@@ -164,11 +159,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
               echo '<META HTTP-EQUIV=Refresh CONTENT="1; URL='.$url.'">';
               die();
             }
-            mysqli_close($conn);
             
           ?>
-          
-             
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
@@ -188,7 +180,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     </nav>
 
   </header>
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
      <!-- Content Header (Page header) -->
@@ -421,10 +412,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <form class="form-horizontal">
                     <div class="form-group margin-bottom-none">
                       <div class="col-sm-9">
-                        <input class="form-control input-sm" placeholder="Post a comment">
+                        <input class="form-control input-sm" id="userComment" placeholder="Post a comment">
                       </div>
                       <div class="col-sm-3">
-                        <button type="submit" class="btn btn-danger pull-right btn-block btn-sm">Send</button>
+                        <button type="submit" class="btn btn-danger pull-right btn-block btn-sm" onclick="commentAdd()">Send</button>
                       </div>
                     </div>
                   </form>
@@ -553,5 +544,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
      Both of these plugins are recommended to enhance the
      user experience. Slimscroll is required when using the
      fixed layout. -->
+
+<script type="text/javascript">
+ 
+  function commentAdd(){
+    var comment = document.getElementById("userComment").value;
+
+
+  }
+</script>
+
 </body>
 </html>
