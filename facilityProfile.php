@@ -1,4 +1,6 @@
-<?php
+
+
+<?php /*
     
   $facility_id = $_GET["id"];
 
@@ -62,6 +64,8 @@
 
 
 
+
+*/
 ?>
 <!DOCTYPE html>
 <!--
@@ -89,6 +93,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
         apply the skin class to the body tag so the changes take effect.
   -->
   <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+
+
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+  <link rel="stylesheet" href="dist/themes/fontawesome-stars.css">
+  <link rel="stylesheet" href="dist/themes/fontawesome-stars-o.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -330,27 +339,120 @@ scratch. This page gets rid of all links and provides the needed markup only.
                <!-- Post -->
                 <div class="post">
                   <div class="user-block">
-                    <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/user1-128x128.jpg" alt="user image">
+                    <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/process.png" alt="user image">
                         <span class="username">
-                          <a href="#">Rate Equipment</a>
-                          
+                          <a href="#">Process</a>                        
                         </span>
+                          <span class="username">
+                              <div class="stars stars-example-fontawesome">
+                                <select class="rating-process" name="rating-process">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                              </div>
+                          </span>
+                    <span class="description">Process measures assess whether a patient received what is known to be good care.
+                    </span>
+                  </div>
+                  <!-- /.user-block -->
+                  <p>
+                  </p>
+          
+                </div>
+                <!-- /.post -->
 
-                            <div class="stars stars-example-fontawesome">
-                              <select class="qty-service-rating" name="qty-service-rating">
+                 <!-- Post -->
+                <div class="post">
+                  <div class="user-block">
+                    <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/medical-result.png" alt="user image">
+                        <span class="username">
+                          <a href="#">Outcomes</a>
+                        </span>
+                        <span class="username">
+                          <div class="stars stars-example-fontawesome">
+                                <select class="rating-process" name="rating-outcome">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                        </span>
+                    <span class="description">How do you fare as a result of the care?</span>
+                  </div>
+                  <!-- /.user-block -->
+                  <p>
+                  </p>
+          
+                </div>
+                <!-- /.post -->
+
+                 <!-- Post -->
+                <div class="post">
+                  <div class="user-block">
+                    <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/flask.png" alt="user image">
+                        <span class="username">
+                          <a href="#">Structure</a>
+                        </span>
+                        <span class="username">
+                         <div class="stars stars-example-fontawesome">
+                              <select class="rating-process" name="rating-structure">
                                   <option value="1">1</option>
                                   <option value="2">2</option>
                                   <option value="3">3</option>
                                   <option value="4">4</option>
                                   <option value="5">5</option>
-                                  <option value="6">6</option>
-                                  <option value="7">7</option>
-                                  <option value="8">8</option>
-                                  <option value="9">9</option>
-                                  <option value="10">10</option>
                               </select>
-                              <span class="title">Quality of Service</span>
                           </div>
+                        </span>
+                    <span class="description">How well-equipped care setting is to deliver care?</span>
+                  </div>
+                  <!-- /.user-block -->
+                  <p>
+                  </p>
+          
+                </div>
+                <!-- /.post -->
+
+                  <!-- Post -->
+                <div class="post">
+                  <div class="user-block">
+                    <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/nurse.png" alt="user image">
+                        <span class="username">
+                          <a href="#">Patient Experience</a>
+                        </span>
+                        <span class="username">
+                         <div class="stars stars-example-fontawesome">
+                              <select class="rating-process" name="rating-experience">
+                                  <option value="1">1</option>
+                                  <option value="2">2</option>
+                                  <option value="3">3</option>
+                                  <option value="4">4</option>
+                                  <option value="5">5</option>
+                              </select>
+                          </div>
+                        </span>
+                    <span class="description">How do you evaluate the care you received?</span>
+                  </div>
+                  <!-- /.user-block -->
+                  <p>
+                  </p>
+          
+                </div>
+                <!-- /.post -->
+
+
+
+
+
+                <div class="post">
+                  <div class="user-block">
+                    
+                         <button type="submit" class="btn btn-danger pull-right btn-block btn-sm" >Submit Ratings!</button>
                     <span class="description"></span>
                   </div>
                   <!-- /.user-block -->
@@ -360,37 +462,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </div>
                 <!-- /.post -->
 
-                 <!-- Post -->
-                <div class="post">
-                  <div class="user-block">
-                    <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/user1-128x128.jpg" alt="user image">
-                        <span class="username">
-                          <a href="#">Rate Service</a>
-                        </span>
-                    <span class="description"></span>
-                  </div>
-                  <!-- /.user-block -->
-                  <p>
-                  </p>
-          
-                </div>
-                <!-- /.post -->
 
-                 <!-- Post -->
-                <div class="post">
-                  <div class="user-block">
-                    <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/user1-128x128.jpg" alt="user image">
-                        <span class="username">
-                          <a href="#">Rate Doctors</a>
-                        </span>
-                    <span class="description"></span>
-                  </div>
-                  <!-- /.user-block -->
-                  <p>
-                  </p>
-          
-                </div>
-                <!-- /.post -->
+
+
+
+
+
+
             </div>
             <!-- /.box-body -->
           </div>
@@ -533,6 +611,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/app.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="jquery.barrating.js"></script>
+<script type="text/javascript">
+   $(function() {
+      $('.rating-process').barrating({
+        theme: 'fontawesome-stars',
+        initialRating: null
+      });
+   });
+</script>
+
+
+
 
 <script type="text/javascript">
     document.getElementById("medOption").onclick = function () {
