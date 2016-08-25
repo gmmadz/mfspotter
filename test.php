@@ -5,6 +5,7 @@
 	$username="root";
 	$password="usbw";
 	$database="mfspotter";
+  $comments = array();
 
 
 	$connect = mysqli_connect("localhost", $username, $password, $database);  
@@ -18,10 +19,11 @@
   {  
     while($row4 = mysqli_fetch_array($result4)) 
     {
-      //$comments[] = array($row4['comment'], $row4['firstName'], $row4['middleName'], $row4['lastName']);
-    	$name = implode(" ", array($row4['firstName'], $row4['middleName'], $row4['lastName']));
-    	$comments[] = array('thecomment' => $row4['comment']);
-    	$namae[] = array('thename' => $name);
+      $name = implode(" ", array($row4['firstName'], $row4['middleName'], $row4['lastName']));
+      $comments[] = array($row4['comment'], $name), $row4['dateRated'];
+    	
+    //	$comments[] = array($row4['comment']);
+    	//$namae[] = array($name);
 
 
     }  
@@ -41,12 +43,13 @@
 
    }*/
 
-   foreach ($comments as $com => $c) 
-   {
-   		foreach ($c as $na => $n) {
-   			echo $n . "<br/>";
-   		}
-   	}
+   for($row = 0; $row < count($comments); $row++){
+
+      echo $comments[$row][0] . "<br/>";
+      echo $comments[$row][1] . "<br/><br/>";
+
+    
+   }
 ?>
 
 

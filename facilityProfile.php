@@ -1,6 +1,4 @@
-
-
-<?php /*
+<?php 
     
   $facility_id = $_GET["id"];
 
@@ -61,11 +59,25 @@
 
 
   //COMMENTS
+  $query4 = "SELECT comment, firstName, middleName, lastName,  DATE_FORMAT( dateRated,  '%Y-%m-%d %H:%i' ) AS dateRated FROM comment c, user u WHERE c.userID = u.userID AND facilityID = " . $facility_id . " ORDER BY dateRated DESC";
+
+  $result4 = mysqli_query($connect, $query4); 
+
+  if(mysqli_num_rows($result4) > 0)  
+  {  
+    while($row4 = mysqli_fetch_array($result4)) 
+    {
+      $name = implode(" ", array($row4['firstName'], $row4['middleName'], $row4['lastName']));
+      $comments[] = array($row4['comment'], $name, $row4['dateRated']);
+      
+    }  
+
+  }
 
 
 
 
-*/
+
 ?>
 <!DOCTYPE html>
 <!--
@@ -487,94 +499,52 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- /.box-header -->
             <div class="box-body">
               <div class="post">
-                  <form class="form-horizontal">
+                  <form class="form-horizontal" method='post' action="" onsubmit="return post();">
                     <div class="form-group margin-bottom-none">
                       <div class="col-sm-9">
-                        <input class="form-control input-sm" id="userComment" placeholder="Post a comment">
+                        <input class="form-control input-sm" id="comment" 
+                        placeholder="Post a comment">
+                        <input type="text" id="username" value="<?php $_SESSION['user_id']?>" hidden>
+                        <input type="text" id="facilityID" value="<?php $facility_id ?>" hidden>
                       </div>
                       <div class="col-sm-3">
-                        <button type="submit" class="btn btn-danger pull-right btn-block btn-sm" onclick="commentAdd()">Send</button>
+                        <button type="submit" class="btn btn-danger pull-right btn-block btn-sm">Send</button>
                       </div>
                     </div>
                   </form>
                 </div>
 
-                <div class="post">
-                  <div class="user-block">
-                    <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/user1-128x128.jpg" alt="user image">
-                        <span class="username">
-                          <a href="#">Randy Flores Jr.</a>
-                        </span>
-                    <span class="description"></span>
-                  </div>
-                  <!-- /.user-block -->
-                  <p>
-                    Lorem ipsum represents a long-held tradition for designers,
-                    typographers and the like. Some people hate it and argue for
-                    its demise, but others ignore the hate as they create awesome
-                    tools to help create filler text for everyone from bacon lovers
-                    to Charlie Sheen fans.
-                  </p>
-                  <ul class="list-inline">
-                    <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
-                    </li>
-                    <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-down margin-r-5"></i> Dislike</a>
-                    </li>
-                  </ul>
-                </div>
-                <!-- /.post -->
+                <div id = "all_comments">
+                <?php 
+                  for($row = 0; $row < count($comments); $row++){
+                  
+                  echo '
+                  <div class="post">
 
-                <!-- Post -->
-                <div class="post">
                   <div class="user-block">
-                    <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/user1-128x128.jpg" alt="user image">
-                        <span class="username">
-                          <a href="#">Dan Angelo Vicente</a>
-                        </span>
-                    <span class="description"></span>
-                  </div>
-                  <!-- /.user-block -->
-                  <p>
-                    Lorem ipsum represents a long-held tradition for designers,
-                    typographers and the like. Some people hate it and argue for
-                    its demise, but others ignore the hate as they create awesome
-                    tools to help create filler text for everyone from bacon lovers
-                    to Charlie Sheen fans.
-                  </p>
-                  <ul class="list-inline">
-                    <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
-                    </li>
-                    <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-down margin-r-5"></i> Dislike</a>
-                    </li>
-                  </ul>
-                </div>
-                <!-- /.post -->
 
-                <!-- Post -->
-                <div class="post">
-                  <div class="user-block">
                     <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/user1-128x128.jpg" alt="user image">
                         <span class="username">
-                          <a href="#">Mary Joahnne Filosopo</a>
+                          <a href="#">' . $comments[$row][1] . '</a>
                         </span>
-                    <span class="description"></span>
+                    <span class="description">' . $comments[$row][2] . '</span>
                   </div>
                   <!-- /.user-block -->
-                  <p>
-                    Lorem ipsum represents a long-held tradition for designers,
-                    typographers and the like. Some people hate it and argue for
-                    its demise, but others ignore the hate as they create awesome
-                    tools to help create filler text for everyone from bacon lovers
-                    to Charlie Sheen fans.
-                  </p>
+
+                  <p>' . $comments[$row][0] . '</p>
                   <ul class="list-inline">
                     <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
                     </li>
                     <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-down margin-r-5"></i> Dislike</a>
                     </li>
                   </ul>
-                </div>
-                <!-- /.post -->
+                </div>  <!-- /.post -->';
+                  }
+                
+                ?>
+                </div>  <!-- /. all_coments -->
+               
+                
 
             </div>
             <!-- /.box-body -->
@@ -639,10 +609,35 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <script type="text/javascript">
  
-  function commentAdd(){
-    var comment = document.getElementById("userComment").value;
-
-
+  function post()
+  {
+    var comment = document.getElementById("comment").value;
+    var name = document.getElementById("username").value;
+    var facility = document.getElementById("facilityID").value;
+    if(comment && name && facility)
+    {
+      $.ajax
+      ({
+        type: 'post',
+        url: 'post_comments.php',
+        data: 
+        {
+           user_comm:comment,
+           user_name:name,
+           facility_id: facility
+        },
+        success: function (response) 
+        {
+          document.getElementById("all_comments").innerHTML=response+document.getElementById("all_comments").innerHTML;
+          document.getElementById("comment").value="";
+          document.getElementById("username").value="";
+          document.getElementById("facilityID").value="";
+    
+        }
+      });
+    }
+    
+    return false;
   }
 </script>
 
