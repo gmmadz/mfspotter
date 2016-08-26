@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 
-
-=======
->>>>>>> 1fcec0ff93e74bfab113eb5fe70d202296c686f7
 <?php 
     
   $facility_id = $_GET["id"];
@@ -66,7 +62,7 @@
   //COMMENTS
 
 
-<<<<<<< HEAD
+
   //RATINGS
   $mysqli = new mysqli('localhost', 'root', 'usbw', 'mfspotter');
   $mysqli->autocommit(false);
@@ -92,7 +88,7 @@
 
         //INSERT INTO RATING EXPERIENCE
         $mysqli->query("INSERT INTO rating(userID, facilityID, categoryID, rating, dateRated) VALUES ('$userID', '$facilityID', '4', '$experience', now() )");
-=======
+
   //COMMENTS
   $query4 = "SELECT comment, firstName, middleName, lastName,  DATE_FORMAT( dateRated,  '%Y-%m-%d %H:%i' ) AS dateRated FROM comment c, user u WHERE c.userID = u.userID AND facilityID = " . $facility_id . " ORDER BY dateRated DESC";
 
@@ -109,7 +105,7 @@
 
   }
 
->>>>>>> 1fcec0ff93e74bfab113eb5fe70d202296c686f7
+
 
         $mysqli->commit();
            

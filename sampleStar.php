@@ -30,34 +30,83 @@
 
 
 <?php
-  
 
+function getAverageVotePerCategory($category){
   $username="root";
   $password="usbw";
   $database="mfspotter";
-
-  $operating_period = array();
-
-  $connect = mysqli_connect("localhost", $username, $password, $database);  
-  
-  $query = "SELECT count(categoryID) as processfive FROM `rating` WHERE categoryID = 1  AND rating = 5 GROUP BY categoryID";
-
-  $result = mysqli_query($connect, $query); 
-
+  $connect = mysqli_connect("localhost", $username, $password, $database); 
+  $query = "SELECT AVG(rating) as overall FROM `rating` WHERE categoryID = ".$category." GROUP BY categoryID";
+  $result = mysqli_query($connect, $query);
   if(mysqli_num_rows($result) > 0)  
   {  
     while($row = mysqli_fetch_array($result)) 
     {
-      $processFive = $row['facilityName'];
-
+      return $row['overall'];
     }  
     
   }
+  else
+  {
+    return 0;
+  }
+ 
+}
+    
+function getTotalVotesPerCategory($category){
+  $username="root";
+  $password="usbw";
+  $database="mfspotter";
+  $connect = mysqli_connect("localhost", $username, $password, $database); 
+  $query = "SELECT count(categoryID) as total FROM `rating` WHERE categoryID = ".$category." GROUP BY categoryID";
+  $result = mysqli_query($connect, $query);
+  if(mysqli_num_rows($result) > 0)  
+  {  
+    while($row = mysqli_fetch_array($result)) 
+    {
+      return $row['total'];
+    }  
+    
+  }
+  else
+  {
+    return 0;
+  }
+ 
+}
 
 
+function getTotalVotes($rating, $category){
+  $username="root";
+  $password="usbw";
+  $database="mfspotter";
+  $connect = mysqli_connect("localhost", $username, $password, $database); 
+  $query = "SELECT count(categoryID) as totalVotes FROM `rating` WHERE categoryID = ".$category."  AND rating = ".$rating." GROUP BY categoryID";
+
+  $result = mysqli_query($connect, $query);
+
+  if(mysqli_num_rows($result) > 0){
+    while($row = mysqli_fetch_array($result))
+    {
+      return $row['totalVotes']; 
+    }
+  }
+  else
+  {
+    return 0;
+  }
+}
+
+$processFive = (getTotalVotes(5,1)/getTotalVotesPerCategory(1))*100;
+$processFour = (getTotalVotes(4,1)/getTotalVotesPerCategory(1))*100;
+$processThree = (getTotalVotes(3,1)/getTotalVotesPerCategory(1))*100;
+$processTwo = (getTotalVotes(2,1)/getTotalVotesPerCategory(1))*100;
+$processOne = (getTotalVotes(1,1)/getTotalVotesPerCategory(1))*100;
+$overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + getAverageVotePerCategory(3) + getAverageVotePerCategory(4))/4;
 
 
-
+//FOR INSERTION
+/*
 
   $mysqli = new mysqli('localhost', $username, $password, $database); 
   $mysqli->autocommit(false);
@@ -87,7 +136,7 @@
         $mysqli->commit();
            
     }
-
+*/
 
 
 ?>
@@ -214,14 +263,14 @@
 
 
 
-
+                <!-OVERALL RATING->
                 <div class="post">
                   <div class="user-block">
                     <span class="username">
                           <a href="#">OVERALL RATINGS</a>
                     </span>
                     <span class="description">
-                              <select class="rating-display-overall" data-current-rating="3.6">
+                              <select class="rating-display-overall" data-current-rating=<?php echo $overallRating?>>
                                   <option value="1">1</option>
                                   <option value="2">2</option>
                                   <option value="3">3</option>
@@ -229,7 +278,116 @@
                                   <option value="5">5</option>
                               </select>
                               <span class="title current-rating">
-                                Avegage Overall Rating: <span class="value">3.6</span>
+                                Avegage Overall Rating: <span class="value"><?php echo $overallRating?></span>
+                              </span>
+                    </span>
+
+                  </div>
+                  <!-- /.user-block -->
+                  <p>
+                  </p>
+          
+                </div>
+                <!-- /.post -->
+
+                <!-OVERALL RATING PROCESS->
+                <div class="post">
+                  <div class="user-block">
+                    <span class="username">
+                          <a href="#">Overall Process Ratings</a>
+                    </span>
+                    <span class="description">
+                              <select class="rating-display-process-overall" data-current-rating=<?php echo getAverageVotePerCategory(1);?>>
+                                  <option value="1">1</option>
+                                  <option value="2">2</option>
+                                  <option value="3">3</option>
+                                  <option value="4">4</option>
+                                  <option value="5">5</option>
+                              </select>
+                              <span class="title current-rating">
+                                Avegage Overall Rating: <span class="value"><?php echo getAverageVotePerCategory(1);?></span>
+                              </span>
+                    </span>
+
+                  </div>
+                  <!-- /.user-block -->
+                  <p>
+                  </p>
+          
+                </div>
+                <!-- /.post -->
+
+
+                <!-OVERALL RATING OUTCOMES->
+                <div class="post">
+                  <div class="user-block">
+                    <span class="username">
+                          <a href="#">Overall Outcomes Ratings</a>
+                    </span>
+                    <span class="description">
+                              <select class="rating-display-outcomes-overall" data-current-rating=<?php echo getAverageVotePerCategory(2);?>>
+                                  <option value="1">1</option>
+                                  <option value="2">2</option>
+                                  <option value="3">3</option>
+                                  <option value="4">4</option>
+                                  <option value="5">5</option>
+                              </select>
+                              <span class="title current-rating">
+                                Avegage Overall Rating: <span class="value"><?php echo getAverageVotePerCategory(2);?></span>
+                              </span>
+                    </span>
+
+                  </div>
+                  <!-- /.user-block -->
+                  <p>
+                  </p>
+          
+                </div>
+                <!-- /.post -->
+
+                <!-OVERALL RATING STRUCTURE->
+                <div class="post">
+                  <div class="user-block">
+                    <span class="username">
+                          <a href="#">Overall Structure Ratings</a>
+                    </span>
+                    <span class="description">
+                              <select class="rating-display-structure-overall" data-current-rating=<?php echo getAverageVotePerCategory(3);?>>
+                                  <option value="1">1</option>
+                                  <option value="2">2</option>
+                                  <option value="3">3</option>
+                                  <option value="4">4</option>
+                                  <option value="5">5</option>
+                              </select>
+                              <span class="title current-rating">
+                                Avegage Overall Rating: <span class="value"><?php echo getAverageVotePerCategory(3);?></span>
+                              </span>
+                    </span>
+
+                  </div>
+                  <!-- /.user-block -->
+                  <p>
+                  </p>
+          
+                </div>
+                <!-- /.post -->
+
+                <!-OVERALL EXPERIENCE STRUCTURE->
+                <div class="post">
+                  <div class="user-block">
+                    <span class="username">
+                          <a href="#">Overall Experience Ratings</a>
+                    </span>
+                    <span class="description">
+                              <select class="rating-display-experience-overall" data-current-rating=<?php echo getAverageVotePerCategory(4);?>>
+                                  <option value="1">1</option>
+                                  <option value="2">2</option>
+                                  <option value="3">3</option>
+                                  <option value="4">4</option>
+                                  <option value="5">5</option>
+                              </select>
+                              <span class="title current-rating">
+                                Avegage Overall Rating: <span class="value"><?php echo getAverageVotePerCategory(4);?></span>
                               </span>
                     </span>
 
@@ -267,7 +425,7 @@
                   </p>
           
                 </div>
-
+                  <!-PROCESS CATEGORY DETAILS->
                   <div class="progress-group">
                     <span class="progress-text"> 
                               <select class="rating-display-five">
@@ -278,10 +436,10 @@
                                   <option value="5">5</option>
                               </select>
                     </span>
-                    <span class="progress-number"><b>160</b>/200</span>
+                    <span class="progress-number"><b><?php echo getTotalVotes(5,1); ?></b>/ <?php echo getTotalVotesPerCategory(1); ?> votes</span>
 
                     <div class="progress sm">
-                      <div class="progress-bar progress-bar-green" style="width: 50%"></div>
+                       <div class="progress-bar progress-bar-green" style="width:<?php echo $processFive."%"?>"></div>
                     </div>
                   </div>
 
@@ -295,10 +453,10 @@
                                   <option value="5">5</option>
                               </select>
                     </span>
-                    <span class="progress-number"><b>160</b>/200</span>
+                    <span class="progress-number"><b><?php echo getTotalVotes(4,1); ?></b>/ <?php echo getTotalVotesPerCategory(1); ?></span>
 
                     <div class="progress sm">
-                      <div class="progress-bar progress-bar-green" style="width: 60%"></div>
+                      <div class="progress-bar progress-bar-green" style="width:<?php echo $processFour."%"?>"></div>
                     </div>
                   </div>
 
@@ -313,10 +471,10 @@
                                   <option value="5">5</option>
                               </select>
                     </span>
-                    <span class="progress-number"><b>160</b>/200</span>
+                    <span class="progress-number"><b><?php echo getTotalVotes(3,1); ?></b>/ <?php echo getTotalVotesPerCategory(1); ?></span>
 
                     <div class="progress sm">
-                      <div class="progress-bar progress-bar-green" style="width: 70%"></div>
+                      <div class="progress-bar progress-bar-green" style="width:<?php echo $processThree."%"?>"></div>
                     </div>
                   </div>
 
@@ -331,10 +489,10 @@
                                   <option value="5">5</option>
                               </select>
                     </span>
-                    <span class="progress-number"><b>160</b>/200</span>
+                    <span class="progress-number"><b><?php echo getTotalVotes(2,1); ?></b>/ <?php echo getTotalVotesPerCategory(1); ?></span>
 
                     <div class="progress sm">
-                      <div class="progress-bar progress-bar-green" style="width: 20%"></div>
+                      <div class="progress-bar progress-bar-green" style="width:<?php echo $processTwo."%"?>"></div>
                     </div>
                   </div>
 
@@ -348,10 +506,10 @@
                                   <option value="5">5</option>
                               </select>
                     </span>
-                    <span class="progress-number"><b>160</b>/200</span>
+                    <span class="progress-number"><b><?php echo getTotalVotes(1,1); ?></b>/ <?php echo getTotalVotesPerCategory(1); ?></span>
 
                     <div class="progress sm">
-                      <div class="progress-bar progress-bar-green" style="width: 30%"></div>
+                      <div class="progress-bar progress-bar-green" style="width:<?php echo $processOne."%"?>"></div>
                     </div>
                   </div>
 </body>
@@ -373,18 +531,71 @@
       });
 
 
-      var currentRating = $('.rating-display-overall').data('current-rating');
+      
+      var overallProcessRating = $('.rating-display-process-overall').data('current-rating');
+      var overallOutcomeRating = $('.rating-display-outcomes-overall').data('current-rating');
+      var overallStructureRating = $('.rating-display-structure-overall').data('current-rating');
+      var overallExperienceRating = $('.rating-display-experience-overall').data('current-rating');
+      var overallRating = $('.rating-display-overall').data('current-rating');
 
       $('.rating-display-overall .current-rating')
             .find('span')
-            .html(currentRating);
+            .html(overallRating);
 
       $('.rating-display-overall').barrating({
         theme: 'fontawesome-stars-o',
-        initialRating: currentRating,
+        initialRating: overallRating,
         readonly: true
       });
 
+
+      $('.rating-display-process-overall .current-rating')
+            .find('span')
+            .html(overallProcessRating);
+
+      $('.rating-display-process-overall').barrating({
+        theme: 'fontawesome-stars-o',
+        initialRating: overallProcessRating,
+        readonly: true
+      });
+
+      $('.rating-display-outcomes-overall .current-rating')
+            .find('span')
+            .html(overallOutcomeRating);
+
+      $('.rating-display-outcomes-overall').barrating({
+        theme: 'fontawesome-stars-o',
+        initialRating: overallOutcomeRating,
+        readonly: true
+      });
+
+      $('.rating-display-structure-overall .current-rating')
+            .find('span')
+            .html(overallStructureRating);
+
+      $('.rating-display-structure-overall').barrating({
+        theme: 'fontawesome-stars-o',
+        initialRating: overallStructureRating,
+        readonly: true
+      });
+
+      $('.rating-display-experience-overall .current-rating')
+            .find('span')
+            .html(overallExperienceRating);
+
+      $('.rating-display-experience-overall').barrating({
+        theme: 'fontawesome-stars-o',
+        initialRating: overallExperienceRating,
+        readonly: true
+      });
+
+
+
+
+
+
+
+      //BREAKDOWN
       $('.rating-display-five').barrating({
         theme: 'fontawesome-stars',
         initialRating: 5,
