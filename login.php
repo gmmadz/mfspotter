@@ -74,6 +74,7 @@
             // Set session variables
             $_SESSION["username"] = $user;
             $_SESSION["password"] = $password;
+            $_SESSION["user_id"] = $row['userID'];
             $_SESSION["firstname"] = $row['firstName'];
             $_SESSION["middlename"] = $row['middleName'];
             $_SESSION["lastname"] = $row['lastName'];
