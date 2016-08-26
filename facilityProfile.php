@@ -1,6 +1,6 @@
 
 
-<?php /*
+<?php 
     
   $facility_id = $_GET["id"];
 
@@ -11,7 +11,7 @@
   $operating_period = array();
 
   $connect = mysqli_connect("localhost", $username, $password, $database);  
-
+  
   $query = "SELECT * FROM `facility` WHERE facilityID = " . $facility_id . " ";
 
   $result = mysqli_query($connect, $query); 
@@ -58,14 +58,43 @@
 
   } 
 
-
-
+  
+  
   //COMMENTS
 
 
+  //RATINGS
+  $mysqli = new mysqli('localhost', 'root', 'usbw', 'mfspotter');
+  $mysqli->autocommit(false);
+  
+    if(isset($_POST['submitted']))
+    {
+       
+        $facilityID = 3;
+        $userID = 1;
+        $process = $_POST['rating-process'];
+        $outcomes = $_POST['rating-outcome'];
+        $structure = $_POST['rating-structure'];
+        $experience = $_POST['rating-experience'];
+
+        //INSERT INTO RATING PROCESS
+        $mysqli->query("INSERT INTO rating(userID, facilityID, categoryID, rating, dateRated) VALUES ('$userID', '$facilityID', '1', '$process', now() )");
+
+        //INSERT INTO RATING OUTCOMES
+        $mysqli->query("INSERT INTO rating(userID, facilityID, categoryID, rating, dateRated) VALUES ('$userID', '$facilityID', '2', '$outcomes', now() )");
+
+        //INSERT INTO RATING STRUCTURE
+        $mysqli->query("INSERT INTO rating(userID, facilityID, categoryID, rating, dateRated) VALUES ('$userID', '$facilityID', '3', '$structure', now() )");
+
+        //INSERT INTO RATING EXPERIENCE
+        $mysqli->query("INSERT INTO rating(userID, facilityID, categoryID, rating, dateRated) VALUES ('$userID', '$facilityID', '4', '$experience', now() )");
+
+        $mysqli->commit();
+           
+    }
 
 
-*/
+
 ?>
 <!DOCTYPE html>
 <!--
@@ -330,6 +359,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- /.box on About the Facility -->
 
           <!-- Ratings -->
+        <!-RATING->
+        <form name = "addRating" enctype="multipart/form-data" role="form" method="post" data-toggle="validator">
           <div class="box box-primary box-success">
             <div class="box-header with-border">
               <h3 class="box-title">Rate the Facility</h3>
@@ -451,8 +482,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 <div class="post">
                   <div class="user-block">
-                    
-                         <button type="submit" class="btn btn-danger pull-right btn-block btn-sm" >Submit Ratings!</button>
+                    <button type="submit" class="btn btn-danger pull-right btn-block btn-sm" >Submit Ratings!</button>
+                    <input type="hidden" name="submitted" value="TRUE" />
                     <span class="description"></span>
                   </div>
                   <!-- /.user-block -->
@@ -475,6 +506,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- /.box on Rating -->
         </div>
         <!-- /.col -->
+      </form>
 
         <!- Left side Comments->
         <div class="col-md-9">
