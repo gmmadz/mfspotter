@@ -425,6 +425,42 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
                   </p>
           
                 </div>
+
+                <!-MODALS FOR DETAILS->
+                <div class="modal fade modal-default" id="locationModal">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Location</h4>
+                      </div>
+                      <div class="modal-body">
+                      
+                        <div class="col-xs-5">
+                          <label class="control-label">Radius:</label>
+                          <select id="radiusSelect" style="color: orange;">
+                            <option value="1" selected>1mi</option>
+                            <option value="25" selected>25mi</option>
+                            <option value="100">100mi</option>
+                            <option value="200">200mi</option>
+                          </select>
+                          <label class="control-label">km</label>
+                        </div>
+                        </br>
+                        
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                    <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+
+
                   <!-PROCESS CATEGORY DETAILS->
                   <div class="progress-group">
                     <span class="progress-text"> 
