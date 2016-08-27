@@ -453,7 +453,7 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
                                   <option value="5">5</option>
                               </select>
                     </span>
-                    <span class="progress-number"><b><?php echo getTotalVotes(4,1); ?></b>/ <?php echo getTotalVotesPerCategory(1); ?></span>
+                    <span class="progress-number"><b><?php echo getTotalVotes(4,1); ?></b>/ <?php echo getTotalVotesPerCategory(1); ?> votes</span>
 
                     <div class="progress sm">
                       <div class="progress-bar progress-bar-green" style="width:<?php echo $processFour."%"?>"></div>
@@ -471,7 +471,7 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
                                   <option value="5">5</option>
                               </select>
                     </span>
-                    <span class="progress-number"><b><?php echo getTotalVotes(3,1); ?></b>/ <?php echo getTotalVotesPerCategory(1); ?></span>
+                    <span class="progress-number"><b><?php echo getTotalVotes(3,1); ?></b>/ <?php echo getTotalVotesPerCategory(1); ?> votes</span>
 
                     <div class="progress sm">
                       <div class="progress-bar progress-bar-green" style="width:<?php echo $processThree."%"?>"></div>
@@ -489,7 +489,7 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
                                   <option value="5">5</option>
                               </select>
                     </span>
-                    <span class="progress-number"><b><?php echo getTotalVotes(2,1); ?></b>/ <?php echo getTotalVotesPerCategory(1); ?></span>
+                    <span class="progress-number"><b><?php echo getTotalVotes(2,1); ?></b>/ <?php echo getTotalVotesPerCategory(1); ?> votes</span>
 
                     <div class="progress sm">
                       <div class="progress-bar progress-bar-green" style="width:<?php echo $processTwo."%"?>"></div>
@@ -506,7 +506,7 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
                                   <option value="5">5</option>
                               </select>
                     </span>
-                    <span class="progress-number"><b><?php echo getTotalVotes(1,1); ?></b>/ <?php echo getTotalVotesPerCategory(1); ?></span>
+                    <span class="progress-number"><b><?php echo getTotalVotes(1,1); ?></b>/ <?php echo getTotalVotesPerCategory(1); ?> votes</span>
 
                     <div class="progress sm">
                       <div class="progress-bar progress-bar-green" style="width:<?php echo $processOne."%"?>"></div>
