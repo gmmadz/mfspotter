@@ -939,6 +939,133 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
                 <!-- /.modal -->
 
 
+
+
+
+<?php
+    $username="root";
+    $password="usbw";
+    $database="mfspotter";
+    $output='';
+
+
+    $connect = mysqli_connect("localhost", $username, $password, $database);  
+
+    $query = "SELECT f.facilityName AS Facility_Name, GROUP_CONCAT(i.insuranceName SEPARATOR ', ') As Insurances_Covered
+              FROM facility f, insurances i, insurancesCovered ic
+              WHERE f.facilityID = ic.facilityID AND i.insurancesID = ic.insuranceID
+              AND i.insurancesID IN (1,2,3)
+              GROUP BY f.facilityName";
+
+     $result = mysqli_query($connect, $query); 
+
+    if(mysqli_num_rows($result) > 0)  
+     {  
+         
+         /* $output .= '<table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th>Facility Name</th>
+                        <th>Insurances Covered</th>
+                      </tr>
+                    </thead>';  
+          while($row = mysqli_fetch_array($result))  
+          {  
+               $output .= '  
+                    <tbody>
+                          <td>'.$row['Facility_Name'].'</td>
+                          <td>'.$row['Insurances_Covered'].'</td>
+                    </tbody>  
+               ';  
+          }  
+          echo $output;  */
+          $output .= '<div class="row"> <div class="col-md-4">';
+
+          while($row = mysqli_fetch_array($result))
+          {
+            $output .= ' <div class="box box-widget widget-user-2">
+                          <div class="widget-user-header bg-green">
+                            <h3 class="widget-user-username">'.$row['Facility_Name'].'</h3>
+                            <h5 class="widget-user-desc">'.$row['Insurances_Covered'].'</h5>
+                          </div>
+                          <div class="box-footer no-padding">
+                            <ul class="nav nav-stacked">
+                              <li><a href="#">Projects <span class="pull-right badge bg-blue">31</span></a></li>
+                              <li><a href="#">Tasks <span class="pull-right badge bg-aqua">5</span></a></li>
+                              <li><a href="#">Completed Projects <span class="pull-right badge bg-green">12</span></a></li>
+                              <li><a href="#">Followers <span class="pull-right badge bg-red">842</span></a></li>
+                            </ul>
+                          </div>
+          </div>
+            ';
+          }
+          echo $output . '</div> </div>';
+
+
+
+
+
+
+     }  
+     else  
+     {  
+          echo 'Data Not Found';  
+ } ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                   
 </body>
 
