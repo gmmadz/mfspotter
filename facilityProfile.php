@@ -60,6 +60,20 @@
   
   
   //COMMENTS
+   /*$query4 = "SELECT comment, firstName, middleName, lastName, dateRated, timeRated FROM comment c, user u WHERE c.userID = u.userID AND facilityID = " . $facility_id . " ORDER BY dateRated DESC, timeRated DESC";
+
+  $result4 = mysqli_query($connect, $query4); 
+
+  if(mysqli_num_rows($result4) > 0)  
+  {  
+    while($row4 = mysqli_fetch_array($result4)) 
+    {
+      $name = implode(" ", array($row4['firstName'], $row4['middleName'], $row4['lastName']));
+      $comments[] = array($row4['comment'], $name, $row4['dateRated']);
+
+    }  
+
+  }*/
 
 
 
@@ -88,22 +102,6 @@
 
         //INSERT INTO RATING EXPERIENCE
         $mysqli->query("INSERT INTO rating(userID, facilityID, categoryID, rating, dateRated) VALUES ('$userID', '$facilityID', '4', '$experience', now() )");
-
-  //COMMENTS
-  $query4 = "SELECT comment, firstName, middleName, lastName,  DATE_FORMAT( dateRated,  '%Y-%m-%d %H:%i' ) AS dateRated FROM comment c, user u WHERE c.userID = u.userID AND facilityID = " . $facility_id . " ORDER BY dateRated DESC";
-
-  $result4 = mysqli_query($connect, $query4); 
-
-  if(mysqli_num_rows($result4) > 0)  
-  {  
-    while($row4 = mysqli_fetch_array($result4)) 
-    {
-      $name = implode(" ", array($row4['firstName'], $row4['middleName'], $row4['lastName']));
-      $comments[] = array($row4['comment'], $name, $row4['dateRated']);
-      
-    }  
-
-  }
 
 
 
@@ -331,7 +329,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </li>
               </ul>
 
-              <a href="#" class="btn btn-success btn-block"><b>Reserve Now</b></a>
+              <a href="#" class="btn btn-success btn-block"><b>Set an Appointment</b></a>
             </div>
             <!-- /.box-body -->
           </div>
@@ -470,7 +468,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <!-- Post -->
                 <div class="post">
                   <div class="user-block">
-                    <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/nurse.png" alt="user image">
+                    <img class="img-circle img-bordered-sm" src="/mfspotter/dist/img/nurse.png" alt="user image">
                         <span class="username">
                           <a href="#">Patient Experience</a>
                         </span>
@@ -540,10 +538,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <form class="form-horizontal" method='post' action="" onsubmit="return post();">
                     <div class="form-group margin-bottom-none">
                       <div class="col-sm-9">
-                        <input class="form-control input-sm" id="comment" 
-                        placeholder="Post a comment">
-                        <input type="text" id="username" value="<?php $_SESSION['user_id']?>" hidden>
-                        <input type="text" id="facilityID" value="<?php $facility_id ?>" hidden>
+                        <input class="form-control input-sm" id="comment" placeholder="Post a comment">
+                        <input type="text" id="username" value="<?php echo $_SESSION["user_id"]; ?>" hidden>
+                        <input type="text" id="facilityID" value="<?php echo $facility_id; ?>" hidden>
                       </div>
                       <div class="col-sm-3">
                         <button type="submit" class="btn btn-danger pull-right btn-block btn-sm">Send</button>
@@ -554,14 +551,32 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 <div id = "all_comments">
                 <?php 
+                   //COMMENTS
+                  $query4 = "SELECT commentID, comment, firstName, middleName, lastName,  DATE_FORMAT( dateRated,  '%Y-%m-%d %H:%i' ) AS dateRated FROM comment c, user u WHERE c.userID = u.userID AND facilityID = " . $facility_id . " ORDER BY dateRated DESC";
+
+                  $result4 = mysqli_query($connect, $query4); 
+
+                  if(mysqli_num_rows($result4) > 0)  
+                  {  
+                    while($row4 = mysqli_fetch_array($result4)) 
+                    {
+                      $name = implode(" ", array($row4['firstName'], $row4['middleName'], $row4['lastName']));
+                      $comments[] = array($row4['comment'], $name, $row4['dateRated'], $row4['commentID']);
+
+                    }  
+
+                  }
+
+
                   for($row = 0; $row < count($comments); $row++){
+
                   
                   echo '
                   <div class="post">
 
                   <div class="user-block">
 
-                    <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/user1-128x128.jpg" alt="user image">
+                    <img class="img-circle img-bordered-sm" src="/mfspotter/dist/img/user1-128x128.jpg" alt="user image">
                         <span class="username">
                           <a href="#">' . $comments[$row][1] . '</a>
                         </span>
@@ -570,12 +585,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <!-- /.user-block -->
 
                   <p>' . $comments[$row][0] . '</p>
-                  <ul class="list-inline">
-                    <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
-                    </li>
-                    <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-down margin-r-5"></i> Dislike</a>
-                    </li>
-                  </ul>
+                  <div id = "totalvotes">
+                    <ul class="list-inline">
+                      <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
+                      </li>
+                      <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-down margin-r-5"></i> Dislike</a>
+                      </li>
+                    </ul>
+                  </div>
                 </div>  <!-- /.post -->';
                   }
                 
@@ -638,22 +655,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
     document.getElementById("medOption").onclick = function () {
         location.href = "/mfspotter/searchCenter2.php";
     };
-</script>
 
-<!-- Optionally, you can add Slimscroll and FastClick plugins.
-     Both of these plugins are recommended to enhance the
-     user experience. Slimscroll is required when using the
-     fixed layout. -->
-
-<script type="text/javascript">
- 
+    //FOR COMMENTS
   function post()
   {
     var comment = document.getElementById("comment").value;
     var name = document.getElementById("username").value;
     var facility = document.getElementById("facilityID").value;
+
+    
+
     if(comment && name && facility)
     {
+
       $.ajax
       ({
         type: 'post',
@@ -662,7 +676,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         {
            user_comm:comment,
            user_name:name,
-           facility_id: facility
+           facility_id:facility
         },
         success: function (response) 
         {
@@ -677,6 +691,49 @@ scratch. This page gets rid of all links and provides the needed markup only.
     
     return false;
   }
+
+  //FOR THE REMARKS
+  function insert_like()
+  {
+    var test = "fd";
+    console.log(test);
+    $.ajax({
+      type: 'post',
+      url: 'store_remarks.php',
+      data: {
+        post_like:"like"
+      },
+      success: function (response) {
+        $('#totalvotes').html(response);
+      }
+      });
+  }
+
+  function insert_like()
+  {
+    $.ajax({
+      type: 'post',
+      url: 'store_remarks.php',
+      data: {
+        post_dislike:"dislike"
+      },
+      success: function (response) {
+        $('#totalvotes').html(response);
+      }
+      });
+  }
+
+
+</script>
+
+<!-- Optionally, you can add Slimscroll and FastClick plugins.
+     Both of these plugins are recommended to enhance the
+     user experience. Slimscroll is required when using the
+     fixed layout. -->
+
+<script type="text/javascript">
+ 
+  
 </script>
 
 </body>

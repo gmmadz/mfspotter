@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 23, 2016 at 05:37 AM
+-- Generation Time: Aug 29, 2016 at 06:04 PM
 -- Server version: 5.6.13
 -- PHP Version: 5.4.17
 
@@ -33,19 +33,32 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `userID` int(11) NOT NULL,
   `facilityID` int(11) NOT NULL,
   `comment` varchar(500) NOT NULL,
-  `dateRated` date NOT NULL,
-  `timeRated` time NOT NULL,
+  `dateRated` datetime NOT NULL,
   PRIMARY KEY (`commentID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=26 ;
 
 --
 -- Dumping data for table `comment`
 --
 
-INSERT INTO `comment` (`commentID`, `userID`, `facilityID`, `comment`, `dateRated`, `timeRated`) VALUES
-(1, 16, 25, 'Hi :)))))))', '2016-08-23', '12:25:00'),
-(3, 17, 25, 'Gwapa ko', '2016-08-23', '12:30:00'),
-(5, 18, 25, 'Im a pig', '2016-08-24', '12:15:00');
+INSERT INTO `comment` (`commentID`, `userID`, `facilityID`, `comment`, `dateRated`) VALUES
+(1, 16, 25, 'Hi :)))))))', '2016-08-23 12:30:00'),
+(3, 17, 25, 'Gwapa ko', '2016-08-23 12:40:00'),
+(5, 18, 25, 'Im a pig', '2016-08-24 11:00:00'),
+(12, 16, 25, 'fsdfsfd', '2016-08-29 22:56:07'),
+(13, 16, 25, 'gfdgdf', '2016-08-29 22:56:52'),
+(14, 16, 25, 'sss', '2016-08-29 23:02:53'),
+(15, 16, 25, 'dd', '2016-08-29 23:07:24'),
+(16, 16, 25, 'haahahahha', '2016-08-29 23:09:14'),
+(17, 16, 25, 'yes please', '2016-08-29 23:10:06'),
+(18, 16, 25, 'now plase', '2016-08-29 23:10:46'),
+(19, 16, 25, 'ddaa', '2016-08-29 23:11:14'),
+(20, 16, 25, 'now now ', '2016-08-29 23:20:39'),
+(21, 16, 25, 'yas it wooorks :)) praise the lord', '2016-08-29 23:21:16'),
+(22, 16, 13, 'saaa', '2016-08-29 23:24:36'),
+(23, 16, 2, 'ssss', '2016-08-29 23:27:08'),
+(24, 16, 25, ':(', '2016-08-30 01:16:01'),
+(25, 16, 25, 'sa', '2016-08-30 01:41:24');
 
 -- --------------------------------------------------------
 
@@ -239,6 +252,46 @@ INSERT INTO `operatingperiod` (`operatingperiodID`, `facilityID`, `dayofweek`, `
 (14, 29, 0, '01:00:00', '01:00:00'),
 (15, 29, 6, '01:00:00', '01:00:00'),
 (16, 30, 0, '06:45:00', '06:45:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `remark`
+--
+
+CREATE TABLE IF NOT EXISTS `remark` (
+  `remarkID` int(11) NOT NULL AUTO_INCREMENT,
+  `userID` int(11) NOT NULL,
+  `commentID` int(11) NOT NULL,
+  `remarks` varchar(50) NOT NULL,
+  PRIMARY KEY (`remarkID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `remark`
+--
+
+INSERT INTO `remark` (`remarkID`, `userID`, `commentID`, `remarks`) VALUES
+(1, 17, 3, 'Like'),
+(2, 16, 3, 'Like'),
+(3, 18, 3, 'Dislike');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reservation`
+--
+
+CREATE TABLE IF NOT EXISTS `reservation` (
+  `reservationID` int(11) NOT NULL AUTO_INCREMENT,
+  `userID` int(11) NOT NULL,
+  `facilityID` int(11) NOT NULL,
+  `reservationDate` date NOT NULL,
+  `consultationDate` date NOT NULL,
+  `consultationTime` time NOT NULL,
+  `status` varchar(50) NOT NULL,
+  PRIMARY KEY (`reservationID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
