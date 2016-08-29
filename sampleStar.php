@@ -52,6 +52,28 @@ function getAverageVotePerCategory($category){
   }
  
 }
+
+
+function getOverallVotePerID($id){
+  $username="root";
+  $password="usbw";
+  $database="mfspotter";
+  $connect = mysqli_connect("localhost", $username, $password, $database); 
+  $query = "SELECT AVG(rating) as overall FROM rating, facility WHERE rating.facilityID = facility.facilityID AND facility.facilityID = ".$id." GROUP BY facility.facilityID";
+  $result = mysqli_query($connect, $query);
+  if(mysqli_num_rows($result) > 0)  
+  {  
+    while($row = mysqli_fetch_array($result)) 
+    {
+      return $row['overall'];
+    }  
+    
+  }
+  else
+  {
+    return 0;
+  }
+}
     
 function getTotalVotesPerCategory($category){
   $username="root";
@@ -943,6 +965,7 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
 
 
 <?php
+//***************************MAKE THIS AS A FUNCTION WITH PARAMETERS (QUERY) ADD IFS FOR EACH DESCRIPTION
     $username="root";
     $password="usbw";
     $database="mfspotter";
@@ -950,61 +973,52 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
 
 
     $connect = mysqli_connect("localhost", $username, $password, $database);  
-
-    $query = "SELECT f.facilityName AS Facility_Name, GROUP_CONCAT(i.insuranceName SEPARATOR ', ') As Insurances_Covered
+    $i = 1;
+    $query = "SELECT f.facilityName AS Facility_Name, GROUP_CONCAT(DISTINCT i.insuranceName SEPARATOR ', ') As Insurances_Covered, f.facilityID
               FROM facility f, insurances i, insurancesCovered ic
               WHERE f.facilityID = ic.facilityID AND i.insurancesID = ic.insuranceID
               AND i.insurancesID IN (1,2,3)
-              GROUP BY f.facilityName";
+              GROUP BY f.facilityID";
 
      $result = mysqli_query($connect, $query); 
-
+     echo "<div class = 'row'>";
     if(mysqli_num_rows($result) > 0)  
      {  
-         
-         /* $output .= '<table id="example1" class="table table-bordered table-striped">
-                    <thead>
-                      <tr>
-                        <th>Facility Name</th>
-                        <th>Insurances Covered</th>
-                      </tr>
-                    </thead>';  
-          while($row = mysqli_fetch_array($result))  
-          {  
-               $output .= '  
-                    <tbody>
-                          <td>'.$row['Facility_Name'].'</td>
-                          <td>'.$row['Insurances_Covered'].'</td>
-                    </tbody>  
-               ';  
-          }  
-          echo $output;  */
-          $output .= '<div class="row"> <div class="col-md-4">';
-
+        
           while($row = mysqli_fetch_array($result))
-          {
-            $output .= ' <div class="box box-widget widget-user-2">
-                          <div class="widget-user-header bg-green">
-                            <h3 class="widget-user-username">'.$row['Facility_Name'].'</h3>
-                            <h5 class="widget-user-desc">'.$row['Insurances_Covered'].'</h5>
-                          </div>
+          { ?>
+            <div class="col-md-3">
+                         <div class="box box-widget widget-user ">
+                            <div class="widget-user-header bg-green">
+                              <h2 class="widget-user-username "><?php echo $row['Facility_Name'] ?></h2>
+                              <h5 class="widget-user-desc "><?php echo $row['Insurances_Covered'] ?></h5>
+                            </div>
                           <div class="box-footer no-padding">
                             <ul class="nav nav-stacked">
-                              <li><a href="#">Projects <span class="pull-right badge bg-blue">31</span></a></li>
-                              <li><a href="#">Tasks <span class="pull-right badge bg-aqua">5</span></a></li>
-                              <li><a href="#">Completed Projects <span class="pull-right badge bg-green">12</span></a></li>
-                              <li><a href="#">Followers <span class="pull-right badge bg-red">842</span></a></li>
+                              
+                              <li><a href="#">Reputation: 
+                                
+                                <div class="pull-right"><select class="rating-display-detail pull-right" data-current-rating="<?php echo getOverallVotePerID($row['facilityID']) ?>" >
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select></div></a>
+                              </li>
+                              <li><a href="#">Average Overall Ratings: <span class="pull-right badge bg-aqua"><?php echo getOverallVotePerID($row['facilityID'])?></span></a></li>
+                              <li><a href="#">View Map <span class="pull-right badge bg-red"><i class="fa fa-map-marker" aria-hidden="true"></i>  </span> </a></li>
+                              <li><a href="#">More details <span class="pull-right badge bg-yellow"><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>  </span></a></li>
                             </ul>
                           </div>
-          </div>
-            ';
+                       </div>
+              </div>
+            
+            <?php 
+            if($i % 3 == 3) echo "</div> <div class = 'row'>";
+            $i++;
           }
-          echo $output . '</div> </div>';
-
-
-
-
-
+        
 
      }  
      else  
@@ -1079,6 +1093,22 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
 
 <script src="jquery.barrating.js"></script>
 <script type="text/javascript">
+
+    function eachBar(details){
+
+    var overalldetails = details;
+
+      $('.rating-display-detail .current-rating')
+            .find('span')
+            .html(overallRating);
+
+      $('.rating-display-detail').barrating({
+        theme: 'fontawesome-stars-o',
+        initialRating: overalldetails,
+        readonly: true
+      });
+    }
+
    $(function() {
       $('.rating-process').barrating({
         theme: 'fontawesome-stars',
@@ -1092,6 +1122,7 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
       var overallStructureRating = $('.rating-display-structure-overall').data('current-rating');
       var overallExperienceRating = $('.rating-display-experience-overall').data('current-rating');
       var overallRating = $('.rating-display-overall').data('current-rating');
+      var overalldetails = $('.rating-display-detail').data('current-rating');
 
       $('.rating-display-overall .current-rating')
             .find('span')
@@ -1103,6 +1134,15 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
         readonly: true
       });
 
+     $('.rating-display-detail .current-rating')
+            .find('span')
+            .html(overallRating);
+
+      $('.rating-display-detail').barrating({
+        theme: 'fontawesome-stars-o',
+        initialRating: overalldetails,
+        readonly: true
+      });
 
       $('.rating-display-process-overall .current-rating')
             .find('span')
