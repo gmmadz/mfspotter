@@ -26,6 +26,20 @@
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
 	<link rel="stylesheet" href="dist/themes/fontawesome-stars.css">
 	<link rel="stylesheet" href="dist/themes/fontawesome-stars-o.css">
+
+<style type="text/css">
+html, body, #map-canvas  {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+#map-canvas {
+  width:500px;
+  height:480px;
+}
+
+</style>
 </head>
 
 
@@ -996,19 +1010,32 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
                           <div class="box-footer no-padding">
                             <ul class="nav nav-stacked">
                               
-                              <li><a href="#">Reputation: 
+                              <li>
+                                <a href="#">
+                                  <div class="row">
+                                    
+                                    <div class="col-xs-4">
+                                      Reputation: 
+                                    </div>
                                 
-                                <div class="pull-right"><select class="rating-display-detail pull-right" data-current-rating="<?php echo getOverallVotePerID($row['facilityID']) ?>" >
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select></div></a>
+                                    <div class="col-xs-8">
+                                       <div class="progress md">
+                                          <div class="progress-bar progress-bar-black progress-bar-striped active" style="width:<?php echo ((getOverallVotePerID($row['facilityID'])/5)*100) ."%"?>"> 
+                                            <label><?php echo ((getOverallVotePerID($row['facilityID'])/5)*100) ."%"?></label></div>
+                                       </div>
+                                    </div>
+
+                                  </div>
+
+                                </a>
+
+                         
                               </li>
+
+
                               <li><a href="#">Average Overall Ratings: <span class="pull-right badge bg-aqua"><?php echo getOverallVotePerID($row['facilityID'])?></span></a></li>
-                              <li><a href="#">View Map <span class="pull-right badge bg-red"><i class="fa fa-map-marker" aria-hidden="true"></i>  </span> </a></li>
-                              <li><a href="#">More details <span class="pull-right badge bg-yellow"><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>  </span></a></li>
+                              <li><a href="#" data-toggle="modal" data-target="#myMapModal">View Map <span class="pull-right badge bg-red"><i class="fa fa-map-marker" aria-hidden="true"></i>  </span> </a></li>
+                              <li><a href="#">More details <span class="pull-right badge bg-blue"><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>  </span></a></li>
                             </ul>
                           </div>
                        </div>
@@ -1034,7 +1061,30 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
 
 
 
+<div class="modal fade" id="myMapModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                 <h4 class="modal-title">View Map</h4>
 
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div id="map-canvas" class=""></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 
 
 
@@ -1090,7 +1140,7 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
 <!-- AdminLTE App -->
 <script src="dist/js/app.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiAxt9bglMA2DTxUsQAz-MbdN1lCZwhpk" type="text/javascript"></script>
 <script src="jquery.barrating.js"></script>
 <script type="text/javascript">
 
@@ -1222,6 +1272,55 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
       });
 
    });
+
+
+
+</script>
+
+<script type="text/javascript">
+    var map;        
+    var myCenter=new google.maps.LatLng(7.1907, 125.4553);
+    var marker=new google.maps.Marker({
+        position:myCenter
+    });
+
+    function initialize() {
+      var mapProp = {
+          center:myCenter,
+          zoom: 14,
+          mapTypeId:google.maps.MapTypeId.ROADMAP
+      };
+      
+      map=new google.maps.Map(document.getElementById("map-canvas"),mapProp);
+      marker.setMap(map);
+        
+      google.maps.event.addListener(marker, 'click', function() {
+          
+        infowindow.setContent(contentString);
+        infowindow.open(map, marker);
+        
+      }); 
+    };
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+    google.maps.event.addDomListener(window, "resize", resizingMap());
+
+    $('#myMapModal').on('show.bs.modal', function() {
+       //Must wait until the render of the modal appear, thats why we use the resizeMap and NOT resizingMap!! ;-)
+       resizeMap();
+    })
+
+    function resizeMap() {
+       if(typeof map =="undefined") return;
+       setTimeout( function(){resizingMap();} , 400);
+    }
+
+    function resizingMap() {
+       if(typeof map =="undefined") return;
+       var center = map.getCenter();
+       google.maps.event.trigger(map, "resize");
+       map.setCenter(center); 
+    }
 </script>
 
 </html>
