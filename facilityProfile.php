@@ -585,14 +585,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <!-- /.user-block -->
 
                   <p>' . $comments[$row][0] . '</p>
-                  <div id = "totalvotes">
+
                     <ul class="list-inline">
-                      <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
+                      <li><a href="#" onclick="return insert_like('.$_SESSION["user_id"].','. $comments[$row][3] . ');" id="like_button" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i><div id="totalvotes"></div> Like</a>
                       </li>
                       <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-down margin-r-5"></i> Dislike</a>
                       </li>
                     </ul>
-                  </div>
+
                 </div>  <!-- /.post -->';
                   }
                 
@@ -662,9 +662,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     var comment = document.getElementById("comment").value;
     var name = document.getElementById("username").value;
     var facility = document.getElementById("facilityID").value;
-
-    
-
+Z
     if(comment && name && facility)
     {
 
@@ -682,8 +680,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         {
           document.getElementById("all_comments").innerHTML=response+document.getElementById("all_comments").innerHTML;
           document.getElementById("comment").value="";
-          document.getElementById("username").value="";
-          document.getElementById("facilityID").value="";
+          //document.getElementById("username").value="";
+          //document.getElementById("facilityID").value="";
     
         }
       });
@@ -693,15 +691,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
   }
 
   //FOR THE REMARKS
-  function insert_like()
+  function insert_like(uID, cID)
   {
-    var test = "fd";
-    console.log(test);
+
+    //var uID = document.getElementById("user").value;
+    //var cID = document.getElementById("commentid").value;
+    //console.log(uID);
+   // console.log(cID);
+
     $.ajax({
       type: 'post',
       url: 'store_remarks.php',
       data: {
-        post_like:"like"
+        post_like:"like",
+        user_id:uID,
+        comment_id:cID
+
       },
       success: function (response) {
         $('#totalvotes').html(response);
@@ -709,7 +714,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       });
   }
 
-  function insert_like()
+  function insert_dislike()
   {
     $.ajax({
       type: 'post',
