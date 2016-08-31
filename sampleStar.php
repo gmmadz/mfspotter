@@ -27,7 +27,7 @@
 	<link rel="stylesheet" href="dist/themes/fontawesome-stars.css">
 	<link rel="stylesheet" href="dist/themes/fontawesome-stars-o.css">
 
-<style type="text/css">
+<style>
 html, body, #map-canvas  {
   margin: 0;
   padding: 0;
@@ -37,8 +37,17 @@ html, body, #map-canvas  {
 #map-canvas {
   width:500px;
   height:480px;
-}
+  overflow:visible;
 
+}
+ /* .modal-dialog{
+    position: relative;
+    display: table; //This is important 
+    overflow-y: auto;    
+    overflow-x: auto;
+    width: auto;
+    min-width: 300px;   */
+}
 </style>
 </head>
 
@@ -323,7 +332,7 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
                 <div class="post">
                   <div class="user-block">
                     <span class="username">
-                          <a href="#">OVERALL RATINGS</a>
+                          <a href="#">OVERALL RATINGS for Facility 1</a>
                     </span>
                     <span class="description">
                               <select class="rating-display-overall" data-current-rating=<?php echo $overallRating?>>
@@ -1034,7 +1043,7 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
 
 
                               <li><a href="#">Average Overall Ratings: <span class="pull-right badge bg-aqua"><?php echo getOverallVotePerID($row['facilityID'])?></span></a></li>
-                              <li><a href="#" data-toggle="modal" data-target="#myMapModal">View Map <span class="pull-right badge bg-red"><i class="fa fa-map-marker" aria-hidden="true"></i>  </span> </a></li>
+                              <li><a href="#" data-lat="23, 18.33" data-toggle="modal" data-target="#myMapModal">View Map <span class="pull-right badge bg-red"><i class="fa fa-map-marker" aria-hidden="true"></i>  </span> </a></li>
                               <li><a href="#">More details <span class="pull-right badge bg-blue"><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>  </span></a></li>
                             </ul>
                           </div>
@@ -1072,7 +1081,9 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
             <div class="modal-body">
                 <div class="container">
                     <div class="row">
+                    
                         <div id="map-canvas" class=""></div>
+                    
                     </div>
                 </div>
             </div>
@@ -1277,9 +1288,10 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
 
 </script>
 
-<script type="text/javascript">
+
+<script type='text/javascript'>
     var map;        
-    var myCenter=new google.maps.LatLng(7.1907, 125.4553);
+    var myCenter=new google.maps.LatLng(7.057964, 125.585403);
     var marker=new google.maps.Marker({
         position:myCenter
     });
@@ -1287,7 +1299,7 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
     function initialize() {
       var mapProp = {
           center:myCenter,
-          zoom: 14,
+          zoom: 10,
           mapTypeId:google.maps.MapTypeId.ROADMAP
       };
       
@@ -1302,25 +1314,22 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
       }); 
     };
     google.maps.event.addDomListener(window, 'load', initialize);
+    google.maps.event.addDomListener(window, "resize", resizeMap());
 
-    google.maps.event.addDomListener(window, "resize", resizingMap());
-
-    $('#myMapModal').on('show.bs.modal', function() {
-       //Must wait until the render of the modal appear, thats why we use the resizeMap and NOT resizingMap!! ;-)
+    $('#myMapModal').on('shown.bs.modal', function() {
        resizeMap();
-    })
+    });
+
 
     function resizeMap() {
-       if(typeof map =="undefined") return;
-       setTimeout( function(){resizingMap();} , 400);
-    }
-
-    function resizingMap() {
        if(typeof map =="undefined") return;
        var center = map.getCenter();
        google.maps.event.trigger(map, "resize");
        map.setCenter(center); 
-    }
+    };
 </script>
+
+
+
 
 </html>
