@@ -38,12 +38,17 @@
 			{
 				$likes = $row['likes'];
 
+				echo '<ul class="list-inline">
+                      <li><a href="#" onclick="return insert_like('. $user.','. $comment . ');" id="like_button" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i>'. $likes . ' Like</a>
+                      </li>
+                      <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-down margin-r-5"></i> Dislike</a>
+                      </li>
+                    </ul>';
+
 			}
 
 	  	}
 
-	  	echo $likes;
-	  	return $likes;
 	  	
 	}
 

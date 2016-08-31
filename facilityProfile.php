@@ -570,30 +570,52 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                   for($row = 0; $row < count($comments); $row++){
 
+                  $comID = $comments[$row][3];
+
+                  //Select Likes
+                  $selectquery="SELECT COUNT(remarkID) AS likes FROM `remark` WHERE commentID = '$comID' AND remarks = 'Like'";
+
+                  $selectLikes=mysqli_query($connect, $selectquery);
+
+                    //SELECT Dislikes
+                    $selectquery2="SELECT COUNT(remarkID) AS dislikes FROM `remark` WHERE commentID = '$comID' AND remarks = 'Dislike'";
+
+                    $selectDislikes=mysqli_query($connect, $selectquery);
+
+                    if(mysqli_num_rows($selectLikes) > 0){
+                      while($row2=mysqli_fetch_array($selectLikes))
+                      {
+                        $likes = $row2['likes'];
+
+                        echo '
+                      <div class="post">
+
+                      <div class="user-block">
+
+                        <img class="img-circle img-bordered-sm" src="/mfspotter/dist/img/user1-128x128.jpg" alt="user image">
+                            <span class="username">
+                              <a href="#">' . $comments[$row][1] . '</a>
+                            </span>
+                        <span class="description">' . $comments[$row][2] . '</span>
+                      </div>
+                      <!-- /.user-block -->
+
+                      <p>' . $comments[$row][0] . '</p>
+                        <div id="totalvotes">
+                        <ul class="list-inline">
+                          <li><a href="#" onclick="return insert_like('.$_SESSION["user_id"].','. $comments[$row][3] . ');" id="like_button" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i>'. $likes . ' Like</a>
+                          </li>
+                          <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-down margin-r-5"></i> Dislike</a>
+                          </li>
+                        </ul>
+                        </div> <!-- /. total votes -->
+
+                    </div>  <!-- /.post -->';
+                      }
+                      
+                    }
                   
-                  echo '
-                  <div class="post">
-
-                  <div class="user-block">
-
-                    <img class="img-circle img-bordered-sm" src="/mfspotter/dist/img/user1-128x128.jpg" alt="user image">
-                        <span class="username">
-                          <a href="#">' . $comments[$row][1] . '</a>
-                        </span>
-                    <span class="description">' . $comments[$row][2] . '</span>
-                  </div>
-                  <!-- /.user-block -->
-
-                  <p>' . $comments[$row][0] . '</p>
-
-                    <ul class="list-inline">
-                      <li><a href="#" onclick="return insert_like('.$_SESSION["user_id"].','. $comments[$row][3] . ');" id="like_button" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i><div id="totalvotes"></div> Like</a>
-                      </li>
-                      <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-down margin-r-5"></i> Dislike</a>
-                      </li>
-                    </ul>
-
-                </div>  <!-- /.post -->';
+                  
                   }
                 
                 ?>
@@ -662,7 +684,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     var comment = document.getElementById("comment").value;
     var name = document.getElementById("username").value;
     var facility = document.getElementById("facilityID").value;
-Z
+
     if(comment && name && facility)
     {
 
@@ -696,8 +718,8 @@ Z
 
     //var uID = document.getElementById("user").value;
     //var cID = document.getElementById("commentid").value;
-    //console.log(uID);
-   // console.log(cID);
+    console.log(uID);
+    console.log(cID);
 
     $.ajax({
       type: 'post',

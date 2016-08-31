@@ -30,8 +30,8 @@
     {
       if($row=mysqli_fetch_array($select))
       {
-        $name=$row['firstName']. " ". $row['middleName']. " ". $row['lastName'];
-        $comment=$row['comment'];
+        $namae=$row['firstName']. " ". $row['middleName']. " ". $row['lastName'];
+        $commentt=$row['comment'];
         $dateTime=$row['dateRated'];
       ?>
 
@@ -41,15 +41,15 @@
 
               <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/user1-128x128.jpg" alt="user image">
                   <span class="username">
-                    <a href="#"><?php echo ''. $name . ''; ?></a>
+                    <a href="#"><?php echo ''. $namae . ''; ?></a>
                   </span>
               <span class="description"><?php echo ''. $dateTime . ''; ?></span>
             </div>
             <!-- /.user-block -->
 
-            <p><?php echo ''. $comment . ''; ?></p>
+            <p><?php echo ''. $commentt . ''; ?></p>
             <ul class="list-inline">
-              <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
+              <li><a href="#" onclick="return insert_like('<?php echo $name ?>','<?php echo $last_id ?>');" id="like_button" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
               </li>
               <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-down margin-r-5"></i> Dislike</a>
               </li>
