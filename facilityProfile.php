@@ -571,23 +571,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   for($row = 0; $row < count($comments); $row++){
 
                   $comID = $comments[$row][3];
+                  $uID = $_SESSION["user_id"];
+
 
                   //Select Likes
                   $selectquery="SELECT COUNT(remarkID) AS likes FROM `remark` WHERE commentID = '$comID' AND remarks = 'Like'";
 
                   $selectLikes=mysqli_query($connect, $selectquery);
 
-                    //SELECT Dislikes
-                    $selectquery2="SELECT COUNT(remarkID) AS dislikes FROM `remark` WHERE commentID = '$comID' AND remarks = 'Dislike'";
+                  //SELECT Dislikes
+                  $selectquery2="SELECT COUNT(remarkID) AS dislikes FROM `remark` WHERE commentID = '$comID' AND remarks = 'Dislike'";
 
-                    $selectDislikes=mysqli_query($connect, $selectquery);
+                  $selectDislikes=mysqli_query($connect, $selectquery);
 
-                    if(mysqli_num_rows($selectLikes) > 0){
-                      while($row2=mysqli_fetch_array($selectLikes))
-                      {
-                        $likes = $row2['likes'];
+                  if(mysqli_num_rows($selectLikes) > 0){
+                     while($row2=mysqli_fetch_array($selectLikes))
+                    {
+                      $likes = $row2['likes'];
+                    }
 
-                        echo '
+
+
+                      echo '
                       <div class="post">
 
                       <div class="user-block">
@@ -601,9 +606,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       <!-- /.user-block -->
 
                       <p>' . $comments[$row][0] . '</p>
-                        <div id="totalvotes">
+                        <div id="totalvotes-'. $comID .'">
+                        <input type="hidden" id="likes-'. $comID .'" value="'. $likes . '">';
+
+                        $validatequery ="SELECT * FROM remarks WHERE commentID = '$comID' and userID = '$uID'";
+                        $valid = mysqli_query($connect, $validatequery);
+                        if(mysqli_num_rows($selectLikes) > 0){
+                           $str_like = "like";
+                        }
+                        else
+                        {
+                          $str_like = "unlike";
+                        }
+                         
+                        
+                      echo '
                         <ul class="list-inline">
-                          <li><a href="#" onclick="return insert_like('.$_SESSION["user_id"].','. $comments[$row][3] . ');" id="like_button" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i>'. $likes . ' Like</a>
+                          <li><a href="#" onclick="return addLikes('. $comID .', '. $str_like .')" id="like_button" class="link-black text-sm '. $str_like .'"><i class="fa fa-thumbs-o-up margin-r-5"></i>'. $likes  .' Like(s)</a>
                           </li>
                           <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-down margin-r-5"></i> Dislike</a>
                           </li>
@@ -611,7 +630,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </div> <!-- /. total votes -->
 
                     </div>  <!-- /.post -->';
-                      }
+                      
                       
                     }
                   
@@ -749,6 +768,45 @@ scratch. This page gets rid of all links and provides the needed markup only.
       }
       });
   }
+
+  //REMARKS Trial 2
+  function addLikes(id,action) {
+
+    $(' #totalvotes-'+id+' li').each(function(index) {
+      $(this).addClass('selected');
+      $('#totalvotes-'+id+' #rating').val((index+1));
+      if(index == $('#tutorial-'+id+' li').index(obj)) {
+        return false; 
+      }
+    });
+    $.ajax({
+    url: "add_likes.php",
+    data:'id='+id+'&action='+action,
+    type: "POST",
+    beforeSend: function(){
+      $('#tutorial-'+id+' .btn-likes').html("<img src='LoaderIcon.gif' />");
+    },
+    success: function(data){
+    var likes = parseInt($('#likes-'+id).val());
+    switch(action) {
+      case "like":
+      $('#tutorial-'+id+' .btn-likes').html('<input type="button" title="Unlike" class="unlike" onClick="addLikes('+id+',\'unlike\')" />');
+      likes = likes+1;
+      break;
+      case "unlike":
+      $('#tutorial-'+id+' .btn-likes').html('<input type="button" title="Like" class="like"  onClick="addLikes('+id+',\'like\')" />')
+      likes = likes-1;
+      break;
+    }
+    $('#likes-'+id).val(likes);
+    if(likes>0) {
+      $('#tutorial-'+id+' .label-likes').html(likes+" Like(s)");
+    } else {
+      $('#tutorial-'+id+' .label-likes').html('');
+    }
+    }
+    });
+}
 
 
 </script>
