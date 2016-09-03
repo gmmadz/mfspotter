@@ -22,10 +22,14 @@
   <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
 
 
-
+  <!--ANTENNA RATEIT-->
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
 	<link rel="stylesheet" href="dist/themes/fontawesome-stars.css">
 	<link rel="stylesheet" href="dist/themes/fontawesome-stars-o.css">
+
+  <!--RATEIT-->
+  <link rel="stylesheet" href="plugins/rateit-scripts/rateit.css">
+
 
 <style>
 html, body, #map-canvas  {
@@ -40,14 +44,7 @@ html, body, #map-canvas  {
   overflow:visible;
 
 }
- /* .modal-dialog{
-    position: relative;
-    display: table; //This is important 
-    overflow-y: auto;    
-    overflow-x: auto;
-    width: auto;
-    min-width: 300px;   */
-}
+ 
 </style>
 </head>
 
@@ -1023,18 +1020,15 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
                                 <a href="#">
                                   <div class="row">
                                     
-                                    <div class="col-xs-4">
-                                      Reputation: 
+                                    <div class="col-xs-5">
+                                      Overall Ratings: 
                                     </div>
                                 
-                                    <div class="col-xs-8">
-                                       <div class="progress md">
-                                          <div class="progress-bar progress-bar-black progress-bar-striped active" style="width:<?php echo ((getOverallVotePerID($row['facilityID'])/5)*100) ."%"?>"> 
-                                            <label><?php echo ((getOverallVotePerID($row['facilityID'])/5)*100) ."%"?></label></div>
-                                       </div>
+                                    <div class="col-xs-7 pull-right">
+                                      <div class="rateit bigstars pull-right" data-rateit-value="<?php echo getOverallVotePerID($row['facilityID'])?>" data-rateit-ispreset="true" data-rateit-readonly="true"></div>
                                     </div>
 
-                                  </div>
+                                </div>
 
                                 </a>
 
@@ -1047,6 +1041,7 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
                               <li><a href="#">More details <span class="pull-right badge bg-blue"><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>  </span></a></li>
                             </ul>
                           </div>
+
                        </div>
               </div>
             
@@ -1134,16 +1129,8 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
 
 
 
-
-
-
-
-
-
-
-                  
-</body>
-
+<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="plugins/rateit-scripts/jquery.rateit.min.js"></script>
 
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
@@ -1153,6 +1140,13 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiAxt9bglMA2DTxUsQAz-MbdN1lCZwhpk" type="text/javascript"></script>
 <script src="jquery.barrating.js"></script>
+
+
+                  
+</body>
+
+
+
 <script type="text/javascript">
 
     function eachBar(details){
@@ -1291,8 +1285,8 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
 
 <script type='text/javascript'>
     var map;        
-    var myCenter=new google.maps.LatLng(7.057964, 125.585403);
-    var marker=new google.maps.Marker({
+    var myCenter = new google.maps.LatLng(7.057964, 125.585403);
+    var marker = new google.maps.Marker({
         position:myCenter
     });
 

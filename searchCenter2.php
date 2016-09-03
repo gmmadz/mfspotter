@@ -182,7 +182,7 @@
 
     <!- Location Modal ->
     
-      <div class="modal fade modal-success" id="locationModal">
+      <div class="modal fade modal-primary" id="locationModal">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -212,7 +212,7 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
               <button type="button" class="btn btn-outline" onclick="searchLocationsNear()">Search</button>
-              <button type="button" class="btn btn-outline"  onclick="getCurrentLocation()">Search from current location</button>
+              <button type="button" class="btn btn-outline"  onclick="getCurrentLocation()">Search from Current location</button>
             </div>
           </div>
           <!-- /.modal-content -->

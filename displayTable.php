@@ -26,8 +26,6 @@ if(mysqli_num_rows($result) > 0)
                 <thead>
                   <tr>
                     <th>Facility Name</th>
-                    <th>Latitude</th>
-                    <th>Longitude</th>
                     <th>Address</th>
                     <th>Distance</th>
                   </tr>
@@ -37,8 +35,6 @@ if(mysqli_num_rows($result) > 0)
            $output .= '  
                 <tbody>
                       <td><a href ="facilityProfile.php?id='. $row['facilityID'] .'">'.$row['facilityName'].'</a></td>
-                      <td>'.$row['latitude'].'</td>
-                      <td>'.$row['longhitude'].'</td>
                       <td>'.$row['address'].'</td>
                       <td>'.$row['distance'].'</td>
                 </tbody>  
