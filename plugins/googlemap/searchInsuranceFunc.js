@@ -1,4 +1,8 @@
  //******************************* Get location by Insurance
+    function hellow(){
+      alert("HELLO");
+    }
+
     function searchInsurances() {
       var map = new google.maps.Map(document.getElementById("map"), {
         center: new google.maps.LatLng(7.057964, 125.585403),

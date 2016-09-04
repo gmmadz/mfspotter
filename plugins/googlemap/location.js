@@ -32,39 +32,16 @@
       };
    }
 
-   function searchLocations() {
-     var address = document.getElementById("addressInput").value;
-     var geocoder = new google.maps.Geocoder();
-     geocoder.geocode({address: address}, function(results, status) {
-       if (status == google.maps.GeocoderStatus.OK) {
-        searchLocationsNear(results[0].geometry.location);
-       } else {
-         alert(address + ' not found');
-       }
-     });
-   }
-
-   function clearLocations() {
-     infoWindow.close();
-     for (var i = 0; i < markers.length; i++) {
-       markers[i].setMap(null);
-     }
-     markers.length = 0;
-
-     locationSelect.innerHTML = "";
-     var option = document.createElement("option");
-     option.value = "none";
-     option.innerHTML = "See all results:";
-     locationSelect.appendChild(option);
-   }
+   
 
    //**************************************************************************GET CURRENT LOCATION METHOD
-    function getCurrentLocation() {
+   /* function getCurrentLocation() {
         var map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: -34.397, lng: 150.644},
           icon: "marker/marker.png",
           zoom: 10
         });
+        
         var infoWindow = new google.maps.InfoWindow({map: map});
 
         // Try HTML5 geolocation.
@@ -79,8 +56,40 @@
             infoWindow.setPosition(pos);
             infoWindow.setContent('Location found.' + pos.lat + " " + pos.lng);
             map.setCenter(pos);
-            searchLocationsNear(pos);
+           
 
+            }, function() {
+              handleLocationError(true, infoWindow, map.getCenter());
+            });
+        } 
+        else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+      }*/
+
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+}
+
+
+
+//**************************************************************************GET CURRENT LOCATION METHOD
+function searchLocationsNear() {
+
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Location found.');
+            map.setCenter(pos);
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
           });
@@ -88,19 +97,9 @@
           // Browser doesn't support Geolocation
           handleLocationError(false, infoWindow, map.getCenter());
         }
-      }
 
-    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-                              'Error: The Geolocation service failed.' :
-                              'Error: Your browser doesn\'t support geolocation.');
-      }
-
-//**************************************************************************GET CURRENT LOCATION METHOD
-function searchLocationsNear() {
       var map = new google.maps.Map(document.getElementById("map"), {
-        center: new google.maps.LatLng(7.057964, 125.585403),
+        center: new google.maps.LatLng(pos.lat, post.lng),
         zoom: 13,
         animation: google.maps.Animation.DROP,
         icon: "marker/marker.png",
@@ -110,7 +109,7 @@ function searchLocationsNear() {
       var radius = document.getElementById('radiusSelect').value;
      
       var infoWindow = new google.maps.InfoWindow;
-      var searchUrl = 'display.php?lat=' + '7.057964' + '&lng=' + '125.585403'+ '&radius=' + radius;
+      var searchUrl = 'display.php?lat=' + pos.lat + '&lng=' + pos.lng + '&radius=' + radius;
       // Change this depending on the name of your PHP file
       downloadUrl(searchUrl, function(data) {
         var xml = data.responseXML;
@@ -137,19 +136,23 @@ function searchLocationsNear() {
       $.ajax({  
                      url:"displayTable.php",  
                      method:"post",  
-                     data:{lati:'7.057964', longi:'125.585403', radi: radius},  
+                     data:{lati: pos.lat, longi: pos.lng, radi: radius},  
                      dataType:"text",  
                      success:function(data)  
                      {  
                           $('#result').html(data);  
                      }  
                 });  
+   
+     
     }
+
+
+
 
 
    
 
-//*************************************************************************
 
     function bindInfoWindow(marker, map, infoWindow, html) {
       google.maps.event.addListener(marker, 'click', function() {

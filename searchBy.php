@@ -25,8 +25,18 @@
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
 
+  
+
+  <!--RATEIT-->
+  <link rel="stylesheet" href="plugins/rateit-scripts/rateit.css">
+
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiAxt9bglMA2DTxUsQAz-MbdN1lCZwhpk"
             type="text/javascript"></script>
+
+
+  <style>
+  #myMapModal .modal-dialog  {width:75%;}
+  </style>
   </head>
 
   <body class="hold-transition skin-green sidebar-mini" style="margin:0px; padding:0px;" onload="load()">
@@ -172,6 +182,14 @@
             </a>
           </li>
 
+          <li>
+            <a href="#" data-toggle="modal" data-target="#">
+              <i class="fa fa-book"></i> <span>Combined Search</span>
+              <span class="pull-right-container">
+              </span>
+            </a>
+          </li>
+
 
         </ul>
       </section>
@@ -195,7 +213,8 @@
               <div class="col-xs-5">
                 <label class="control-label">Radius:</label>
                 <select id="radiusSelect" style="color: orange;">
-                  <option value="1" selected>1mi</option>
+                  <option value="1">1mi</option>
+                  <option value="5">5mi</option>
                   <option value="25" selected>25mi</option>
                   <option value="100">100mi</option>
                   <option value="200">200mi</option>
@@ -212,7 +231,6 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
               <button type="button" class="btn btn-outline" onclick="searchLocationsNear()">Search</button>
-              <button type="button" class="btn btn-outline"  onclick="getCurrentLocation()">Search from Current location</button>
             </div>
           </div>
           <!-- /.modal-content -->
@@ -426,32 +444,108 @@
       
 
 
+
+
+<div class="modal fade" id="myMapModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                 <h4 class="modal-title">View Map</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                    
+                        <div class="col-md-12">
+                          <div id="map" style="width: 80%; height: 80%"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+
+<div class="modal fade" id="myMapModal-each">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                 <h4 class="modal-title">View Map</h4>
+
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                    
+                        <div class="col-md-12">
+                          <div id="map" style="width: 80%; height: 80%"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+
+
+
+
+
+
+
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
       <section class="content-header">
-        <h1>
-          Searching a Medical Facility
-        </h1>
+      
+        <div class="row">
+
+          <div class="col-md-4">
+            <h3> Searching a Medical Facility  </h3>
+          </div>
+
+          <div class="col-md-8 pull-left">
+            <button type="button" class="btn btn-primary pull-right"  data-toggle="modal" data-target="#myMapModal">View Map </button>
+          </div>
+
+        </div>
+       
       </section>
 
 
-      <!- Main content -->
+
+
+
+      <!- Main content ->
       <section class="content">
         <div class="box box-solid box-success">
       
           <div class="box-body">
             <div class="row"> 
 
-            <!-****************************************** MAP SECTION->
-             <div class="col-md-6"> 
-              <div><select id="locationSelect" style="width:100%;visibility:hidden"></select></div>
-                <div id="map" style="width: 100%; height: 80%"></div>
-             </div>
-                
+                          
               <!-****************************************** TABLE SECTION->  
-              </br>
-              <div class="col-md-6">   
+              
+              <div class="col-md-12">   
                 <div class="box">
                     <div class="box-header">
                       <h3 class="box-title">List of Facilities</h3>
@@ -529,12 +623,12 @@
 
 <!-- FUNCTIONS -->
 <!-- location search functions -->
-<script src="plugins/googlemap/location.js"></script>
+
 <!-- Search Insurance Function -->
-<script src="plugins/googlemap/searchInsuranceFunc.js"></script>
+
 <!-- Search Schedule Function -->
 <script src="plugins/googlemap/searchScheduleFunc.js"></script>
-
+<script type="text/javascript" src="plugins/rateit-scripts/jquery.rateit.min.js"></script>
 
 <!-- page script -->
 <script>
@@ -566,6 +660,199 @@
 
 
   });
+
+ $('#myMapModal-each').on('shown.bs.modal', function(e) {
+        var element = $(e.relatedTarget);
+        var data = element.data("lat").split(',')
+        initialize(new google.maps.LatLng(data[0], data[1]));
+    });
+
+    var map;
+    var markers = [];
+    
+    var customIcons = {
+      restaurant: {
+        icon: 'http://labs.google.com/ridefinder/images/mm_20_blue.png'
+      },
+      bar: {
+        icon: 'http://labs.google.com/ridefinder/images/mm_20_red.png'
+      }
+    };
+
+
+  function load() {
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: new google.maps.LatLng(7.1907, 125.4553),
+        zoom: 12,
+        mapTypeId: 'roadmap',
+        icon: "marker/marker.png",
+        mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU}
+      });
+      infoWindow = new google.maps.InfoWindow();
+
+  }
+
+  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+  }
+
+
+  function searchLocationsNear() {
+
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+           alert(pos.lat + " " + pos.lng);
+
+              var map = new google.maps.Map(document.getElementById("map"), {
+              center: new google.maps.LatLng(pos.lat, pos.lng),
+              zoom: 10,
+              animation: google.maps.Animation.DROP,
+              icon: "marker/marker.png",
+              mapTypeId: 'roadmap'
+            });
+
+            var radius = document.getElementById('radiusSelect').value;
+           
+            var infoWindow = new google.maps.InfoWindow;
+            var searchUrl = 'display.php?lat=' + pos.lat + '&lng=' + pos.lng + '&radius=' + radius;
+      
+            // Change this depending on the name of your PHP file
+            downloadUrl(searchUrl, function(data) {
+              var xml = data.responseXML;
+              var markers = xml.documentElement.getElementsByTagName("marker");
+              for (var i = 0; i < markers.length; i++) {
+                var name = markers[i].getAttribute("name");
+                var address = markers[i].getAttribute("address");
+                var type = markers[i].getAttribute("distance");
+                var point = new google.maps.LatLng(
+                    parseFloat(markers[i].getAttribute("lat")),
+                    parseFloat(markers[i].getAttribute("lng")));
+                var html = "<b>" + name + "</b> <br/>" + address;
+                var icon = customIcons[0] || {};
+                var marker = new google.maps.Marker({
+                  map: map,
+                  position: point,
+                  icon: icon.icon
+                });
+                bindInfoWindow(marker, map, infoWindow, html);
+              }
+            });
+           
+
+              $.ajax({  
+                             url:"displayTable.php",  
+                             method:"post",  
+                             data:{lati: pos.lat, longi: pos.lng, radi: radius},  
+                             dataType:"text",  
+                             success:function(data)  
+                             {  
+                                  $('#result').html(data);  
+                             }  
+                        });  
+           
+
+
+
+
+
+
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+
+     
+     
+    }
+  
+  function searchInsurances() {
+      var map = new google.maps.Map(document.getElementById("map"), {
+        center: new google.maps.LatLng(7.057964, 125.585403),
+        zoom: 12,
+        animation: google.maps.Animation.DROP,
+        icon: "marker/marker.png",
+        mapTypeId: 'roadmap'
+      });
+
+      
+      var selectedInsurance = $("#select2_insurances").val();
+      
+
+      var infoWindow = new google.maps.InfoWindow;
+      var searchUrl = 'searchByInsurances_Map.php?insurances=' + selectedInsurance;
+   
+      // Change this depending on the name of your PHP file
+      downloadUrl(searchUrl, function(data) {
+        var xml = data.responseXML;
+        var markers = xml.documentElement.getElementsByTagName("marker");
+        for (var i = 0; i < markers.length; i++) {
+          var name = markers[i].getAttribute("name");
+          var address = markers[i].getAttribute("address");
+          var type = markers[i].getAttribute("distance");
+          var point = new google.maps.LatLng(
+              parseFloat(markers[i].getAttribute("lat")),
+              parseFloat(markers[i].getAttribute("lng")));
+          var html = "<b>" + name + "</b> <br/>" + address;
+          var icon = customIcons[0] || {};
+          var marker = new google.maps.Marker({
+            map: map,
+            position: point,
+            icon: icon.icon
+          });
+          bindInfoWindow(marker, map, infoWindow, html);
+        }
+      });
+
+
+      $.ajax({  
+                     url:"searchByInsurances_Table.php",  
+                     method:"post",  
+                     data:{insuarray: selectedInsurance},  
+                     dataType:"text",  
+                     success:function(data)  
+                     {  
+                          $('#result').html(data);  
+                     }  
+                });  
+    }
+
+  function bindInfoWindow(marker, map, infoWindow, html) {
+      google.maps.event.addListener(marker, 'click', function() {
+        infoWindow.setContent(html);
+        infoWindow.open(map, marker);
+      });
+    }
+
+    function downloadUrl(url, callback) {
+      var request = window.ActiveXObject ?
+          new ActiveXObject('Microsoft.XMLHTTP') :
+          new XMLHttpRequest;
+
+      request.onreadystatechange = function() {
+        if (request.readyState == 4) {
+          request.onreadystatechange = doNothing;
+          callback(request, request.status);
+        }
+      };
+
+      request.open('GET', url, true);
+      request.send(null);
+    }
+
+    function doNothing() {}
+
+
+
 </script>
 
 </body>
