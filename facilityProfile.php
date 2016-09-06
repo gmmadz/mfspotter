@@ -255,7 +255,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- Profile-->
           <div class="box box-primary box-success">
             <div class="box-body box-profile">
-              <img class="profile-user-img img-responsive" src="../mfspotter/dist/img/photo1.png" alt="User profile picture">
+              <img class="profile-user-img img-responsive" src="/mfspotter/dist/img/photo1.png" alt="User profile picture">
 
               <h3 class="profile-username text-center"><?php echo $facility_name ?></h3>
 
@@ -572,6 +572,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                   $comID = $comments[$row][3];
                   $uID = $_SESSION["user_id"];
+                  $str_like = "like";
 
 
                   //Select Likes
@@ -612,17 +613,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         $validatequery ="SELECT * FROM remarks WHERE commentID = '$comID' and userID = '$uID'";
                         $valid = mysqli_query($connect, $validatequery);
                         if(mysqli_num_rows($selectLikes) > 0){
-                           $str_like = "like";
+                           $str_like = "unlike";
                         }
-                        else
-                        {
-                          $str_like = "unlike";
-                        }
-                         
                         
                       echo '
                         <ul class="list-inline">
-                          <li><a href="#" onclick="return addLikes('. $comID .', '. $str_like .')" id="like_button" class="link-black text-sm '. $str_like .'"><i class="fa fa-thumbs-o-up margin-r-5"></i>'. $likes  .' Like(s)</a>
+                          <li class="btn-likes">
+                            <div class="btn-likes" style="display:inline;"><a href="#" title="'. ucwords($str_like) .'" class="'. $str_like .'" onclick="return addLikes('. $uID . ','. $comID .', '. $str_like .')"><i class="fa fa-thumbs-o-up margin-r-5"></i>
+                            </div>
+                            <div class="label-likes" style="display:inline;">';
+
+                              if($likes != 0) 
+                              { 
+                                echo $likes . " Like(s)"; 
+                              } 
+
+                            echo '</a></div>
                           </li>
                           <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-down margin-r-5"></i> Dislike</a>
                           </li>
@@ -770,39 +776,42 @@ scratch. This page gets rid of all links and provides the needed markup only.
   }
 
   //REMARKS Trial 2
-  function addLikes(id,action) {
+  function addLikes(user,id,action) {
+    console.log(user);
+    console.log(id);
+    console.log(action);
 
-    $(' #totalvotes-'+id+' li').each(function(index) {
+    $('#totalvotes-'+id+' li').each(function(index) {
       $(this).addClass('selected');
       $('#totalvotes-'+id+' #rating').val((index+1));
-      if(index == $('#tutorial-'+id+' li').index(obj)) {
+      if(index == $('#totalvotes-'+id+' li').index(obj)) {
         return false; 
       }
     });
     $.ajax({
     url: "add_likes.php",
-    data:'id='+id+'&action='+action,
+    data:'usid='+user+'id='+id+'&action='+action,
     type: "POST",
     beforeSend: function(){
-      $('#tutorial-'+id+' .btn-likes').html("<img src='LoaderIcon.gif' />");
+      $('#totalvotes-'+id+' .btn-likes').html("<img src='/mfspotter/dist/img/remarks/loaderIcon.gif'/>");
     },
     success: function(data){
     var likes = parseInt($('#likes-'+id).val());
     switch(action) {
       case "like":
-      $('#tutorial-'+id+' .btn-likes').html('<input type="button" title="Unlike" class="unlike" onClick="addLikes('+id+',\'unlike\')" />');
+      $('#totalvotes-'+id+' .btn-likes').html('<a href="#" title="Unlike" class="unlike" onclick="addLikes('+id+',\'unlike\')" />');
       likes = likes+1;
       break;
       case "unlike":
-      $('#tutorial-'+id+' .btn-likes').html('<input type="button" title="Like" class="like"  onClick="addLikes('+id+',\'like\')" />')
+      $('#totalvotes-'+id+' .btn-likes').html('<a href="#" title="Like" class="like"  onclick="addLikes('+id+',\'like\')" />')
       likes = likes-1;
       break;
     }
     $('#likes-'+id).val(likes);
     if(likes>0) {
-      $('#tutorial-'+id+' .label-likes').html(likes+" Like(s)");
+      $('#totalvotes-'+id+' .label-likes').html(likes+" Like(s)");
     } else {
-      $('#tutorial-'+id+' .label-likes').html('');
+      $('#totalvotes-'+id+' .label-likes').html('');
     }
     }
     });
