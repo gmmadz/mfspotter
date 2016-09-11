@@ -251,14 +251,22 @@
             <div class="modal-body">
               <div class="box-body">
               <div class="form-group col-xs-12">
-                <select class="form-control select2" multiple="multiple" data-placeholder="Select a Medical Treatment" style="width: 100%;">
-                  <option>Dentist</option>
-                  <option>Dermatology</option>
-                  <option>Nutritionist</option>
-                  <option>Opthalmology(Eye)</option>
-                  <option>Optometrist(Eye)</option>
-                  <option>Orthodontic(Teeth)</option>
-                  <option>Pedetrician</option>
+                <select class="form-control select2" name="selected_specialization[]" id="select2_specialization" multiple="multiple" data-placeholder="Select a Medical Treatment" style="width: 100%;">
+
+                   <?php
+                  include ("config.php");
+                  $q = "SELECT specializationID, specialization FROM specialization";
+                  $result = mysqli_query($conn, $q);
+                  if (mysqli_num_rows($result) > 0) {
+    
+                    while($row = mysqli_fetch_assoc($result)) {
+                      echo '<option value="'. $row['specializationID'] . '">' . $row['specialization'] . '</option>';
+                    }
+
+                  }
+                  mysqli_close($conn);             
+                  ?>
+
                 </select>
               </div>
                     <!-- /.form-group -->
@@ -266,7 +274,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-outline">Save changes</button>
+              <button type="button" class="btn btn-outline" onclick="searchSpecialization()">Search</button>
             </div>
           </div>
           <!-- /.modal-content -->
@@ -708,7 +716,7 @@
               lat: position.coords.latitude,
               lng: position.coords.longitude
             };
-           alert(pos.lat + " " + pos.lng);
+          
 
               var map = new google.maps.Map(document.getElementById("map"), {
               center: new google.maps.LatLng(pos.lat, pos.lng),
@@ -777,7 +785,7 @@
   
   function searchInsurances() {
       var map = new google.maps.Map(document.getElementById("map"), {
-        center: new google.maps.LatLng(7.057964, 125.585403),
+        center: new google.maps.LatLng(7.0719049, 125.6125521),
         zoom: 12,
         animation: google.maps.Animation.DROP,
         icon: "marker/marker.png",
@@ -818,6 +826,58 @@
                      url:"searchByInsurances_Table.php",  
                      method:"post",  
                      data:{insuarray: selectedInsurance},  
+                     dataType:"text",  
+                     success:function(data)  
+                     {  
+                          $('#result').html(data);  
+                     }  
+                });  
+    }
+
+
+    function searchSpecialization() {
+      var map = new google.maps.Map(document.getElementById("map"), {
+        center: new google.maps.LatLng(7.0719049, 125.6125521),
+        zoom: 12,
+        animation: google.maps.Animation.DROP,
+        icon: "marker/marker.png",
+        mapTypeId: 'roadmap'
+      });
+
+      
+      var selectedSpecialization = $("#select2_specialization").val();
+      
+
+      var infoWindow = new google.maps.InfoWindow;
+      var searchUrl = 'searchBySpecialization_Map.php?insurances=' + selectedSpecialization;
+   
+      // Change this depending on the name of your PHP file
+      downloadUrl(searchUrl, function(data) {
+        var xml = data.responseXML;
+        var markers = xml.documentElement.getElementsByTagName("marker");
+        for (var i = 0; i < markers.length; i++) {
+          var name = markers[i].getAttribute("name");
+          var address = markers[i].getAttribute("address");
+          var type = markers[i].getAttribute("distance");
+          var point = new google.maps.LatLng(
+              parseFloat(markers[i].getAttribute("lat")),
+              parseFloat(markers[i].getAttribute("lng")));
+          var html = "<b>" + name + "</b> <br/>" + address;
+          var icon = customIcons[0] || {};
+          var marker = new google.maps.Marker({
+            map: map,
+            position: point,
+            icon: icon.icon
+          });
+          bindInfoWindow(marker, map, infoWindow, html);
+        }
+      });
+
+
+      $.ajax({  
+                     url:"searchBySpecialization_Table.php",  
+                     method:"post",  
+                     data:{insuarray: selectedSpecialization},  
                      dataType:"text",  
                      success:function(data)  
                      {  

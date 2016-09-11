@@ -37,7 +37,7 @@ if (!$db_selected) {
 /*$query = sprintf("SELECT address, facilityName, latitude, longhitude, ( 3959 * acos( cos( radians('%s') ) * cos( radians( latitude ) ) * cos( radians( longhitude ) - radians('%s') ) + sin( radians('%s') ) * sin( radians( latitude ) ) ) ) AS distance FROM facility HAVING distance < '%s' ORDER BY distance LIMIT 0 , 20";
 */
 // Search the rows in the markers table
-$query = sprintf("SELECT address, facilityName, latitude, longhitude, ( 3959 * acos( cos( radians('%s') ) * cos( radians( latitude ) ) * cos( radians( longhitude ) - radians('%s') ) + sin( radians('%s') ) * sin( radians( latitude ) ) ) ) AS distance FROM facility HAVING distance < '%s' ORDER BY distance LIMIT 0 , 20",
+$query = sprintf("SELECT address, facilityName, latitude, longhitude, ( 6371 * acos( cos( radians('%s') ) * cos( radians( latitude ) ) * cos( radians( longhitude ) - radians('%s') ) + sin( radians('%s') ) * sin( radians( latitude ) ) ) ) AS distance FROM facility HAVING distance < '%s' ORDER BY distance LIMIT 0 , 20",
   mysql_real_escape_string($center_lat),
   mysql_real_escape_string($center_lng),
   mysql_real_escape_string($center_lat),

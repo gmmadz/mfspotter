@@ -71,9 +71,9 @@ function getOverallVotePerID($id){
 
     $connect = mysqli_connect("localhost", $username, $password, $database);  
     $i = 1;
-    $query = "SELECT f.facilityName AS Facility_Name, GROUP_CONCAT(i.insuranceName SEPARATOR ', ') As Insurances_Covered, f.facilityID, f.longhitude, f.latitude FROM facility f, insurances i, insurancesCovered ic
-              WHERE f.facilityID = ic.facilityID AND i.insurancesID = ic.insuranceID
-              AND i.insurancesID IN ($insurancesArray)
+    $query = "SELECT f.facilityName AS Facility_Name, GROUP_CONCAT(s.specialization SEPARATOR ', ') As Has_Specialization, f.facilityID, f.longhitude, f.latitude FROM facility f, specialization s, hasspecialization hs
+              WHERE f.facilityID = hs.facilityID AND s.specializationID = hs.specializationID
+              AND s.specializationID IN ($insurancesArray)
               GROUP BY f.facilityID";
 
      $result = mysqli_query($connect, $query); 
@@ -89,7 +89,7 @@ function getOverallVotePerID($id){
                          <div class="box box-widget widget-user ">
                             <div class="widget-user-header bg-green">
                               <h2 class="widget-user-username "><?php echo $row['Facility_Name'] ?></h2>
-                              <h5 class="widget-user-desc "><?php echo $row['Insurances_Covered'] ?></h5>
+                              <h5 class="widget-user-desc "><?php echo $row['Has_Specialization'] ?></h5>
                             </div>
                           <div class="box-footer no-padding">
                             <ul class="nav nav-stacked">
