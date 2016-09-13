@@ -1,57 +1,5 @@
 <?php
 //SEARCH BY INSURANCES SELECTED
-
-
-$username="root";
-$password="usbw";
-$database="mfspotter";
-$output='';
-$schedArray= implode(",",$_POST['schedule']);
-$opening = $_POST['op'];
-$closing = $_POST['cl'];
-
-
-$connect = mysqli_connect("localhost", $username, $password, $database);  
-
-$query = "SELECT f.facilityName AS Facility_Name, op.timeOpened AS Opening_Time, op.timeClosed AS Closing_Time
-        FROM facility f, operatingperiod op 
-        WHERE f.facilityID = op.facilityID
-        AND op.dayofweek IN('$schedArray')
-        AND op.timeOpened >= '$opening'
-        AND op.timeClosed <= '$closing'
-        GROUP BY f.facilityID";
-/* $result = mysqli_query($connect, $query); 
-
-  if(mysqli_num_rows($result) > 0)  
-   {  
-       
-        $output .= '<table id="example1" class="table table-bordered table-striped">
-                  <thead>
-                    <tr>
-                      <th>Facility Name</th>
-                      <th>Opening Time</th>
-                      <th>Closing Time</th>
-                      <th>'.$schedArray.'</th>
-                    </tr>
-                  </thead>';  
-        while($row = mysqli_fetch_array($result))  
-        {  
-             $output .= '  
-                  <tbody>
-                        <td>'.$row['Facility_Name'].'</td>
-                        <td>'.$row['Opening_Time'].'</td>
-                        <td>'.$row['Closing_Time'].'</td>
-                  </tbody>  
-             ';  
-        }  
-        echo $output;  
-   }  
-   else  
-   {  
-        echo 'Data Not Found';  
-   }  
-
-*/
 function getOverallVotePerID($id){
   $username="root";
   $password="usbw";
@@ -73,6 +21,26 @@ function getOverallVotePerID($id){
     return 0;
   }
 }
+
+$username="root";
+$password="usbw";
+$database="mfspotter";
+$output='';
+$schedArray= implode(",",$_POST['schedule']);
+$opening = $_POST['op'];
+$closing = $_POST['cl'];
+
+
+$connect = mysqli_connect("localhost", $username, $password, $database);  
+$i = 1;
+$query = "SELECT f.facilityName AS Facility_Name, DATE_FORMAT(op.timeOpened, '%h:%i %p') AS Opening_Time, DATE_FORMAT(op.timeClosed, '%h:%i %p') AS Closing_Time, f.facilityID, f.latitude, f.longhitude
+        FROM facility f, operatingperiod op 
+        WHERE f.facilityID = op.facilityID
+        AND op.dayofweek IN('$schedArray')
+        AND op.timeOpened >= '$opening'
+        AND op.timeClosed <= '$closing'
+        GROUP BY f.facilityID";
+ 
  $result = mysqli_query($connect, $query); 
      echo "<link rel='stylesheet' href='plugins/rateit-scripts/rateit.css'> <div class = 'row'>";
     if(mysqli_num_rows($result) > 0)  
@@ -86,7 +54,7 @@ function getOverallVotePerID($id){
                          <div class="box box-widget widget-user ">
                             <div class="widget-user-header bg-green">
                               <h2 class="widget-user-username "><?php echo $row['Facility_Name'] ?></h2>
-                              <h5 class="widget-user-desc ">Opening Time: <?php echo $row['Opening_Time'] ?></h5>
+                              <h5 class="widget-user-desc "><?php echo $row['Opening_Time'] ?> to <?php echo $row['Closing_Time'] ?></h5>
                             </div>
                           <div class="box-footer no-padding">
                             <ul class="nav nav-stacked">

@@ -6,19 +6,60 @@ $username="root";
 $password="usbw";
 $database="mfspotter";
 $output='';
-$insurancesArray= implode(",",$_POST['insuarray']);
 
-/*
+$daysOfWeek = '0,1,2';
+$openingTime = '1:00';
+$closingTime = '24:00';
+$insurancesIDs = '1,3';
+$specializationIDs = '1';
+$latitude = 7.0702295954887475;
+$longhitude = 125.68084716796875;
+$radius = 25;
+
 $connect = mysqli_connect("localhost", $username, $password, $database);  
+$query = "SELECT f.facilityName AS Facility_Name, DATE_FORMAT(op.timeOpened, '%h:%i %p') AS Opening_Time, DATE_FORMAT(op.timeClosed, '%h:%i %p') AS Closing_Time, f.facilityID, f.latitude, f.longhitude
+	        FROM facility f, operatingperiod op 
+	        WHERE f.facilityID = op.facilityID
+	        AND op.dayofweek IN($daysOfWeek)
+	        AND op.timeOpened >= '$openingTime'
+	        AND op.timeClosed <= '$closingTime'
+	        AND f.facilityID IN(   
+                SELECT DISTINCT f.facilityID 
+                FROM facility f, insurances i, insurancesCovered ic, specialization s, hasspecialization hs
+                WHERE f.facilityID = ic.facilityID AND i.insurancesID = ic.insuranceID AND s.specializationID = hs.specializationID 
+                AND hs.facilityID = f.facilityID
+                AND i.insurancesID IN ($insurancesIDs) AND s.specializationID IN ($specializationIDs) 
+                AND f.facilityID IN 
+                        (SELECT facilityID 
+                        	FROM facility 
+                        	WHERE (6371 * acos( cos( radians($latitude) ) * cos( radians( latitude ) ) * cos( radians( longhitude ) - radians($longhitude) ) + sin( radians($latitude) ) * sin( radians( latitude ) ) ) ) < $radius))
+        	";
 
-$query = "SELECT f.facilityName AS Facility_Name, GROUP_CONCAT(i.insuranceName SEPARATOR ', ') As Insurances_Covered
-					FROM facility f, insurances i, insurancesCovered ic
-					WHERE f.facilityID = ic.facilityID AND i.insurancesID = ic.insuranceID
-					AND i.insurancesID IN ('$insurancesArray')
-					GROUP BY f.facilityName";
 
+
+
+//******************************************************FIND THE DIFFERENCES
+/*$query = "SELECT f.facilityName AS Facility_Name, DATE_FORMAT(op.timeOpened, '%h:%i %p') AS Opening_Time, DATE_FORMAT(op.timeClosed, '%h:%i %p') AS Closing_Time, f.facilityID, f.latitude, f.longhitude
+        FROM facility f, operatingperiod op 
+        WHERE f.facilityID = op.facilityID
+        AND op.dayofweek IN(0,1,2)
+        AND op.timeOpened >= '1:00'
+        AND op.timeClosed <= '24:00'
+        AND f.facilityID IN(   
+                SELECT DISTINCT f.facilityID 
+                FROM facility f, insurances i, insurancesCovered ic, specialization s, hasspecialization hs
+                WHERE f.facilityID = ic.facilityID AND i.insurancesID = ic.insuranceID AND s.specializationID = hs.specializationID 
+                AND hs.facilityID = f.facilityID
+                AND i.insurancesID IN (1,3) AND s.specializationID IN (1)
+                AND f.facilityID IN 
+                        (SELECT facilityID FROM facility WHERE (6371 * acos( cos( radians(7.0702295954887475) ) * cos( radians( latitude ) ) * cos( radians( longhitude ) - radians(125.68084716796875) ) + sin( radians(7.0702295954887475) ) * sin( radians( latitude ) ) ) ) < 25))";
+*/
+/*$query = "SELECT f.facilityName AS Facility_Name, GROUP_CONCAT(s.specialization SEPARATOR ', ') As Has_Specialization, f.facilityID, f.longhitude, f.latitude FROM facility f, specialization s, hasspecialization hs
+              WHERE f.facilityID = hs.facilityID AND s.specializationID = hs.specializationID
+              AND s.specializationID IN ($insurancesIDs)
+              GROUP BY f.facilityID";*/
  $result = mysqli_query($connect, $query); 
-
+$n = 0;
 if(mysqli_num_rows($result) > 0)  
  {  
      
@@ -26,7 +67,6 @@ if(mysqli_num_rows($result) > 0)
                 <thead>
                   <tr>
                     <th>Facility Name</th>
-                    <th>Insurances Covered</th>
                   </tr>
                 </thead>';  
       while($row = mysqli_fetch_array($result))  
@@ -34,18 +74,18 @@ if(mysqli_num_rows($result) > 0)
            $output .= '  
                 <tbody>
                       <td>'.$row['Facility_Name'].'</td>
-                      <td>'.$row['Insurances_Covered'].'</td>
                 </tbody>  
            ';  
+           $n++;
       }  
-      echo $output;  
+      echo $output . $n;  
  }  
  else  
  {  
       echo 'Data Not Found';  
  }  
-*/
 
+/*
 function getOverallVotePerID($id){
   $username="root";
   $password="usbw";
@@ -71,9 +111,9 @@ function getOverallVotePerID($id){
 
     $connect = mysqli_connect("localhost", $username, $password, $database);  
     $i = 1;
-    $query = "SELECT f.facilityName AS Facility_Name, GROUP_CONCAT(i.insuranceName SEPARATOR ', ') As Insurances_Covered, f.facilityID, f.longhitude, f.latitude FROM facility f, insurances i, insurancesCovered ic
-              WHERE f.facilityID = ic.facilityID AND i.insurancesID = ic.insuranceID
-              AND i.insurancesID IN ($insurancesArray)
+    $query = "SELECT f.facilityName AS Facility_Name, GROUP_CONCAT(s.specialization SEPARATOR ', ') As Has_Specialization, f.facilityID, f.longhitude, f.latitude FROM facility f, specialization s, hasspecialization hs
+              WHERE f.facilityID = hs.facilityID AND s.specializationID = hs.specializationID
+              AND s.specializationID IN ($insurancesArray)
               GROUP BY f.facilityID";
 
      $result = mysqli_query($connect, $query); 
@@ -89,7 +129,7 @@ function getOverallVotePerID($id){
                          <div class="box box-widget widget-user ">
                             <div class="widget-user-header bg-green">
                               <h2 class="widget-user-username "><?php echo $row['Facility_Name'] ?></h2>
-                              <h5 class="widget-user-desc "><?php echo $row['Insurances_Covered'] ?></h5>
+                              <h5 class="widget-user-desc "><?php echo $row['Has_Specialization'] ?></h5>
                             </div>
                           <div class="box-footer no-padding">
                             <ul class="nav nav-stacked">
@@ -138,5 +178,5 @@ function getOverallVotePerID($id){
           echo 'Data Not Found';  
     }
 
-
+*/
 ?>

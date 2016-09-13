@@ -213,11 +213,11 @@
               <div class="col-xs-5">
                 <label class="control-label">Radius:</label>
                 <select id="radiusSelect" style="color: orange;">
-                  <option value="1">1mi</option>
-                  <option value="5">5mi</option>
-                  <option value="25" selected>25mi</option>
-                  <option value="100">100mi</option>
-                  <option value="200">200mi</option>
+                  <option value="1">1km</option>
+                  <option value="5">5km</option>
+                  <option value="25" selected>25km</option>
+                  <option value="100">100km</option>
+                  <option value="200">200km</option>
                 </select>
                 <label class="control-label">km</label>
               </div>

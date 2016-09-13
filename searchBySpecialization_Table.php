@@ -58,7 +58,7 @@ function getOverallVotePerID($id){
   {  
     while($row = mysqli_fetch_array($result)) 
     {
-      return $row['overall'];
+      return number_format($row['overall'],2);
     }  
     
   }
