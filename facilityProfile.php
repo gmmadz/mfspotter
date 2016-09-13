@@ -151,7 +151,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 
+  <style type="text/css">
 
+  .glyphicon-thumbs-up:hover{ color:#008000; cursor:pointer;}
+  .glyphicon-thumbs-down:hover{ color: #E10000; cursor:pointer;}
+  .counter{ color:#333333;}
+  </style>
 </head>
 
 <body  class="hold-transition skin-green layout-top-nav">
@@ -575,23 +580,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   $str_like = "like";
 
 
-                  //Select Likes
-                  $selectquery="SELECT COUNT(remarkID) AS likes FROM `remark` WHERE commentID = '$comID' AND remarks = 'Like'";
+                  //Select Likes and Dislikes
+                  $selectquery="SELECT COUNT(case when remarks = 'Like' then 1 end) as likes, COUNT(case when remarks = 'Dislike' then 1 end) as dislikes FROM remark WHERE commentID = '$comID'";
 
-                  $selectLikes=mysqli_query($connect, $selectquery);
+                  $selectRemarks=mysqli_query($connect, $selectquery);
 
-                  //SELECT Dislikes
-                  $selectquery2="SELECT COUNT(remarkID) AS dislikes FROM `remark` WHERE commentID = '$comID' AND remarks = 'Dislike'";
 
-                  $selectDislikes=mysqli_query($connect, $selectquery);
-
-                  if(mysqli_num_rows($selectLikes) > 0){
-                     while($row2=mysqli_fetch_array($selectLikes))
+                  if(mysqli_num_rows($selectRemarks) > 0){
+                     while($row2=mysqli_fetch_array($selectRemarks))
                     {
                       $likes = $row2['likes'];
+                      $dislikes = $row2['dislikes'];
                     }
 
-
+                    $like_count = "'like_count". $comID . "'";
+                    $dislike_count = "'dislike_count". $comID . "'";
 
                       echo '
                       <div class="post">
@@ -607,33 +610,28 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       <!-- /.user-block -->
 
                       <p>' . $comments[$row][0] . '</p>
-                        <div id="totalvotes-'. $comID .'">
-                        <input type="hidden" id="likes-'. $comID .'" value="'. $likes . '">';
 
-                        $validatequery ="SELECT * FROM remarks WHERE commentID = '$comID' and userID = '$uID'";
-                        $valid = mysqli_query($connect, $validatequery);
-                        if(mysqli_num_rows($selectLikes) > 0){
-                           $str_like = "unlike";
-                        }
+ 
+                      <div class="ratings">
                         
-                      echo '
                         <ul class="list-inline">
-                          <li class="btn-likes">
-                            <div class="btn-likes" style="display:inline;"><a href="#" title="'. ucwords($str_like) .'" class="'. $str_like .'" onclick="return addLikes('. $uID . ','. $comID .', '. $str_like .')"><i class="fa fa-thumbs-o-up margin-r-5"></i>
-                            </div>
-                            <div class="label-likes" style="display:inline;">';
+                          <li>
+                            <!-- Like Icon HTML -->
+                            <span class="glyphicon glyphicon-thumbs-up" onClick="cwRating('. $comID.', 1, '. $like_count .')"></span>&nbsp;
 
-                              if($likes != 0) 
-                              { 
-                                echo $likes . " Like(s)"; 
-                              } 
+                            <!-- Like Counter -->
+                            <span class="counter" id="like_count'. $comID.'">'. $likes .'</span>&nbsp;&nbsp;&nbsp;
 
-                            echo '</a></div>
                           </li>
-                          <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-down margin-r-5"></i> Dislike</a>
+
+                          <li>
+                            <!-- Dislike Icon HTML -->
+                            <span class="glyphicon glyphicon-thumbs-up" onClick="cwRating('. $comID.', 0, '. $dislike_count .'")"></span>&nbsp;
+                            <!-- Dislike Counter -->
+                            <span class="counter" id="dislike_count'. $comID.'">'. $dislikes .'</span>&nbsp;&nbsp;&nbsp;
                           </li>
                         </ul>
-                        </div> <!-- /. total votes -->
+                        </div> <!-- /. ratings -->
 
                     </div>  <!-- /.post -->';
                       
@@ -641,7 +639,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     }
                   
                   
-                  }
+                  }// END OF FOR EACH FOR EACH COMMENT
                 
                 ?>
                 </div>  <!-- /. all_coments -->
@@ -815,6 +813,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
     }
     }
     });
+}
+
+//REMARKS TRIAL 3
+function cwRating(id,type,target){
+  console.log(id);
+  console.log(type);
+  console.log(target);
+
+  $.ajax({
+    type:'POST',
+    url:'rating.php',
+    data:'id='+id+'&type='+type,
+    success:function(msg){
+      if(msg == 'err'){
+        alert('Some problem occured, please try again.');
+      }else{
+        $('#'+target).html(msg);
+      }
+    }
+  });
 }
 
 
