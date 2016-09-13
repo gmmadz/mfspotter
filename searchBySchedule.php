@@ -132,7 +132,7 @@
         document.getElementById('btntest').onclick = function(){
           var selchb = getSelectedChbox(this.form);  
           //ADD VALIDATION IF VARIABLE IS BLANK
-
+          alert(selchb);
           var close = $("#closetime").val();
           var open = $("#opentime").val();
 
@@ -146,9 +146,9 @@
           });
 
           
-        
+        alert(selchb);
           var infoWindow = new google.maps.InfoWindow;
-          var searchUrl = 'searchBySchedule_Map.php?schedule='+ selchb.toString() + '&op='+ open + '&cl=' + close ;
+          var searchUrl = 'searchBySchedule_Map.php?schedule='+ selchb + '&op='+ open + '&cl=' + close ;
        
           // Change this depending on the name of your PHP file
           downloadUrl(searchUrl, function(data) {
