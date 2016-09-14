@@ -84,12 +84,14 @@
     if(isset($_POST['submitted']))
     {
        
-        $facilityID = 3;
+        $facilityID = $facility_id;
+
         $userID = 1;
         $process = $_POST['rating-process'];
         $outcomes = $_POST['rating-outcome'];
         $structure = $_POST['rating-structure'];
         $experience = $_POST['rating-experience'];
+        echo $experience;
 
         //INSERT INTO RATING PROCESS
         $mysqli->query("INSERT INTO rating(userID, facilityID, categoryID, rating, dateRated) VALUES ('$userID', '$facilityID', '1', '$process', now() )");
@@ -109,6 +111,118 @@
            
     }
 
+function getOverallVotePerID($id){
+  $username="root";
+  $password="usbw";
+  $database="mfspotter";
+  $connect = mysqli_connect("localhost", $username, $password, $database); 
+  $query = "SELECT AVG(rating) as overall FROM rating, facility WHERE rating.facilityID = facility.facilityID AND facility.facilityID = ".$id." AND dateRated >= DATE_SUB(NOW(),INTERVAL 1 YEAR) GROUP BY facility.facilityID";
+  $result = mysqli_query($connect, $query);
+  if(mysqli_num_rows($result) > 0)  
+  {  
+    while($row = mysqli_fetch_array($result)) 
+    {
+      return $row['overall'];
+    }  
+    
+  }
+  else
+  {
+    return 0;
+  }
+}
+
+function getTotalVotesPerCategory($category){
+  $username="root";
+  $password="usbw";
+  $database="mfspotter";
+  $connect = mysqli_connect("localhost", $username, $password, $database); 
+  $query = "SELECT count(categoryID) as total FROM `rating` WHERE categoryID = ".$category." GROUP BY categoryID";
+  $result = mysqli_query($connect, $query);
+  if(mysqli_num_rows($result) > 0)  
+  {  
+    while($row = mysqli_fetch_array($result)) 
+    {
+      return $row['total'];
+    }  
+    
+  }
+  else
+  {
+    return 0;
+  }
+ 
+}
+
+function getAverageVotePerCategory($category){
+  $username="root";
+  $password="usbw";
+  $database="mfspotter";
+  $connect = mysqli_connect("localhost", $username, $password, $database); 
+  $query = "SELECT AVG(rating) as overall FROM `rating` WHERE categoryID = ".$category." GROUP BY categoryID";
+  $result = mysqli_query($connect, $query);
+  if(mysqli_num_rows($result) > 0)  
+  {  
+    while($row = mysqli_fetch_array($result)) 
+    {
+      return number_format($row['overall'],2);
+    }  
+    
+  }
+  else
+  {
+    return 0;
+  }
+ 
+}
+
+function getTotalVotes($rating, $category){
+  $username="root";
+  $password="usbw";
+  $database="mfspotter";
+  $connect = mysqli_connect("localhost", $username, $password, $database); 
+  $query = "SELECT count(categoryID) as totalVotes FROM `rating` WHERE categoryID = ".$category."  AND rating = ".$rating." GROUP BY categoryID";
+
+  $result = mysqli_query($connect, $query);
+
+  if(mysqli_num_rows($result) > 0){
+    while($row = mysqli_fetch_array($result))
+    {
+      return $row['totalVotes']; 
+    }
+  }
+  else
+  {
+    return 0;
+  }
+}
+
+$processFive = (getTotalVotes(5,1)/getTotalVotesPerCategory(1))*100;
+$processFour = (getTotalVotes(4,1)/getTotalVotesPerCategory(1))*100;
+$processThree = (getTotalVotes(3,1)/getTotalVotesPerCategory(1))*100;
+$processTwo = (getTotalVotes(2,1)/getTotalVotesPerCategory(1))*100;
+$processOne = (getTotalVotes(1,1)/getTotalVotesPerCategory(1))*100;
+
+$outcomeFive = (getTotalVotes(5,2)/getTotalVotesPerCategory(2))*100;
+$outcomeFour = (getTotalVotes(4,2)/getTotalVotesPerCategory(2))*100;
+$outcomeThree = (getTotalVotes(3,2)/getTotalVotesPerCategory(2))*100;
+$outcomeTwo = (getTotalVotes(2,2)/getTotalVotesPerCategory(2))*100;
+$outcomeOne = (getTotalVotes(1,2)/getTotalVotesPerCategory(2))*100;
+
+$structureFive = (getTotalVotes(5,3)/getTotalVotesPerCategory(3))*100;
+$structureFour = (getTotalVotes(4,3)/getTotalVotesPerCategory(3))*100;
+$structureThree = (getTotalVotes(3,3)/getTotalVotesPerCategory(3))*100;
+$structureTwo = (getTotalVotes(2,3)/getTotalVotesPerCategory(3))*100;
+$structureOne = (getTotalVotes(1,3)/getTotalVotesPerCategory(3))*100;
+
+$experienceFive = (getTotalVotes(5,4)/getTotalVotesPerCategory(4))*100;
+$experienceFour = (getTotalVotes(4,4)/getTotalVotesPerCategory(4))*100;
+$experienceThree = (getTotalVotes(3,4)/getTotalVotesPerCategory(4))*100;
+$experienceTwo = (getTotalVotes(2,4)/getTotalVotesPerCategory(4))*100;
+$experienceOne = (getTotalVotes(1,4)/getTotalVotesPerCategory(4))*100;
+
+
+$overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + getAverageVotePerCategory(3) + getAverageVotePerCategory(4))/4;
 
 
 ?>
@@ -139,8 +253,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
   -->
   <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
 
-
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+  <!--RATEIT-->
+  <link rel="stylesheet" href="plugins/rateit-scripts/rateit.css">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
   <link rel="stylesheet" href="dist/themes/fontawesome-stars.css">
   <link rel="stylesheet" href="dist/themes/fontawesome-stars-o.css">
 
@@ -156,6 +271,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   .glyphicon-thumbs-up:hover{ color:#008000; cursor:pointer;}
   .glyphicon-thumbs-down:hover{ color: #E10000; cursor:pointer;}
   .counter{ color:#333333;}
+
+
   </style>
 </head>
 
@@ -267,8 +384,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <ul class="list-group list-group-unbordered">
 
                 <li class="list-group-item">
-                  <b>Rating</b> <a class="pull-right">star goes here</a>
+                  <b>Overall Rating</b> 
+                      <a class="pull-right">
+                        <div class="rateit" data-rateit-value="<?php echo getOverallVotePerID($facility_id)?>"  data-rateit-ispreset="true" data-rateit-readonly="true">
+                        </div>
+
+                      </a>
                 </li>
+
+                <!-add php script to hide this if user has already voted->
+                <li class="list-group-item">
+                  <b>View Rating Details</b> 
+                      <a class="pull-right">
+                       <b><a data-toggle="modal" href="#ratingDetailsModal" class="pull-right"><?php echo number_format(getOverallVotePerID($facility_id),2)?></a></b>
+
+                      </a>
+                </li>
+
+
                 <li class="list-group-item">
                   <b>Operating Hours</b> <a class="pull-right">
                   <?php
@@ -380,6 +513,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- /.box on About the Facility -->
 
           <!-- Ratings -->
+        
+
         <!-RATING->
         <form name = "addRating" enctype="multipart/form-data" role="form" method="post" data-toggle="validator">
           <div class="box box-primary box-success">
@@ -396,15 +531,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                           <a href="#">Process</a>                        
                         </span>
                           <span class="username">
-                              <div class="stars stars-example-fontawesome">
-                                <select class="rating-process" name="rating-process">
+                                <select class="rating-process" name="rating-process" id="backing2b">
+                                    <option value="0">0</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
                                     <option value="4">4</option>
                                     <option value="5">5</option>
                                 </select>
-                              </div>
+                                <div class="rateit" data-rateit-backingfld="#backing2b"></div>
+                              
                           </span>
                     <span class="description">Process measures assess whether a patient received what is known to be good care.
                     </span>
@@ -424,15 +560,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                           <a href="#">Outcomes</a>
                         </span>
                         <span class="username">
-                          <div class="stars stars-example-fontawesome">
-                                <select class="rating-process" name="rating-outcome">
+                        
+                                <select class="rating-process" name="rating-outcome" id="backing3b">
+                                    <option value="0">0</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
                                     <option value="4">4</option>
                                     <option value="5">5</option>
                                 </select>
-                            </div>
+                                <div class="rateit" data-rateit-backingfld="#backing3b"></div>
                         </span>
                     <span class="description">How do you fare as a result of the care?</span>
                   </div>
@@ -451,15 +588,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                           <a href="#">Structure</a>
                         </span>
                         <span class="username">
-                         <div class="stars stars-example-fontawesome">
-                              <select class="rating-process" name="rating-structure">
+                         
+                              <select class="rating-process" name="rating-structure" id="backing1b">
+                                  <option value="0">0</option>
                                   <option value="1">1</option>
                                   <option value="2">2</option>
                                   <option value="3">3</option>
                                   <option value="4">4</option>
                                   <option value="5">5</option>
                               </select>
-                          </div>
+                              <div class="rateit" data-rateit-backingfld="#backing1b"></div>
                         </span>
                     <span class="description">How well-equipped care setting is to deliver care?</span>
                   </div>
@@ -478,15 +616,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                           <a href="#">Patient Experience</a>
                         </span>
                         <span class="username">
-                         <div class="stars stars-example-fontawesome">
-                              <select class="rating-process" name="rating-experience">
+                        
+                              <select class="rating-process" name="rating-experience" id="backing0b">
+                                  <option value="0">0</option>
                                   <option value="1">1</option>
                                   <option value="2">2</option>
                                   <option value="3">3</option>
                                   <option value="4">4</option>
                                   <option value="5">5</option>
                               </select>
-                          </div>
+                              <div class="rateit" data-rateit-backingfld="#backing0b"></div>
                         </span>
                     <span class="description">How do you evaluate the care you received?</span>
                   </div>
@@ -527,7 +666,551 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- /.box on Rating -->
         </div>
         <!-- /.col -->
-      </form>
+        </form>
+
+
+        <!-RATING DETAILS MODAL->
+        <div class="modal fade modal-default" id="ratingDetailsModal">
+           <div class="modal-dialog">
+                   
+              <div class="modal-content">
+                      
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title">Rating Details</h4>
+                </div>
+                      
+                <div class="modal-body">
+                  <div class="col-md-12">
+                    <div class="nav-tabs-custom">
+                          
+                          <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab_1" data-toggle="tab">Process</a></li>
+                            <li><a href="#tab_2" data-toggle="tab">Outcomes</a></li>
+                            <li><a href="#tab_3" data-toggle="tab">Structure</a></li>
+                            <li><a href="#tab_4" data-toggle="tab">Experience</a></li>
+                          </ul>
+                          
+
+                          <div class="tab-content">
+                            
+                            <div class="tab-pane active" id="tab_1">
+                                
+                                <!-OVERALL RATING PROCESS->
+                                <div class="post">
+                                  <div class="user-block">
+                                    <span class="username">
+                                          <a href="#" class="pull=left">Overall</a>
+                                    </span>
+                                    <span class="description">
+                                              <select class="rating-display-process-overall" data-current-rating=<?php echo getAverageVotePerCategory(1);?>>
+                                                  <option value="1">1</option>
+                                                  <option value="2">2</option>
+                                                  <option value="3">3</option>
+                                                  <option value="4">4</option>
+                                                  <option value="5">5</option>
+                                              </select>
+                                              <span class="title current-rating">
+                                                Average: <span class="value"><?php echo number_format(getAverageVotePerCategory(1),2);?></span>
+                                              </span>
+                                    </span>
+
+                                  </div>
+                                  <!-- /.user-block -->
+                                </div>
+                                <!-- /.post -->
+
+
+                                <div class="progress-group">
+                                  <span class="progress-text"> 
+                                            <select class="rating-display-five">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                            </select>
+                                  </span>
+                                  <span class="progress-number"><b><?php echo getTotalVotes(5,1); ?></b>/ <?php echo getTotalVotesPerCategory(1); ?> votes</span>
+
+                                  <div class="progress md">
+                                     <div class="progress-bar progress-bar-green progress-bar-striped" style="width:<?php echo $processFive."%"?>"> <?php echo number_format($processFive,2) ." %"?> </div> 
+                                  </div>
+                                </div>
+
+                                <div class="progress-group">
+                                  <span class="progress-text"> 
+                                            <select class="rating-display-four">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                            </select>
+                                  </span>
+                                  <span class="progress-number"><b><?php echo getTotalVotes(4,1); ?></b>/ <?php echo getTotalVotesPerCategory(1); ?> votes</span>
+
+                                  <div class="progress md">
+                                    <div class="progress-bar progress-bar-green progress-bar-striped" style="width:<?php echo $processFour."%"?>"><?php echo number_format($processFour,2)." %"?></div>
+                                  </div>
+                                </div>
+
+
+                                <div class="progress-group">
+                                  <span class="progress-text"> 
+                                            <select class="rating-display-three">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                            </select>
+                                  </span>
+                                  <span class="progress-number"><b><?php echo getTotalVotes(3,1); ?></b>/ <?php echo getTotalVotesPerCategory(1); ?> votes</span>
+
+                                  <div class="progress md">
+                                    <div class="progress-bar progress-bar-green progress-bar-striped" style="width:<?php echo $processThree."%"?>"><?php echo number_format($processThree,2) ." %"?></div>
+                                  </div>
+                                </div>
+
+
+                                <div class="progress-group">
+                                  <span class="progress-text"> 
+                                            <select class="rating-display-two">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                            </select>
+                                  </span>
+                                  <span class="progress-number"><b><?php echo getTotalVotes(2,1); ?></b>/ <?php echo getTotalVotesPerCategory(1); ?> votes</span>
+
+                                  <div class="progress md">
+                                    <div class="progress-bar progress-bar-green progress-bar-striped" style="width:<?php echo $processTwo."%"?>"><?php echo number_format($processTwo,2) ." %"?></div>
+                                  </div>
+                                </div>
+
+                                <div class="progress-group">
+                                  <span class="progress-text"> 
+                                            <select class="rating-display-one">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                            </select>
+                                  </span>
+                                  <span class="progress-number"><b><?php echo getTotalVotes(1,1); ?></b>/ <?php echo getTotalVotesPerCategory(1); ?> votes</span>
+
+                                  <div class="progress md">
+                                    <div class="progress-bar progress-bar-green progress-bar-striped" style="width:<?php echo $processOne."%"?>"><?php echo number_format($processOne,2) ." %"?></div>
+                                  </div>
+                                </div>
+
+
+
+
+                            </div>
+                            <!-- /.tab-pane -->
+                            <div class="tab-pane" id="tab_2">
+                              <!-OVERALL RATING OUTCOMES->
+                              <div class="post">
+                                <div class="user-block">
+                                  <span class="username">
+                                        <a href="#" data-toggle="modal" data-target="#outcomeDetailModal">Overall</a>
+                                  </span>
+                                  <span class="description">
+                                            <select class="rating-display-outcomes-overall" data-current-rating=<?php echo getAverageVotePerCategory(2);?>>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                            </select>
+                                            <span class="title current-rating">
+                                              Average: <span class="value"><?php echo getAverageVotePerCategory(2);?></span>
+                                            </span>
+                                  </span>
+
+                                </div>
+                                <!-- /.user-block -->
+                              
+                              </div>
+                              <!-- /.post -->
+
+                                <div class="progress-group">
+                                <span class="progress-text"> 
+                                          <select class="rating-display-five">
+                                              <option value="1">1</option>
+                                              <option value="2">2</option>
+                                              <option value="3">3</option>
+                                              <option value="4">4</option>
+                                              <option value="5">5</option>
+                                          </select>
+                                </span>
+                                <span class="progress-number"><b><?php echo getTotalVotes(5,2); ?></b>/ <?php echo getTotalVotesPerCategory(2); ?> votes</span>
+
+                                <div class="progress md">
+                                   <div class="progress-bar progress-bar-green progress-bar-striped" style="width:<?php echo $outcomeFive."%"?>"> <?php echo number_format($outcomeFive) ." %"?> </div> 
+                                </div>
+                              </div>
+
+                              <div class="progress-group">
+                                <span class="progress-text"> 
+                                          <select class="rating-display-four">
+                                              <option value="1">1</option>
+                                              <option value="2">2</option>
+                                              <option value="3">3</option>
+                                              <option value="4">4</option>
+                                              <option value="5">5</option>
+                                          </select>
+                                </span>
+                                <span class="progress-number"><b><?php echo getTotalVotes(4,2); ?></b>/ <?php echo getTotalVotesPerCategory(2); ?> votes</span>
+
+                                <div class="progress md">
+                                  <div class="progress-bar progress-bar-green progress-bar-striped" style="width:<?php echo $outcomeFour."%"?>"><?php echo number_format($outcomeFour)." %"?></div>
+                                </div>
+                              </div>
+
+
+                              <div class="progress-group">
+                                <span class="progress-text"> 
+                                          <select class="rating-display-three">
+                                              <option value="1">1</option>
+                                              <option value="2">2</option>
+                                              <option value="3">3</option>
+                                              <option value="4">4</option>
+                                              <option value="5">5</option>
+                                          </select>
+                                </span>
+                                <span class="progress-number"><b><?php echo getTotalVotes(3,2); ?></b>/ <?php echo getTotalVotesPerCategory(2); ?> votes</span>
+
+                                <div class="progress md">
+                                  <div class="progress-bar progress-bar-green progress-bar-striped" style="width:<?php echo $outcomeThree."%"?>"><?php echo number_format($outcomeThree)." %"?></div>
+                                </div>
+                              </div>
+
+
+                              <div class="progress-group">
+                                <span class="progress-text"> 
+                                          <select class="rating-display-two">
+                                              <option value="1">1</option>
+                                              <option value="2">2</option>
+                                              <option value="3">3</option>
+                                              <option value="4">4</option>
+                                              <option value="5">5</option>
+                                          </select>
+                                </span>
+                                <span class="progress-number"><b><?php echo getTotalVotes(2,2); ?></b>/ <?php echo getTotalVotesPerCategory(2); ?> votes</span>
+
+                                <div class="progress md">
+                                  <div class="progress-bar progress-bar-green progress-bar-striped" style="width:<?php echo $outcomeTwo."%"?>"><?php echo number_format($outcomeTwo)." %"?></div>
+                                </div>
+                              </div>
+
+                              <div class="progress-group">
+                                <span class="progress-text"> 
+                                          <select class="rating-display-one">
+                                              <option value="1">1</option>
+                                              <option value="2">2</option>
+                                              <option value="3">3</option>
+                                              <option value="4">4</option>
+                                              <option value="5">5</option>
+                                          </select>
+                                </span>
+                                <span class="progress-number"><b><?php echo getTotalVotes(1,2); ?></b>/ <?php echo getTotalVotesPerCategory(2); ?> votes</span>
+
+                                <div class="progress md">
+                                  <div class="progress-bar progress-bar-green progress-bar-striped" style="width:<?php echo $outcomeOne."%"?>"><?php echo number_format($outcomeOne)." %"?></div>
+                                </div>
+                              </div>
+
+                            </div>
+                            <!-- /.tab-pane -->
+
+
+
+                            <div class="tab-pane" id="tab_3">
+                              <!-OVERALL RATING STRUCTURE->
+                              <div class="post">
+                                <div class="user-block">
+                                  <span class="username">
+                                        <a href="#" data-toggle="modal" data-target="#structureDetailModal">Overall</a>
+                                  </span>
+                                  <span class="description">
+                                            <select class="rating-display-structure-overall" data-current-rating=<?php echo getAverageVotePerCategory(3);?>>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                            </select>
+                                            <span class="title current-rating">
+                                              Average: <span class="value"><?php echo getAverageVotePerCategory(3);?></span>
+                                            </span>
+                                  </span>
+
+                                </div>
+                                <!-- /.user-block -->
+                              </div>
+                              <!-- /.post -->
+
+
+                              <!-STRUCTURE CATEGORY DETAILS->
+                            
+
+                            <div class="progress-group">
+                              <span class="progress-text"> 
+                                        <select class="rating-display-five">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                              </span>
+                              <span class="progress-number"><b><?php echo getTotalVotes(5,3); ?></b>/ <?php echo getTotalVotesPerCategory(3); ?> votes</span>
+
+                              <div class="progress md">
+                                 <div class="progress-bar progress-bar-green progress-bar-striped" style="width:<?php echo $structureFive."%"?>"> <?php echo number_format($structureFive)." %"?></div>
+                              </div>
+                            </div>
+
+                            <div class="progress-group">
+                              <span class="progress-text"> 
+                                        <select class="rating-display-four">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                              </span>
+                              <span class="progress-number"><b><?php echo getTotalVotes(4,3); ?></b>/ <?php echo getTotalVotesPerCategory(3); ?> votes</span>
+
+                              <div class="progress md">
+                                <div class="progress-bar progress-bar-green progress-bar-striped" style="width:<?php echo $structureFour."%"?>"><?php echo number_format($structureFour)." %"?></div>
+                              </div>
+                            </div>
+
+
+                            <div class="progress-group">
+                              <span class="progress-text"> 
+                                        <select class="rating-display-three">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                              </span>
+                              <span class="progress-number"><b><?php echo getTotalVotes(3,3); ?></b>/ <?php echo getTotalVotesPerCategory(3); ?> votes</span>
+
+                              <div class="progress md">
+                                <div class="progress-bar progress-bar-green progress-bar-striped" style="width:<?php echo $structureThree."%"?>"><?php echo number_format($structureThree)." %"?></div>
+                              </div>
+                            </div>
+
+
+                            <div class="progress-group">
+                              <span class="progress-text"> 
+                                        <select class="rating-display-two">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                              </span>
+                              <span class="progress-number"><b><?php echo getTotalVotes(2,3); ?></b>/ <?php echo getTotalVotesPerCategory(3); ?> votes</span>
+
+                              <div class="progress md">
+                                <div class="progress-bar progress-bar-green progress-bar-striped" style="width:<?php echo $structureTwo."%"?>"><?php echo number_format($structureTwo)." %"?></div>
+                              </div>
+                            </div>
+
+                            <div class="progress-group">
+                              <span class="progress-text"> 
+                                        <select class="rating-display-one">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                              </span>
+                              <span class="progress-number"><b><?php echo getTotalVotes(1,3); ?></b>/ <?php echo getTotalVotesPerCategory(3); ?> votes</span>
+
+                              <div class="progress md">
+                                <div class="progress-bar progress-bar-green progress-bar-striped" style="width:<?php echo $structureOne."%"?>"><?php echo number_format($structureOne)." %"?></div>
+                              </div>
+                            </div>
+
+
+
+
+                            </div>
+                     
+                            <!-- /.tab-pane -->
+                            <div class="tab-pane" id="tab_4">
+                              <!-OVERALL EXPERIENCE STRUCTURE->
+                              <div class="post">
+                                <div class="user-block">
+                                  <span class="username">
+                                        <a href="#" data-toggle="modal" data-target="#experienceDetailModal">Overall Experience Ratings</a>
+                                  </span>
+                                  <span class="description" >
+                                            <select class="rating-display-experience-overall" data-current-rating=<?php echo getAverageVotePerCategory(4);?>>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                            </select>
+                                            <span class="title current-rating">
+                                              Average: <span class="value"><?php echo getAverageVotePerCategory(4);?></span>
+                                            </span>
+                                  </span>
+
+                                </div>
+                                <!-- /.user-block -->
+                               </div>
+                              <!-- /.post -->
+
+                              <!-STRUCTURE CATEGORY DETAILS->
+                            <div class="progress-group">
+                              <span class="progress-text"> 
+                                        <select class="rating-display-five">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                              </span>
+                              <span class="progress-number"><b><?php echo getTotalVotes(5,4); ?></b>/ <?php echo getTotalVotesPerCategory(4); ?> votes</span>
+
+                              <div class="progress md">
+                                 <div class="progress-bar progress-bar-green progress-bar-striped" style="width:<?php echo $experienceFive."%"?>"> <?php echo number_format($experienceFive)." %"?></div>
+                              </div>
+                            </div>
+
+                            <div class="progress-group">
+                              <span class="progress-text"> 
+                                        <select class="rating-display-four">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                              </span>
+                              <span class="progress-number"><b><?php echo getTotalVotes(4,4); ?></b>/ <?php echo getTotalVotesPerCategory(4); ?> votes</span>
+
+                              <div class="progress md">
+                                <div class="progress-bar progress-bar-green progress-bar-striped" style="width:<?php echo $experienceFour."%"?>"><?php echo number_format($experienceFour)." %"?></div>
+                              </div>
+                            </div>
+
+
+                            <div class="progress-group">
+                              <span class="progress-text"> 
+                                        <select class="rating-display-three">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                              </span>
+                              <span class="progress-number"><b><?php echo getTotalVotes(3,4); ?></b>/ <?php echo getTotalVotesPerCategory(4); ?> votes</span>
+
+                              <div class="progress md">
+                                <div class="progress-bar progress-bar-green progress-bar-striped" style="width:<?php echo $experienceThree."%"?>"><?php echo number_format($experienceThree)." %"?></div>
+                              </div>
+                            </div>
+
+
+                            <div class="progress-group">
+                              <span class="progress-text"> 
+                                        <select class="rating-display-two">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                              </span>
+                              <span class="progress-number"><b><?php echo getTotalVotes(2,4); ?></b>/ <?php echo getTotalVotesPerCategory(4); ?> votes</span>
+
+                              <div class="progress md">
+                                <div class="progress-bar progress-bar-green progress-bar-striped" style="width:<?php echo $experienceTwo."%"?>"><?php echo number_format($experienceTwo)." %"?></div>
+                              </div>
+                            </div>
+
+                            <div class="progress-group">
+                              <span class="progress-text"> 
+                                        <select class="rating-display-one">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                              </span>
+                              <span class="progress-number"><b><?php echo getTotalVotes(1,4); ?></b>/ <?php echo getTotalVotesPerCategory(4); ?> votes</span>
+
+                              <div class="progress md">
+                                <div class="progress-bar progress-bar-green progress-bar-striped" style="width:<?php echo $experienceOne."%"?>"><?php echo number_format($experienceOne)." %"?></div>
+                              </div>
+                            </div>
+
+
+                            </div>
+                            <!-- /.tab-pane -->
+
+
+                          </div>
+                          <!-- /.tab-content -->
+                    </div>
+                    <!-- nav-tabs-custom -->
+                  </div>    
+                </div>
+                      
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+                </div>
+
+              </div>
+              <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         <!- Left side Comments->
         <div class="col-md-9">
@@ -684,17 +1367,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script src="jquery.barrating.js"></script>
-<script type="text/javascript">
-   $(function() {
-      $('.rating-process').barrating({
-        theme: 'fontawesome-stars',
-        initialRating: null
-      });
-   });
-</script>
 
 
 
+<script type="text/javascript" src="plugins/rateit-scripts/jquery.rateit.min.js"></script>
 
 <script type="text/javascript">
     document.getElementById("medOption").onclick = function () {
@@ -846,6 +1522,122 @@ function cwRating(id,type,target){
 <script type="text/javascript">
  
   
+$(function() {
+      $('.rating-process').barrating({
+        theme: 'fontawesome-stars',
+        initialRating: null
+      });
+
+
+      
+      var overallProcessRating = $('.rating-display-process-overall').data('current-rating');
+      var overallOutcomeRating = $('.rating-display-outcomes-overall').data('current-rating');
+      var overallStructureRating = $('.rating-display-structure-overall').data('current-rating');
+      var overallExperienceRating = $('.rating-display-experience-overall').data('current-rating');
+      var overallRating = $('.rating-display-overall').data('current-rating');
+      var overalldetails = $('.rating-display-detail').data('current-rating');
+
+      $('.rating-display-overall .current-rating')
+            .find('span')
+            .html(overallRating);
+
+      $('.rating-display-overall').barrating({
+        theme: 'fontawesome-stars-o',
+        initialRating: overallRating,
+        readonly: true
+      });
+
+     $('.rating-display-detail .current-rating')
+            .find('span')
+            .html(overallRating);
+
+      $('.rating-display-detail').barrating({
+        theme: 'fontawesome-stars-o',
+        initialRating: overalldetails,
+        readonly: true
+      });
+
+      $('.rating-display-process-overall .current-rating')
+            .find('span')
+            .html(overallProcessRating);
+
+      $('.rating-display-process-overall').barrating({
+        theme: 'fontawesome-stars-o',
+        initialRating: overallProcessRating,
+        readonly: true
+      });
+
+      $('.rating-display-outcomes-overall .current-rating')
+            .find('span')
+            .html(overallOutcomeRating);
+
+      $('.rating-display-outcomes-overall').barrating({
+        theme: 'fontawesome-stars-o',
+        initialRating: overallOutcomeRating,
+        readonly: true
+      });
+
+      $('.rating-display-structure-overall .current-rating')
+            .find('span')
+            .html(overallStructureRating);
+
+      $('.rating-display-structure-overall').barrating({
+        theme: 'fontawesome-stars-o',
+        initialRating: overallStructureRating,
+        readonly: true
+      });
+
+      $('.rating-display-experience-overall .current-rating')
+            .find('span')
+            .html(overallExperienceRating);
+
+      $('.rating-display-experience-overall').barrating({
+        theme: 'fontawesome-stars-o',
+        initialRating: overallExperienceRating,
+        readonly: true
+      });
+
+
+
+
+
+
+
+      //BREAKDOWN
+      $('.rating-display-five').barrating({
+        theme: 'fontawesome-stars',
+        initialRating: 5,
+        readonly: true
+      });
+
+      $('.rating-display-four').barrating({
+        theme: 'fontawesome-stars',
+        initialRating: 4,
+        readonly: true
+      });
+
+      $('.rating-display-three').barrating({
+        theme: 'fontawesome-stars',
+        initialRating: 3,
+        readonly: true
+      });
+
+      $('.rating-display-two').barrating({
+        theme: 'fontawesome-stars',
+        initialRating: 2,
+        readonly: true
+      });
+
+      $('.rating-display-one').barrating({
+        theme: 'fontawesome-stars',
+        initialRating: 1,
+        readonly: true
+      });
+
+   });
+
+
+
 </script>
 
 </body>

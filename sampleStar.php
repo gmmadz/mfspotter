@@ -752,6 +752,8 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
                         <div class="col-md-12">
                           
                           <!-STRUCTURE CATEGORY DETAILS->
+                            
+
                             <div class="progress-group">
                               <span class="progress-text"> 
                                         <select class="rating-display-five">
@@ -874,7 +876,7 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
                       
                         <div class="col-md-12">
                           
-                          <!-STRUCTURE CATEGORY DETAILS->
+                            <!-STRUCTURE CATEGORY DETAILS->
                             <div class="progress-group">
                               <span class="progress-text"> 
                                         <select class="rating-display-five">
