@@ -1300,7 +1300,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <ul class="list-inline">
                           <li>
                             <!-- Like Icon HTML -->
-                            <span class="glyphicon glyphicon-thumbs-up" onClick="cwRating('. $comID.', 1, '. $like_count .')"></span>&nbsp;
+                            <span class="glyphicon glyphicon-thumbs-up" onClick="cwRating('. $comID.', 1, '. $like_count .', '. $likes .','. $dislikes.')"></span>&nbsp;
 
                             <!-- Like Counter -->
                             <span class="counter" id="like_count'. $comID.'">'. $likes .'</span>&nbsp;&nbsp;&nbsp;
@@ -1309,7 +1309,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                           <li>
                             <!-- Dislike Icon HTML -->
-                            <span class="glyphicon glyphicon-thumbs-up" onClick="cwRating('. $comID.', 0, '. $dislike_count .'")"></span>&nbsp;
+                            <span class="glyphicon glyphicon-thumbs-up" onClick="cwRating('. $comID.', 0, '. $dislike_count .', '. $likes .', '. $dislikes .'")"></span>&nbsp;
                             <!-- Dislike Counter -->
                             <span class="counter" id="dislike_count'. $comID.'">'. $dislikes .'</span>&nbsp;&nbsp;&nbsp;
                           </li>
@@ -1492,15 +1492,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
 }
 
 //REMARKS TRIAL 3
-function cwRating(id,type,target){
+function cwRating(id,type,target, like, dislike){
   console.log(id);
   console.log(type);
   console.log(target);
+  console.log(like);
+  console.log(dislike);
 
   $.ajax({
     type:'POST',
     url:'rating.php',
-    data:'id='+id+'&type='+type,
+    data: {
+      id:id,
+      type:type,
+      like:like,
+      dislike:dislike
+
+    },
     success:function(msg){
       if(msg == 'err'){
         alert('Some problem occured, please try again.');
