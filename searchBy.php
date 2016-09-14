@@ -183,8 +183,8 @@
           </li>
 
           <li>
-            <a href="#" data-toggle="modal" data-target="#">
-              <i class="fa fa-book"></i> <span>Combined Search</span>
+            <a href="#" data-toggle="modal" data-target="#combinedModal">
+              <i class="fa fa-object-group"></i> <span>Combined Search</span>
               <span class="pull-right-container">
               </span>
             </a>
@@ -198,7 +198,7 @@
 
     <!- MODALS ->
 
-    <!- Location Modal ->
+    <!- LOCATION ->
     
       <div class="modal fade modal-primary" id="locationModal">
         <div class="modal-dialog">
@@ -239,7 +239,7 @@
       </div>
       <!-- /.modal -->
 
-    <!-Specialization ->
+    <!-SPECIALIZATION ->
       <div class="modal fade modal-success" id="specialModal">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -283,7 +283,7 @@
       </div>
       <!-- /.modal -->
 
-    <!-Insurance ->
+    <!-INSURANCE ->
       <div class="modal fade modal-success" id="insuranceModal">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -329,7 +329,7 @@
       </div>
       <!-- /.modal -->
 
-    <!-Schedule ->
+    <!-SCHEDULE ->
       <div class="modal fade modal-success" id="schedModal">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -450,7 +450,187 @@
       </div>
       <!-- /.modal -->
       
+    <!-COMBINED SEARCH ->
+      <div class="modal fade modal-success" id="combinedModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Combined Search</h4>
+            </div>
 
+            <div class="modal-body">
+             
+              <div class="box-body">
+                <div class="row">
+
+                  <form name = "search" enctype="multipart/form-data" role="form" method="post" data-toggle="validator">
+                  
+                  <div class="col-md-6">
+
+                      <div class="form-group">
+                        <label class="control-label">Radius:</label>
+                        <select class="form-control" id="c-radiusSelect">
+                          <option value="1">1 km</option>
+                          <option value="5">5 km</option>
+                          <option value="25" selected>25 km</option>
+                          <option value="100">100 km</option>
+                          <option value="200">200 km</option>
+                        </select>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Specialization:</label>
+                        <select class="form-control select2" name="c-selected_specialization[]" id="c-select2_specialization" multiple="multiple" data-placeholder="Select a Medical Treatment" style="width: 100%;">
+                            <?php
+                            include ("config.php");
+                            $q = "SELECT specializationID, specialization FROM specialization";
+                            $result = mysqli_query($conn, $q);
+                            if (mysqli_num_rows($result) > 0) {           
+                              while($row = mysqli_fetch_assoc($result)) {
+                                echo '<option value="'. $row['specializationID'] . '">' . $row['specialization'] . '</option>';
+                              }
+                            }
+                            mysqli_close($conn);             
+                            ?>
+                        </select>
+                      </div>
+
+                      <div class="form-group">
+                          <label>Insurances Covered:</label>
+                          <select name="c-selected_insurances[]" id="c-select2_insurances" class="form-control input-group select2" multiple="multiple" placeholder="Select Insurances" style="width: 100%;">
+                            <?php
+                            include ("config.php");
+                            $q = "SELECT insurancesID, insuranceName FROM insurances";
+                            $result = mysqli_query($conn, $q);
+                            if (mysqli_num_rows($result) > 0) {
+                              while($row = mysqli_fetch_assoc($result)) {
+                                echo '<option value="'. $row['insurancesID'] . '">' . $row['insuranceName'] . '</option>';
+                              }
+                            }
+                            mysqli_close($conn);             
+                            ?>
+                          </select>
+                      </div>
+                   
+                  </div> <!-- col 1st section -->
+
+                  
+                  <div class="col-md-6">
+                    <div class="form-group">
+                         
+                      <div class="form-group">
+                        <div class="col-md-1">
+                          <label>
+                            <input type="checkbox" class="minimal cday" name="days[]" value="0"> Sun
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="col-md-1">
+                          <label>
+                            <input type="checkbox" class="minimal cday"  name="days[]" value="1"> Mon
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="col-md-1">
+                          <label>
+                            <input type="checkbox" class="minimal cday" id="days" name="days[]" value="2"> Tue
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="col-md-1">
+                          <label>
+                            <input type="checkbox" class="minimal cday" name="days[]" value="3"> Wed
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="col-md-1">
+                          <label>
+                            <input type="checkbox" class="minimal cday" name="days[]" value="4"> Thu
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="col-md-1">
+                          <label>
+                            <input type="checkbox" class="minimal cday" name="days[]" value="5"> Fri
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="col-md-1">
+                          <label>
+                            <input type="checkbox" class="minimal cday" name="days[]" value="6"> Sat
+                          </label>
+                        </div>
+                      </div>
+                            
+                    </div> <!-- /.form group -->
+                    
+                    </br></br></br>
+
+                    <!-OPENING TIME->
+                    <div class="bootstrap-timepicker">
+                  
+                      <div class="form-group col-xs-12">
+                        <label>Opening Time:</label>
+
+                        <div class="input-group">
+                          <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                          </div>
+                          <input type="text" class="form-control timepicker" id="c-opentime" name="c-opentime" required>
+                        </div>
+                     
+                      </div>
+                    </div>
+
+                    <!-CLOSING TIME->
+                    <div class="bootstrap-timepicker">
+                      <div class="form-group col-xs-12">
+                        <label>Closing Time:</label>
+
+                        <div class="input-group">
+                          <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                          </div>
+                          <input type="text" class="form-control timepicker"  id="c-closetime" name="c-closetime" required>
+                        </div>
+                        
+                      </div>
+                    </div>
+
+                  </div> <!-- col 2nd section -->
+
+                </div> <!-- row -->
+
+              </div> <!-- /.box body -->
+
+            </div> <!-- /. modal body -->
+            
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline" id="btntest" onclick="combinedSearch()">Search</button>
+            </div>
+
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
 
 
 
@@ -596,38 +776,38 @@
 <!-- REQUIRED JS SCRIPTS -->
 
 <!-- jQuery 2.2.3 -->
-<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
-<script src="bootstrap/js/bootstrap.min.js"></script>
-<!-- DataTables -->
-<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
-<!-- SlimScroll -->
-<script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="plugins/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/app.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-<!-- Select2 -->
-<script src="plugins/select2/select2.full.min.js"></script>
-<!-- iCheck 1.0.1 -->
-<script src="plugins/iCheck/icheck.min.js"></script>
-<!-- bootstrap time picker -->
-<script src="plugins/timepicker/bootstrap-timepicker.min.js"></script>
+  <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+  <!-- Bootstrap 3.3.6 -->
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <!-- DataTables -->
+  <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+  <script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+  <!-- SlimScroll -->
+  <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
+  <!-- FastClick -->
+  <script src="plugins/fastclick/fastclick.js"></script>
+  <!-- AdminLTE App -->
+  <script src="dist/js/app.min.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="dist/js/demo.js"></script>
+  <!-- Select2 -->
+  <script src="plugins/select2/select2.full.min.js"></script>
+  <!-- iCheck 1.0.1 -->
+  <script src="plugins/iCheck/icheck.min.js"></script>
+  <!-- bootstrap time picker -->
+  <script src="plugins/timepicker/bootstrap-timepicker.min.js"></script>
 
-<!-- InputMask -->
-<script src="plugins/input-mask/jquery.inputmask.js"></script>
-<script src="plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-<script src="plugins/input-mask/jquery.inputmask.extensions.js"></script>
-<!-- date-range-picker -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-<script src="plugins/daterangepicker/daterangepicker.js"></script>
-<!-- bootstrap datepicker -->
-<script src="plugins/datepicker/bootstrap-datepicker.js"></script>
-<!-- bootstrap color picker -->
-<script src="plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
+  <!-- InputMask -->
+  <script src="plugins/input-mask/jquery.inputmask.js"></script>
+  <script src="plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+  <script src="plugins/input-mask/jquery.inputmask.extensions.js"></script>
+  <!-- date-range-picker -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+  <script src="plugins/daterangepicker/daterangepicker.js"></script>
+  <!-- bootstrap datepicker -->
+  <script src="plugins/datepicker/bootstrap-datepicker.js"></script>
+  <!-- bootstrap color picker -->
+  <script src="plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
 
 <!-- FUNCTIONS -->
 <!-- location search functions -->
@@ -719,12 +899,12 @@
           
 
               var map = new google.maps.Map(document.getElementById("map"), {
-              center: new google.maps.LatLng(pos.lat, pos.lng),
-              zoom: 10,
-              animation: google.maps.Animation.DROP,
-              icon: "marker/marker.png",
-              mapTypeId: 'roadmap'
-            });
+                center: new google.maps.LatLng(pos.lat, pos.lng),
+                zoom: 10,
+                animation: google.maps.Animation.DROP,
+                icon: "marker/marker.png",
+                mapTypeId: 'roadmap'
+              });
 
             var radius = document.getElementById('radiusSelect').value;
            
@@ -905,6 +1085,23 @@
         return selchbox;
       }
 
+
+  function getSelectedChboxCombined() {
+        var selchbox = [];        // array that will store the value of selected checkboxes
+
+        // gets all the input tags in frm, and their number
+       // var inpfields = frm.getElementsByTagName('input');
+        var inpfields = document.getElementsByClassName("cday");
+        var nr_inpfields = inpfields.length;
+
+        // traverse the inpfields elements, and adds the value of selected (checked) checkbox in selchbox
+        for(var i=0; i<nr_inpfields; i++) {
+          if(inpfields[i].type == 'checkbox' && inpfields[i].checked == true) selchbox.push(inpfields[i].value);
+        }
+
+        return selchbox;
+      }
+
   function searchSchedule(){
 
 
@@ -991,6 +1188,74 @@
     }
 
   function doNothing() {}
+
+  function combinedSearch(){
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = {lat: position.coords.latitude, lng: position.coords.longitude};
+        var c_selectedInsurance = $("#c-select2_insurances").val();
+        var c_selectedSpecialization = $("#c-select2_specialization").val();
+        var c_radius = document.getElementById('c-radiusSelect').value;
+        var c_dayOfWeek = getSelectedChboxCombined();
+        var c_openTime = $("#c-opentime").val();
+        var c_closeTime = $("#c-closetime").val();
+
+        var map = new google.maps.Map(document.getElementById("map"), {center: new google.maps.LatLng(pos.lat, pos.lng),
+                zoom: 10, animation: google.maps.Animation.DROP, icon: "marker/marker.png", mapTypeId: 'roadmap'});
+
+        var searchUrl = 'searchByCombined_Map.php?lati='+ pos.lat + '&longi='+ pos.lng + '&insu=' + c_selectedInsurance.toString() + '&specia=' + c_selectedSpecialization.toString() + '&radi=' + c_radius + '&days=' + c_dayOfWeek + '&open=' + c_openTime + '&close=' + c_closeTime;
+
+         
+        downloadUrl(searchUrl, function(data) {
+            var xml = data.responseXML;
+            var markers = xml.documentElement.getElementsByTagName("marker");
+            for (var i = 0; i < markers.length; i++) {
+              var name = markers[i].getAttribute("name");
+              var address = markers[i].getAttribute("address");
+              var type = markers[i].getAttribute("distance");
+              var point = new google.maps.LatLng(
+                  parseFloat(markers[i].getAttribute("lat")),
+                  parseFloat(markers[i].getAttribute("lng")));
+              var html = "<b>" + name + "</b> <br/>" + address;
+              var icon = customIcons[0] || {};
+              var marker = new google.maps.Marker({
+                map: map,
+                position: point,
+                icon: icon.icon
+              });
+              bindInfoWindow(marker, map, infoWindow, html);
+            }
+          });
+
+       $.ajax({  
+          url:"searchByCombined_Table.php",  
+          method:"post",  
+          data:
+            {
+              lati: pos.lat, 
+              longi: pos.lng, 
+              insu: c_selectedInsurance, 
+              specia: c_selectedSpecialization, 
+              radi: c_radius, 
+              days: c_dayOfWeek, 
+              open: c_openTime, 
+              close: c_closeTime
+            },  
+          dataType:"text",  
+          success:function(data)  
+          {  
+            $('#result').html(data);  
+          }  
+        });
+
+      }, function() {handleLocationError(true, infoWindow, map.getCenter());});
+    } 
+    else{
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
+
+  }
 
 
 
