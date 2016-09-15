@@ -1237,7 +1237,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                       <p>' . $comments[$row][0] . '</p>';
 
-
+                      /*
                       //CHECK IF THE USER HAS ALREADY VOTED
                       $checkQ="SELECT * FROM remark WHERE commentID = $comID AND userID = $uID";
 
@@ -1249,7 +1249,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                          }
 
                       }
-
+                    */
 
 
  
