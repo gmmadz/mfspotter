@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 29, 2016 at 06:04 PM
+-- Generation Time: Sep 15, 2016 at 03:25 AM
 -- Server version: 5.6.13
 -- PHP Version: 5.4.17
 
@@ -25,6 +25,28 @@ USE `mfspotter`;
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `category`
+--
+
+CREATE TABLE IF NOT EXISTS `category` (
+  `categoryID` int(4) NOT NULL AUTO_INCREMENT,
+  `categoryName` varchar(40) NOT NULL,
+  PRIMARY KEY (`categoryID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `category`
+--
+
+INSERT INTO `category` (`categoryID`, `categoryName`) VALUES
+(1, 'Process'),
+(2, 'Outcomes'),
+(3, 'Structure'),
+(4, 'Experience');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `comment`
 --
 
@@ -35,30 +57,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `comment` varchar(500) NOT NULL,
   `dateRated` datetime NOT NULL,
   PRIMARY KEY (`commentID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=26 ;
-
---
--- Dumping data for table `comment`
---
-
-INSERT INTO `comment` (`commentID`, `userID`, `facilityID`, `comment`, `dateRated`) VALUES
-(1, 16, 25, 'Hi :)))))))', '2016-08-23 12:30:00'),
-(3, 17, 25, 'Gwapa ko', '2016-08-23 12:40:00'),
-(5, 18, 25, 'Im a pig', '2016-08-24 11:00:00'),
-(12, 16, 25, 'fsdfsfd', '2016-08-29 22:56:07'),
-(13, 16, 25, 'gfdgdf', '2016-08-29 22:56:52'),
-(14, 16, 25, 'sss', '2016-08-29 23:02:53'),
-(15, 16, 25, 'dd', '2016-08-29 23:07:24'),
-(16, 16, 25, 'haahahahha', '2016-08-29 23:09:14'),
-(17, 16, 25, 'yes please', '2016-08-29 23:10:06'),
-(18, 16, 25, 'now plase', '2016-08-29 23:10:46'),
-(19, 16, 25, 'ddaa', '2016-08-29 23:11:14'),
-(20, 16, 25, 'now now ', '2016-08-29 23:20:39'),
-(21, 16, 25, 'yas it wooorks :)) praise the lord', '2016-08-29 23:21:16'),
-(22, 16, 13, 'saaa', '2016-08-29 23:24:36'),
-(23, 16, 2, 'ssss', '2016-08-29 23:27:08'),
-(24, 16, 25, ':(', '2016-08-30 01:16:01'),
-(25, 16, 25, 'sa', '2016-08-30 01:41:24');
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -73,29 +72,30 @@ CREATE TABLE IF NOT EXISTS `facility` (
   `longhitude` double DEFAULT NULL,
   `latitude` double DEFAULT NULL,
   `address` varchar(40) NOT NULL,
-  `facilityPicture` blob NOT NULL,
   PRIMARY KEY (`facilityID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=31 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=33 ;
 
 --
 -- Dumping data for table `facility`
 --
 
-INSERT INTO `facility` (`facilityID`, `facilityName`, `telephoneNumber`, `longhitude`, `latitude`, `address`, `facilityPicture`) VALUES
-(1, 'Sample1', '(123) 456-7890', 125.68084716796875, 7.0702295954887475, 'Davao', ''),
-(2, 'Sample1', '(456) 789-8765', 125.59879302978516, 7.062904226490174, 'asdad', ''),
-(5, 'wawa', '(123) 456-7665', 125.61630249023438, 7.0651188851749716, 'Davao', ''),
-(13, 'autoco', '(234) 576-5432', 125.58815002441406, 7.057282352971582, 'auto', ''),
-(14, 'bonnga', '(123) 245-6543', 125.61922073364258, 7.067163176082755, 'Davao', ''),
-(15, 'warwar', '(123) 456-7543', 125.62591552734375, 7.072444219068159, 'dav', ''),
-(16, 'rerere', '(222) 222-2222', 125.62248229980469, 7.068355674936543, 'rererere', ''),
-(22, 'asdsad', '(213) 424-3423', 125.61226844787598, 7.058730417833918, 'ada', ''),
-(25, 'wawaw', '(234) 567-8987', 125.61887741088867, 7.068355674936543, 'wawawa', ''),
-(26, 'POPO', '(000) 000-0000', 125.62162399291992, 7.067333533250265, 'POPOPOPO', ''),
-(27, 'UYUYUY', '(000) 000-0000', 125.62076568603516, 7.060008118360919, 'UYUYUY', ''),
-(28, 'TRTR', '(444) 444-4444', 125.63089370727539, 7.0496160517644455, 'TRTRTRTR', ''),
-(29, 'QWQW', '(222) 222-2222', 125.6205940246582, 7.0697185270010126, 'QWQW', ''),
-(30, 'wawawawa', '(243) 456-7867', 125.29220581054688, 6.98776992815563, 'wawawa', '');
+INSERT INTO `facility` (`facilityID`, `facilityName`, `telephoneNumber`, `longhitude`, `latitude`, `address`) VALUES
+(1, 'Sample1', '(123) 456-7890', 125.68084716796875, 7.0702295954887475, 'Davao'),
+(2, 'Sample2', '(456) 789-8765', 125.4553409, 7.190708, 'asdad'),
+(3, 'wawa', '(123) 456-7665', 125.61630249023438, 7.0651188851749716, 'Davao'),
+(13, 'autoco', '(234) 576-5432', 125.58815002441406, 7.057282352971582, 'auto'),
+(14, 'bonnga', '(123) 245-6543', 125.61922073364258, 7.067163176082755, 'Davao'),
+(15, 'warwar', '(123) 456-7543', 125.62591552734375, 7.072444219068159, 'dav'),
+(16, 'rerere', '(222) 222-2222', 125.62248229980469, 7.068355674936543, 'rererere'),
+(22, 'asdsad', '(213) 424-3423', 125.61226844787598, 7.058730417833918, 'ada'),
+(25, 'wawaw', '(234) 567-8987', 125.61887741088867, 7.068355674936543, 'wawawa'),
+(26, 'POPO', '(000) 000-0000', 125.62162399291992, 7.067333533250265, 'POPOPOPO'),
+(27, 'UYUYUY', '(000) 000-0000', 125.62076568603516, 7.060008118360919, 'UYUYUY'),
+(28, 'Teeth and Ears', '(444) 444-4444', 125.63089370727539, 7.0496160517644455, 'TRTRTRTR'),
+(29, 'QWQW', '(222) 222-2222', 125.6205940246582, 7.0697185270010126, 'QWQW'),
+(30, 'wawawawa', '(243) 456-7867', 125.29220581054688, 6.98776992815563, 'wawawa'),
+(31, 'wawa', '(435) 345-3453', 125.60274124145508, 7.061370995033533, 'wawawa'),
+(32, 'opopo', '(678) 567-8546', 125.61063766479492, 7.054726933338916, 'popopo');
 
 -- --------------------------------------------------------
 
@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `facilityhasstaff` (
   `facilityID` int(4) NOT NULL,
   `userID` int(4) NOT NULL,
   PRIMARY KEY (`facilityHasStaffID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `facilityhasstaff`
@@ -129,7 +129,9 @@ INSERT INTO `facilityhasstaff` (`facilityHasStaffID`, `facilityID`, `userID`) VA
 (12, 27, 12),
 (13, 28, 13),
 (14, 29, 14),
-(15, 30, 15);
+(15, 30, 15),
+(16, 31, 16),
+(17, 32, 17);
 
 -- --------------------------------------------------------
 
@@ -142,7 +144,7 @@ CREATE TABLE IF NOT EXISTS `hasspecialization` (
   `specializationID` int(4) NOT NULL,
   `facilityID` int(4) NOT NULL,
   PRIMARY KEY (`hasSpecializationID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `hasspecialization`
@@ -151,12 +153,14 @@ CREATE TABLE IF NOT EXISTS `hasspecialization` (
 INSERT INTO `hasspecialization` (`hasSpecializationID`, `specializationID`, `facilityID`) VALUES
 (1, 0, 3),
 (2, 0, 3),
-(3, 0, 1),
-(4, 0, 2),
+(3, 2, 28),
+(4, 1, 28),
 (5, 29, 1),
 (6, 29, 2),
 (7, 1, 30),
-(8, 2, 30);
+(8, 2, 30),
+(9, 1, 31),
+(10, 1, 32);
 
 -- --------------------------------------------------------
 
@@ -190,18 +194,18 @@ CREATE TABLE IF NOT EXISTS `insurancescovered` (
   `facilityID` int(4) NOT NULL,
   `insuranceID` int(4) NOT NULL,
   PRIMARY KEY (`insurancesCoveredID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
 
 --
 -- Dumping data for table `insurancescovered`
 --
 
 INSERT INTO `insurancescovered` (`insurancesCoveredID`, `facilityID`, `insuranceID`) VALUES
-(3, 13, 1),
-(4, 14, 1),
-(5, 14, 2),
+(3, 1, 1),
+(4, 2, 1),
+(5, 3, 2),
 (6, 14, 3),
-(7, 16, 1),
+(7, 14, 1),
 (8, 16, 3),
 (9, 25, 1),
 (10, 25, 2),
@@ -214,7 +218,11 @@ INSERT INTO `insurancescovered` (`insurancesCoveredID`, `facilityID`, `insurance
 (17, 29, 1),
 (18, 29, 3),
 (19, 30, 1),
-(20, 30, 2);
+(20, 30, 2),
+(21, 31, 1),
+(22, 31, 2),
+(23, 32, 1),
+(24, 32, 2);
 
 -- --------------------------------------------------------
 
@@ -229,7 +237,7 @@ CREATE TABLE IF NOT EXISTS `operatingperiod` (
   `timeOpened` time NOT NULL,
   `timeClosed` time NOT NULL,
   PRIMARY KEY (`operatingperiodID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
 
 --
 -- Dumping data for table `operatingperiod`
@@ -251,7 +259,80 @@ INSERT INTO `operatingperiod` (`operatingperiodID`, `facilityID`, `dayofweek`, `
 (13, 28, 6, '01:00:00', '01:00:00'),
 (14, 29, 0, '01:00:00', '01:00:00'),
 (15, 29, 6, '01:00:00', '01:00:00'),
-(16, 30, 0, '06:45:00', '06:45:00');
+(16, 30, 0, '06:45:00', '06:45:00'),
+(17, 31, 1, '11:00:00', '11:00:00'),
+(18, 32, 0, '11:00:00', '11:00:00'),
+(19, 32, 3, '11:00:00', '11:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rating`
+--
+
+CREATE TABLE IF NOT EXISTS `rating` (
+  `ratingID` int(4) NOT NULL AUTO_INCREMENT,
+  `userID` int(4) NOT NULL,
+  `facilityID` int(4) NOT NULL,
+  `categoryID` int(4) NOT NULL,
+  `rating` int(2) NOT NULL,
+  `dateRated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ratingID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=88 ;
+
+--
+-- Dumping data for table `rating`
+--
+
+INSERT INTO `rating` (`ratingID`, `userID`, `facilityID`, `categoryID`, `rating`, `dateRated`) VALUES
+(25, 1, 1, 1, 5, '2016-08-29 16:43:20'),
+(26, 1, 1, 2, 5, '2016-08-29 16:43:16'),
+(27, 1, 1, 3, 3, '2016-08-25 02:34:28'),
+(28, 1, 1, 4, 4, '2016-08-25 02:34:28'),
+(29, 1, 2, 1, 1, '2016-08-25 02:36:52'),
+(30, 1, 2, 2, 2, '2016-08-25 02:36:56'),
+(31, 1, 2, 3, 3, '2016-08-25 02:36:59'),
+(32, 1, 2, 4, 4, '2016-08-25 02:37:03'),
+(33, 1, 3, 1, 5, '2016-08-25 02:38:13'),
+(34, 1, 3, 2, 5, '2016-08-25 02:38:13'),
+(35, 1, 3, 3, 5, '2016-08-25 02:38:13'),
+(36, 1, 3, 4, 5, '2016-08-25 02:38:13'),
+(40, 1, 3, 1, 1, '2016-08-25 04:07:01'),
+(41, 1, 3, 2, 1, '2016-08-25 04:07:01'),
+(42, 1, 3, 3, 1, '2016-08-25 04:07:01'),
+(43, 1, 3, 4, 1, '2016-08-25 04:07:01'),
+(44, 1, 3, 1, 1, '2016-08-25 04:29:00'),
+(45, 1, 3, 2, 1, '2016-08-25 04:29:00'),
+(46, 1, 3, 3, 1, '2016-08-25 04:29:00'),
+(47, 1, 3, 4, 1, '2016-08-25 04:29:00'),
+(48, 1, 28, 1, 4, '2016-09-04 08:04:29'),
+(49, 1, 28, 2, 3, '2016-09-04 08:04:32'),
+(50, 1, 28, 3, 5, '2016-09-04 08:04:34'),
+(51, 1, 28, 4, 3, '2016-09-04 08:04:36'),
+(64, 1, 3, 1, 0, '2016-09-14 16:03:23'),
+(65, 1, 3, 2, 0, '2016-09-14 16:03:23'),
+(66, 1, 3, 3, 0, '2016-09-14 16:03:23'),
+(67, 1, 3, 4, 0, '2016-09-14 16:03:23'),
+(68, 1, 0, 1, 0, '2016-09-14 16:04:47'),
+(69, 1, 0, 2, 0, '2016-09-14 16:04:47'),
+(70, 1, 0, 3, 0, '2016-09-14 16:04:47'),
+(71, 1, 0, 4, 0, '2016-09-14 16:04:47'),
+(72, 1, 32, 1, 0, '2016-09-14 16:05:24'),
+(73, 1, 32, 2, 0, '2016-09-14 16:05:24'),
+(74, 1, 32, 3, 0, '2016-09-14 16:05:24'),
+(75, 1, 32, 4, 0, '2016-09-14 16:05:24'),
+(76, 1, 32, 1, 1, '2016-09-14 16:05:40'),
+(77, 1, 32, 2, 1, '2016-09-14 16:05:40'),
+(78, 1, 32, 3, 1, '2016-09-14 16:05:40'),
+(79, 1, 32, 4, 1, '2016-09-14 16:05:40'),
+(80, 1, 32, 1, 5, '2016-09-14 16:06:25'),
+(81, 1, 32, 2, 5, '2016-09-14 16:06:25'),
+(82, 1, 32, 3, 5, '2016-09-14 16:06:25'),
+(83, 1, 32, 4, 5, '2016-09-14 16:06:25'),
+(84, 1, 32, 1, 0, '2016-09-14 16:07:12'),
+(85, 1, 32, 2, 0, '2016-09-14 16:07:12'),
+(86, 1, 32, 3, 0, '2016-09-14 16:07:12'),
+(87, 1, 32, 4, 0, '2016-09-14 16:07:12');
 
 -- --------------------------------------------------------
 
@@ -265,32 +346,6 @@ CREATE TABLE IF NOT EXISTS `remark` (
   `commentID` int(11) NOT NULL,
   `remarks` varchar(50) NOT NULL,
   PRIMARY KEY (`remarkID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
-
---
--- Dumping data for table `remark`
---
-
-INSERT INTO `remark` (`remarkID`, `userID`, `commentID`, `remarks`) VALUES
-(1, 17, 3, 'Like'),
-(2, 16, 3, 'Like'),
-(3, 18, 3, 'Dislike');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `reservation`
---
-
-CREATE TABLE IF NOT EXISTS `reservation` (
-  `reservationID` int(11) NOT NULL AUTO_INCREMENT,
-  `userID` int(11) NOT NULL,
-  `facilityID` int(11) NOT NULL,
-  `reservationDate` date NOT NULL,
-  `consultationDate` date NOT NULL,
-  `consultationTime` time NOT NULL,
-  `status` varchar(50) NOT NULL,
-  PRIMARY KEY (`reservationID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -328,7 +383,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `middleName` varchar(30) DEFAULT NULL,
   `lastName` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `user`
@@ -345,9 +400,8 @@ INSERT INTO `user` (`userID`, `userType`, `username`, `password`, `firstName`, `
 (13, 'staff', 'TRT', 'RTRTR', 'TRTR', 'RTR', 'TRTR'),
 (14, 'staff', 'WQWQ', 'WQWQWQ', 'QWQW', 'QWQ', 'WQWQWQ'),
 (15, 'staff', 'aawaw', 'wawwawawaw', 'wawawawa', 'waawawaw', 'waawawa'),
-(16, 'User', 'joan', 'joan', 'Joan', 'Perez', 'Filosopo'),
-(17, 'user', 'gmmadz', 'gmmadz', 'Gems', 'Conanan', 'Madarang'),
-(18, 'User', 'dan', 'dan', 'Dan', 'Buta', 'Vicente');
+(16, 'staff', 'awawaw', 'waawaw', 'wawa', 'wawaaw', 'waawaw'),
+(17, 'staff', 'popopop', 'popo', 'opopo', 'popo', 'popop');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
