@@ -230,29 +230,65 @@ getTotalVotes(1,1, $facility_id)*/
 //totalvotes is correct
 
 
-$processFive = (getTotalVotes(5,1, $facility_id)/getCountVotePerCategoryTotal($facility_id, 1))*100;
-$processFour = (getTotalVotes(4,1, $facility_id)/getCountVotePerCategoryTotal($facility_id, 1))*100;
-$processThree = (getTotalVotes(3,1, $facility_id)/getCountVotePerCategoryTotal($facility_id, 1))*100;
-$processTwo = (getTotalVotes(2,1, $facility_id)/getCountVotePerCategoryTotal($facility_id, 1))*100;
-$processOne = (getTotalVotes(1,1, $facility_id)/getCountVotePerCategoryTotal($facility_id, 1))*100;
+if(getCountVotePerCategoryTotal($facility_id,1) == 0 && getCountVotePerCategoryTotal($facility_id,2) == 0 && getCountVotePerCategoryTotal($facility_id,3) == 0 && getCountVotePerCategoryTotal($facility_id,4) == 0){
+ 
+  $processFive = 0;
+  $processFour = 0;
+  $processThree = 0;
+  $processTwo = 0;
+  $processOne = 0;
 
-$outcomeFive = (getTotalVotes(5,2, $facility_id)/getCountVotePerCategoryTotal($facility_id, 2))*100;
-$outcomeFour = (getTotalVotes(4,2, $facility_id)/getCountVotePerCategoryTotal($facility_id, 2))*100;
-$outcomeThree = (getTotalVotes(3,2, $facility_id)/getCountVotePerCategoryTotal($facility_id, 2))*100;
-$outcomeTwo = (getTotalVotes(2,2, $facility_id)/getCountVotePerCategoryTotal($facility_id, 2))*100;
-$outcomeOne = (getTotalVotes(1,2, $facility_id)/getCountVotePerCategoryTotal($facility_id, 2))*100;
+  $outcomeFive = 0;
+  $outcomeFour = 0;
+  $outcomeThree = 0;
+  $outcomeTwo = 0;
+  $outcomeOne = 0;
 
-$structureFive = (getTotalVotes(5,3, $facility_id)/getCountVotePerCategoryTotal($facility_id, 3))*100;
-$structureFour = (getTotalVotes(4,3, $facility_id)/getCountVotePerCategoryTotal($facility_id, 3))*100;
-$structureThree = (getTotalVotes(3,3, $facility_id)/getCountVotePerCategoryTotal($facility_id, 3))*100;
-$structureTwo = (getTotalVotes(2,3, $facility_id)/getCountVotePerCategoryTotal($facility_id, 3))*100;
-$structureOne = (getTotalVotes(1,3, $facility_id)/getCountVotePerCategoryTotal($facility_id, 3))*100;
+  $structureFive = 0;
+  $structureFour = 0;
+  $structureThree = 0;
+  $structureTwo = 0;
+  $structureOne = 0;
 
-$experienceFive = (getTotalVotes(5,4, $facility_id)/getCountVotePerCategoryTotal($facility_id, 4))*100;
-$experienceFour = (getTotalVotes(4,4, $facility_id)/getCountVotePerCategoryTotal($facility_id, 4))*100;
-$experienceThree = (getTotalVotes(3,4, $facility_id)/getCountVotePerCategoryTotal($facility_id, 4))*100;
-$experienceTwo = (getTotalVotes(2,4, $facility_id)/getCountVotePerCategoryTotal($facility_id, 4))*100;
-$experienceOne = (getTotalVotes(1,4, $facility_id)/getCountVotePerCategoryTotal($facility_id, 4))*100;
+  $experienceFive = 0;
+  $experienceFour = 0;
+  $experienceThree = 0;
+  $experienceTwo = 0;
+  $experienceOne = 0;
+
+}
+
+else{
+  $processFive = (getTotalVotes(5,1, $facility_id)/getCountVotePerCategoryTotal($facility_id, 1))*100;
+  $processFour = (getTotalVotes(4,1, $facility_id)/getCountVotePerCategoryTotal($facility_id, 1))*100;
+  $processThree = (getTotalVotes(3,1, $facility_id)/getCountVotePerCategoryTotal($facility_id, 1))*100;
+  $processTwo = (getTotalVotes(2,1, $facility_id)/getCountVotePerCategoryTotal($facility_id, 1))*100;
+  $processOne = (getTotalVotes(1,1, $facility_id)/getCountVotePerCategoryTotal($facility_id, 1))*100;
+
+  $outcomeFive = (getTotalVotes(5,2, $facility_id)/getCountVotePerCategoryTotal($facility_id, 2))*100;
+  $outcomeFour = (getTotalVotes(4,2, $facility_id)/getCountVotePerCategoryTotal($facility_id, 2))*100;
+  $outcomeThree = (getTotalVotes(3,2, $facility_id)/getCountVotePerCategoryTotal($facility_id, 2))*100;
+  $outcomeTwo = (getTotalVotes(2,2, $facility_id)/getCountVotePerCategoryTotal($facility_id, 2))*100;
+  $outcomeOne = (getTotalVotes(1,2, $facility_id)/getCountVotePerCategoryTotal($facility_id, 2))*100;
+
+  $structureFive = (getTotalVotes(5,3, $facility_id)/getCountVotePerCategoryTotal($facility_id, 3))*100;
+  $structureFour = (getTotalVotes(4,3, $facility_id)/getCountVotePerCategoryTotal($facility_id, 3))*100;
+  $structureThree = (getTotalVotes(3,3, $facility_id)/getCountVotePerCategoryTotal($facility_id, 3))*100;
+  $structureTwo = (getTotalVotes(2,3, $facility_id)/getCountVotePerCategoryTotal($facility_id, 3))*100;
+  $structureOne = (getTotalVotes(1,3, $facility_id)/getCountVotePerCategoryTotal($facility_id, 3))*100;
+
+  $experienceFive = (getTotalVotes(5,4, $facility_id)/getCountVotePerCategoryTotal($facility_id, 4))*100;
+  $experienceFour = (getTotalVotes(4,4, $facility_id)/getCountVotePerCategoryTotal($facility_id, 4))*100;
+  $experienceThree = (getTotalVotes(3,4, $facility_id)/getCountVotePerCategoryTotal($facility_id, 4))*100;
+  $experienceTwo = (getTotalVotes(2,4, $facility_id)/getCountVotePerCategoryTotal($facility_id, 4))*100;
+  $experienceOne = (getTotalVotes(1,4, $facility_id)/getCountVotePerCategoryTotal($facility_id, 4))*100;
+}
+
+
+
+
+
+
 
 
 $overallRating =(getAverageVotePerCategory(1, $facility_id) + getAverageVotePerCategory(2, $facility_id) + getAverageVotePerCategory(3, $facility_id) + getAverageVotePerCategory(4, $facility_id))/4;
