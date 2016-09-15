@@ -294,7 +294,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <!-Menu on the left side->
        
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse pull-right" id="navbar-collapse">
+        <div class="navbar-custom-menu">
           <ul class="nav navbar-nav">
             <li><a href="#">About</a></li>
          <!-- User Account: style can be found in dropdown.less -->
@@ -1240,7 +1240,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div id = "all_comments">
                 <?php 
                    //COMMENTS
-                  $query4 = "SELECT commentID, comment, firstName, middleName, lastName,  DATE_FORMAT( dateRated,  '%Y-%m-%d %H:%i' ) AS dateRated FROM comment c, user u WHERE c.userID = u.userID AND facilityID = " . $facility_id . " ORDER BY dateRated DESC";
+                  $query4 = "SELECT commentID, comment, firstName, middleName, lastName,  DATE_FORMAT( dateRated,  '%Y-%m-%d %H:%i' ) AS dateRated FROM comment c, user u WHERE c.userID = u.userID AND facilityID = " . $facility_id . " AND YEAR( dateRated ) = YEAR( CURDATE()) ORDER BY dateRated DESC";
 
                   $result4 = mysqli_query($connect, $query4); 
 
@@ -1292,15 +1292,30 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       </div>
                       <!-- /.user-block -->
 
-                      <p>' . $comments[$row][0] . '</p>
+                      <p>' . $comments[$row][0] . '</p>';
+
+
+                      //CHECK IF THE USER HAS ALREADY VOTED
+                      $checkQ="SELECT * FROM remark WHERE commentID = $comID AND userID = $uID";
+
+                      $checkUser=mysqli_query($connect, $checkQ);
+
+                      if(mysqli_num_rows($checkUser) > 0){
+                         while($row2=mysqli_fetch_array($checkUser)){
+                            $userRemark = $row2['likes'];
+                         }
+
+                      }
+
+
 
  
-                      <div class="ratings">
+                      echo '<div class="ratings">
                         
                         <ul class="list-inline">
                           <li>
                             <!-- Like Icon HTML -->
-                            <span class="glyphicon glyphicon-thumbs-up" onClick="cwRating('. $comID.', 1, '. $like_count .', '. $likes .','. $dislikes.')"></span>&nbsp;
+                            <span class="glyphicon glyphicon-thumbs-up" onClick="cwRating('. $comID .', 1, '. $like_count .', '. $uID .')"></span>&nbsp;
 
                             <!-- Like Counter -->
                             <span class="counter" id="like_count'. $comID.'">'. $likes .'</span>&nbsp;&nbsp;&nbsp;
@@ -1309,7 +1324,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                           <li>
                             <!-- Dislike Icon HTML -->
-                            <span class="glyphicon glyphicon-thumbs-up" onClick="cwRating('. $comID.', 0, '. $dislike_count .', '. $likes .', '. $dislikes .'")"></span>&nbsp;
+                            <span class="glyphicon glyphicon-thumbs-down" onClick="cwRating('. $comID .', 0, '. $dislike_count .', '. $uID .')"></span>&nbsp;
                             <!-- Dislike Counter -->
                             <span class="counter" id="dislike_count'. $comID.'">'. $dislikes .'</span>&nbsp;&nbsp;&nbsp;
                           </li>
@@ -1457,7 +1472,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     $('#totalvotes-'+id+' li').each(function(index) {
       $(this).addClass('selected');
-      $('#totalvotes-'+id+' #rating').val((index+1));
+      $('#like_count-'+id+' #rating').val((index+1));
       if(index == $('#totalvotes-'+id+' li').index(obj)) {
         return false; 
       }
@@ -1492,12 +1507,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 }
 
 //REMARKS TRIAL 3
-function cwRating(id,type,target, like, dislike){
+function cwRating(id,type,target, userId){
   console.log(id);
   console.log(type);
   console.log(target);
-  console.log(like);
-  console.log(dislike);
+  console.log(userId);
 
   $.ajax({
     type:'POST',
@@ -1505,8 +1519,7 @@ function cwRating(id,type,target, like, dislike){
     data: {
       id:id,
       type:type,
-      like:like,
-      dislike:dislike
+      userId:userId
 
     },
     success:function(msg){

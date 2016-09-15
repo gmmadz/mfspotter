@@ -14,6 +14,8 @@
     $name=$_POST['user_name'];
     $facility=$_POST['facility_id'];
 
+
+    //INSERT the comment into the database
     $insertquery = "INSERT INTO `comment`(`userID`, `facilityID`, `comment`, `dateRated`) VALUES ('$name','$facility', '$comment', CURRENT_TIMESTAMP)";
 
     $insert=mysqli_query($connect, $insertquery);
@@ -22,6 +24,7 @@
     
     $last_id = $connect->insert_id;
 
+    //SELECT THE COMMENT ON THE DATABASE
     $selectquery = "SELECT firstName, middleName, lastName, comment,  DATE_FORMAT( dateRated,  '%Y-%m-%d %H:%i' ) AS dateRated FROM comment c, user u WHERE c.userID = u.userID AND c.userID='$name' AND facilityID='$facility' AND comment='$comment' AND commentID='$last_id'";
 
     $select=mysqli_query($connect, $selectquery);
@@ -47,13 +50,25 @@
             </div>
             <!-- /.user-block -->
 
+            <!-- Like and Dislike Button Part -->
             <p><?php echo ''. $commentt . ''; ?></p>
-            <ul class="list-inline">
-              <li><a href="#" onclick="return insert_like('<?php echo $name ?>','<?php echo $last_id ?>');" id="like_button" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
-              </li>
-              <li><a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-down margin-r-5"></i> Dislike</a>
-              </li>
-            </ul>
+              <ul class="list-inline">
+                <li>
+                  <!-- Like Icon HTML -->
+                  <span class="glyphicon glyphicon-thumbs-up" onClick="cwRating('. $comID .', 1, '. $like_count .', '. $uID .')"></span>&nbsp;
+
+                  <!-- Like Counter -->
+                  <span class="counter" id="like_count'. $comID.'">0</span>&nbsp;&nbsp;&nbsp;
+
+                </li>
+
+                <li>
+                  <!-- Dislike Icon HTML -->
+                  <span class="glyphicon glyphicon-thumbs-down" onClick="cwRating('. $comID .', 0, '. $dislike_count .', '. $uID .')"></span>&nbsp;
+                  <!-- Dislike Counter -->
+                  <span class="counter" id="dislike_count'. $comID.'">0</span>&nbsp;&nbsp;&nbsp;
+                </li>
+              </ul>
           </div>  <!-- /.post -->
       <?php
       }
