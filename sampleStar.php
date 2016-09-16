@@ -1059,6 +1059,199 @@ $overallRating =(getAverageVotePerCategory(1) + getAverageVotePerCategory(2) + g
           echo 'Data Not Found';  
  } ?>
 
+<?php
+
+function getRatingID($id, $facid, $catid){
+  $username="root";
+  $password="usbw";
+  $database="mfspotter";
+  $connect = mysqli_connect("localhost", $username, $password, $database); 
+
+  $query = "SELECT categoryID, ratingID, rating FROM rating WHERE userID = ".$id." AND facilityID = ".$facid." AND categoryID = ".$catid." ";
+  $result = mysqli_query($connect, $query);
+ 
+  if(mysqli_num_rows($result)){
+    while($row = mysqli_fetch_array($result))
+    {
+      return $row['ratingID']; 
+    }
+  }
+  else 
+    return false;
+
+}
+
+function getRatingValue($id, $facid, $catid){
+  $username="root";
+  $password="usbw";
+  $database="mfspotter";
+  $connect = mysqli_connect("localhost", $username, $password, $database); 
+
+  $query = "SELECT categoryID, ratingID, rating FROM rating WHERE userID = ".$id." AND facilityID = ".$facid." AND categoryID = ".$catid." ";
+  $result = mysqli_query($connect, $query);
+ 
+  if(mysqli_num_rows($result)){
+    while($row = mysqli_fetch_array($result))
+    {
+      return $row['rating']; 
+    }
+  }
+  else 
+    return false;
+
+}
+
+?>
+<?php
+echo '
+<label id="process-id" for="<?php echo '.getRatingID(1, 25, 1).'; ?>"></label>
+<label id="process-before-id" for="<?php echo getRatingValue(1,25,1); ?>"></label>
+<select id="process-value">
+    <option value="0">0</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+</select>
+<div class="rateit" data-rateit-backingfld="#process-value" data-rateit-value="<?php echo '.getRatingID(1, 25, 1).'; ?>"></div>
+
+
+';
+
+?>
+
+<label id="outcome-id" for="<?php echo getRatingID(1, 25, 2); ?>"></label>
+<label id="outcome-before-id" for="<?php echo getRatingValue(1,25,2); ?>"></label>
+<select id="outcome-value">
+    <option value="0">0</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+</select>
+<div class="rateit" data-rateit-backingfld="#outcome-value" data-rateit-value="<?php echo getRatingValue(1,25,2); ?>"></div>
+
+
+<label id="structure-id" for="<?php echo getRatingID(1, 25, 3); ?>"></label>
+<label id="structure-before-id" for="<?php echo getRatingValue(1,25,3); ?>"></label>
+<select id="structure-value">
+    <option value="0">0</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+</select>
+<div class="rateit" data-rateit-backingfld="#structure-value" data-rateit-value="<?php echo getRatingValue(1,25,3); ?>"></div>
+
+<label id="experience-id" for="<?php echo getRatingID(1, 25, 4); ?>"></label>
+<label id="experience-before-id" for="<?php echo getRatingValue(1,25,4); ?>"></label>
+<select id="experience-value">
+    <option value="0">0</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+</select>
+<div class="rateit" data-rateit-backingfld="#experience-value" data-rateit-value="<?php echo getRatingValue(1,25,4); ?>"></div>
+
+
+
+
+
+
+<button onclick="updateRating()">Get value</button>
+
+<script>
+function updateRating(){
+
+
+  var process_id = document.getElementById("process-id").htmlFor;
+  var outcome_id = document.getElementById("outcome-id").htmlFor;
+  var structure_id = document.getElementById("structure-id").htmlFor;
+  var experience_id = document.getElementById("experience-id").htmlFor;
+
+  var process_value, outcome_value, structure_value, experience_value;
+
+  var p = document.getElementById("process-value");
+  var o = document.getElementById("outcome-value");
+  var s = document.getElementById("structure-value");
+  var e = document.getElementById("experience-value");
+
+  //********SELECTED VALUE FROM SELECT TAG
+  var selectedProcessValue = p.options[p.selectedIndex].value;
+  var selectedOutcomeValue = o.options[o.selectedIndex].value;
+  var selectedStructureValue = s.options[s.selectedIndex].value;
+  var selectedExperienceValue = e.options[e.selectedIndex].value;
+
+  //********PROCESS
+  if(selectedProcessValue == 0 && selectedProcessValue != document.getElementById('process-before-id').htmlFor){
+    process_value = document.getElementById('process-before-id').htmlFor;
+  }
+  else{
+    process_value = selectedProcessValue;
+  }
+
+  //********OUTCOME
+  if(selectedOutcomeValue == 0 && selectedOutcomeValue != document.getElementById('outcome-before-id').htmlFor){
+    outcome_value = document.getElementById('outcome-before-id').htmlFor;
+  }
+  else{
+    outcome_value = selectedOutcomeValue;
+  }
+
+  //********STRUCTURE
+  if(selectedStructureValue == 0 && selectedStructureValue != document.getElementById('structure-before-id').htmlFor){
+    structure_value = document.getElementById('structure-before-id').htmlFor;
+  }
+  else{
+    structure_value = selectedStructureValue;
+  }
+
+  //********EXPERIENCE
+  if(selectedExperienceValue == 0 && selectedExperienceValue != document.getElementById('experience-before-id').htmlFor){
+    experience_value = document.getElementById('experience-before-id').htmlFor;
+  }
+  else{
+    experience_value = selectedExperienceValue;
+  }
+
+
+
+
+
+  alert("id: " + process_id + " value: " + process_value);
+  alert("id: " + outcome_id + " value: " + outcome_value);
+  alert("id: " + structure_id + " value: " + structure_value);
+  alert("id: " + experience_id + " value: " + experience_value);
+
+
+  $.ajax({  
+          url:"updateRatings.php",  
+          method:"post",  
+          data:{
+            pid: process_id, pval: process_value,
+            oid: outcome_id, oval: outcome_value,
+            sid: structure_id, sval: structure_value,
+            eid: experience_id, eval: experience_value,
+            usid: 1, faid: 25
+            },  
+          dataType:"text",  
+          success:function(data)  
+          {  
+            alert("UPDATED!"); 
+          }  
+        });  
+
+
+ 
+}
+</script>
+
+
 
 
 
