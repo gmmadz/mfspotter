@@ -23,6 +23,9 @@
 
     
     $last_id = $connect->insert_id;
+    $like_count = "'like_count". $last_id . "'";
+    $dislike_count = "'dislike_count". $last_id . "'";
+
 
     //SELECT THE COMMENT ON THE DATABASE
     $selectquery = "SELECT firstName, middleName, lastName, comment,  DATE_FORMAT( dateRated,  '%Y-%m-%d %H:%i' ) AS dateRated FROM comment c, user u WHERE c.userID = u.userID AND c.userID='$name' AND facilityID='$facility' AND comment='$comment' AND commentID='$last_id'";
@@ -36,6 +39,21 @@
         $namae=$row['firstName']. " ". $row['middleName']. " ". $row['lastName'];
         $commentt=$row['comment'];
         $dateTime=$row['dateRated'];
+
+        //Select Likes and Dislikes
+        $selectquery2="SELECT COUNT(case when remarks = 'Like' then 1 end) as likes, COUNT(case when remarks = 'Dislike' then 1 end) as dislikes FROM remark WHERE commentID = '$last_id'";
+
+        $selectRemarks=mysqli_query($connect, $selectquery2);
+
+
+        if(mysqli_num_rows($selectRemarks) > 0){
+          while($row2=mysqli_fetch_array($selectRemarks)){
+            $likes = $row2['likes'];
+            $dislikes = $row2['dislikes'];
+
+          }
+        
+
       ?>
 
           <div class="post">
@@ -52,25 +70,30 @@
 
             <!-- Like and Dislike Button Part -->
             <p><?php echo ''. $commentt . ''; ?></p>
-              <ul class="list-inline">
-                <li>
-                  <!-- Like Icon HTML -->
-                  <span class="glyphicon glyphicon-thumbs-up" onClick="cwRating('. $comID .', 1, '. $like_count .', '. $uID .')"></span>&nbsp;
 
-                  <!-- Like Counter -->
-                  <span class="counter" id="like_count'. $comID.'">0</span>&nbsp;&nbsp;&nbsp;
+              <div class="ratings">
+                        
+                <ul class="list-inline">
+                  <li>
+                    <!-- Like Icon HTML -->
+                    <span class="glyphicon glyphicon-thumbs-up" onClick="cwRating('<?php echo $last_id ?>', 1, <?php echo $like_count ?>, '<?php echo $name ?>')"></span>&nbsp;
 
-                </li>
+                    <!-- Like Counter -->
+                    <span class="counter" id="<?php echo 'like_count'. $last_id ; ?>"><?php echo $likes ?></span>&nbsp;&nbsp;&nbsp;
 
-                <li>
-                  <!-- Dislike Icon HTML -->
-                  <span class="glyphicon glyphicon-thumbs-down" onClick="cwRating('. $comID .', 0, '. $dislike_count .', '. $uID .')"></span>&nbsp;
-                  <!-- Dislike Counter -->
-                  <span class="counter" id="dislike_count'. $comID.'">0</span>&nbsp;&nbsp;&nbsp;
-                </li>
-              </ul>
+                  </li>
+
+                  <li>
+                    <!-- Dislike Icon HTML -->
+                    <span class="glyphicon glyphicon-thumbs-down" onClick="cwRating('<?php echo $last_id ?>', 0, <?php echo $dislike_count ?>, '<?php echo $name ?>')"></span>&nbsp;
+                    <!-- Dislike Counter -->
+                    <span class="counter" id="<?php echo 'dislike_count'. $last_id ; ?>"><?php echo $dislikes ?></span>&nbsp;&nbsp;&nbsp;
+                  </li>
+                </ul>
+                </div> <!-- /. ratings -->
           </div>  <!-- /.post -->
       <?php
+      }
       }
     }
       
