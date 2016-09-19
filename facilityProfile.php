@@ -407,6 +407,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
   .glyphicon-thumbs-down:hover{ color: #E10000; cursor:pointer;}
   .counter{ color:#333333;}
 
+<<<<<<< HEAD
+=======
+  .icon-success {
+    color: #008000;
+  }
+
+  .icon-fail {
+    color: #E10000;
+  }
+
+
+>>>>>>> f8d6551489fe0e647ce3fc00af2ff145096e0c6d
   </style>
 <script type="text/javascript">
  
@@ -1135,329 +1147,333 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!- Left side Comments->
         <div class="col-md-9">
         
-
-                    <div class="nav-tabs-custom">
+          <div class="nav-tabs-custom">
                           
-                          <ul class="nav nav-tabs">
-                            <li class="active"><a href="#ltab_1" data-toggle="tab">Map</a></li>
-                            <li><a href="#ltab_2" data-toggle="tab">Ratings</a></li>
-                            <li><a href="#ltab_3" data-toggle="tab">Comments</a></li>
-                          </ul>
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#ltab_1" data-toggle="tab">Map</a></li>
+              <li><a href="#ltab_2" data-toggle="tab">Ratings</a></li>
+              <li><a href="#ltab_3" data-toggle="tab">Comments</a></li>
+            </ul>
                           
 
-                          <div class="tab-content">
+            <div class="tab-content">
                             
+<<<<<<< HEAD
                             <!-MAP->
                             <div class="tab-pane active" id="ltab_1">
                                 <div class="box box-primary box-success">
                                   <div id="viewfaci_map" style="position: relative; width:100%; height:400px"></div>
                                 </div>
-                            </div>
+=======
+              <!-MAP->
+              <div class="tab-pane active" id="ltab_1">
+                  <div class="col-md-12">
+                    <div id="map" style="width: 80%; height: 80%"></div>
+                  </div>
+              </div>
 
-                            <!-RATING->
-                            <!-- /.tab-pane -->
-                            <div class="tab-pane" id="ltab_2">
+              <!-RATING->
+              <!-- /.tab-pane -->
+
+              <div class="tab-pane" id="ltab_2">
+                
+                <form name = "addRating" enctype="multipart/form-data" role="form" method="post" data-toggle="validator">
+                  
+                  <div class="box box-primary box-success">
+                    <div class="box-header with-border">
+                      <h3 class="box-title"><?php echo (userHasVoted($_SESSION['user_id'], $facility_id))? "You already voted!" :"Rate the Facility!"; ?></h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                       <!-- Post -->
+                       
+                      <?php 
+
+                        if (userHasVoted($_SESSION['user_id'], $facility_id)){
+
+                          echo '
+                          <label id="userids" for="'.$_SESSION['user_id'].'"></label>
+                          <label id="facilityids" for="'.$facility_id.'"></label>
+                          <div class="post">
+                            <div class="user-block">
+                              <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/process.png" alt="user image">
+                                  <span class="username">
+                                    <a href="#">Process</a>                        
+                                  </span>
+                                    <span class="username">
+                                          <label id="process-id" for="'.getRatingID($_SESSION['user_id'],$facility_id, 1).'"></label>
+                                          <label id="process-before-id" for="'.getRatingValue($_SESSION['user_id'],$facility_id, 1).'"></label>
+                                          <select id="process-value">
+                                              <option value="0">0</option>
+                                              <option value="1">1</option>
+                                              <option value="2">2</option>
+                                              <option value="3">3</option>
+                                              <option value="4">4</option>
+                                              <option value="5">5</option>
+                                          </select>
+                                          <div class="rateit" data-rateit-backingfld="#process-value" data-rateit-value="'.getRatingValue($_SESSION['user_id'],$facility_id, 1).'"></div>
+
+
+                                    </span>
+                              <span class="description">Process measures assess whether a patient received what is known to be good care.
+                              </span>
+>>>>>>> f8d6551489fe0e647ce3fc00af2ff145096e0c6d
+                            </div>
+                            <!-- /.user-block -->
+                          </div>
+                          <!-- /.post -->
+
+
+                           <!-- Post -->
+                          <div class="post">
+                            <div class="user-block">
+                              <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/medical-result.png" alt="user image">
+                                  <span class="username">
+                                    <a href="#">Outcomes</a>
+                                  </span>
+                                  <span class="username">
+                                  
+                                          <label id="outcome-id" for="'.getRatingID($_SESSION['user_id'],$facility_id, 2).'"></label>
+                                          <label id="outcome-before-id" for="'.getRatingValue($_SESSION['user_id'],$facility_id, 2).'"></label>
+                                          <select id="outcome-value">
+                                              <option value="0">0</option>
+                                              <option value="1">1</option>
+                                              <option value="2">2</option>
+                                              <option value="3">3</option>
+                                              <option value="4">4</option>
+                                              <option value="5">5</option>
+                                          </select>
+                                          <div class="rateit" data-rateit-backingfld="#outcome-value" data-rateit-value="'.getRatingValue($_SESSION['user_id'],$facility_id, 2).'"></div>
+
+
+                                  </span>
+                              <span class="description">How do you fare as a result of the care?</span>
+                            </div>
+                            <!-- /.user-block -->
+                            <p>
+                            </p>
+                          </div>
+                          <!-- /.post -->
+
+
+                          <!-- Post -->
+                          <div class="post">
+                            <div class="user-block">
+                              <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/flask.png" alt="user image">
+                                  <span class="username">
+                                    <a href="#">Structure</a>
+                                  </span>
+                                  <span class="username">
+                                   
+                                        <label id="structure-id" for="'.getRatingID($_SESSION['user_id'],$facility_id, 3).'"></label>
+                                        <label id="structure-before-id" for="'.getRatingValue($_SESSION['user_id'],$facility_id, 3).'"></label>
+                                        <select id="structure-value">
+                                            <option value="0">0</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                        <div class="rateit" data-rateit-backingfld="#structure-value" data-rateit-value="'.getRatingValue($_SESSION['user_id'],$facility_id, 3).'"></div>
+
+                                  </span>
+                              <span class="description">How well-equipped care setting is to deliver care?</span>
+                            </div>
+                            <!-- /.user-block -->
+                            <p>
+                            </p>
+                    
+                          </div>
+                          <!-- /.post -->
+
+                          <!-- Post -->
+                          <div class="post">
+                            <div class="user-block">
+                              <img class="img-circle img-bordered-sm" src="/mfspotter/dist/img/nurse.png" alt="user image">
+                                  <span class="username">
+                                    <a href="#">Patient Experience</a>
+                                  </span>
+                                  <span class="username">
+                                  
+                                        <label id="experience-id" for="'.getRatingID($_SESSION['user_id'],$facility_id, 4).'"></label>
+                                        <label id="experience-before-id" for="'.getRatingValue($_SESSION['user_id'],$facility_id, 4).'"></label>
+                                        <select id="experience-value">
+                                            <option value="0">0</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                        <div class="rateit" data-rateit-backingfld="#experience-value" data-rateit-value="'.getRatingValue($_SESSION['user_id'],$facility_id, 4).'"></div>
+
+
+                                  </span>
+                              <span class="description">How do you evaluate the care you received?</span>
+                            </div>
+                            <!-- /.user-block -->
+                          </div>
+                          <!-- /.post -->
+
+                          <div class="post">
+                            <div class="user-block">
+                              <button type="submit" class="btn btn-danger pull-right btn-block btn-sm" onClick="updateRating()" >Update Ratings!</button>
                               
-                              <form name = "addRating" enctype="multipart/form-data" role="form" method="post" data-toggle="validator">
-                                
-                                <div class="box box-primary box-success">
-                                  <div class="box-header with-border">
-                                    <h3 class="box-title"><?php echo (userHasVoted($_SESSION['user_id'], $facility_id))? "You already voted!" :"Rate the Facility!"; ?></h3>
-                                  </div>
-                                  <!-- /.box-header -->
-                                  <div class="box-body">
-                                     <!-- Post -->
-                                     
-
-
-
-
-                                    <?php 
-
-                                      if (userHasVoted($_SESSION['user_id'], $facility_id)){
-
-                                        echo '
-                                        <label id="userids" for="'.$_SESSION['user_id'].'"></label>
-                                        <label id="facilityids" for="'.$facility_id.'"></label>
-                                        <div class="post">
-                                          <div class="user-block">
-                                            <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/process.png" alt="user image">
-                                                <span class="username">
-                                                  <a href="#">Process</a>                        
-                                                </span>
-                                                  <span class="username">
-                                                        <label id="process-id" for="'.getRatingID($_SESSION['user_id'],$facility_id, 1).'"></label>
-                                                        <label id="process-before-id" for="'.getRatingValue($_SESSION['user_id'],$facility_id, 1).'"></label>
-                                                        <select id="process-value">
-                                                            <option value="0">0</option>
-                                                            <option value="1">1</option>
-                                                            <option value="2">2</option>
-                                                            <option value="3">3</option>
-                                                            <option value="4">4</option>
-                                                            <option value="5">5</option>
-                                                        </select>
-                                                        <div class="rateit" data-rateit-backingfld="#process-value" data-rateit-value="'.getRatingValue($_SESSION['user_id'],$facility_id, 1).'"></div>
-
-
-                                                  </span>
-                                            <span class="description">Process measures assess whether a patient received what is known to be good care.
-                                            </span>
-                                          </div>
-                                          <!-- /.user-block -->
-                                        </div>
-                                        <!-- /.post -->
-
-
-                                         <!-- Post -->
-                                        <div class="post">
-                                          <div class="user-block">
-                                            <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/medical-result.png" alt="user image">
-                                                <span class="username">
-                                                  <a href="#">Outcomes</a>
-                                                </span>
-                                                <span class="username">
-                                                
-                                                        <label id="outcome-id" for="'.getRatingID($_SESSION['user_id'],$facility_id, 2).'"></label>
-                                                        <label id="outcome-before-id" for="'.getRatingValue($_SESSION['user_id'],$facility_id, 2).'"></label>
-                                                        <select id="outcome-value">
-                                                            <option value="0">0</option>
-                                                            <option value="1">1</option>
-                                                            <option value="2">2</option>
-                                                            <option value="3">3</option>
-                                                            <option value="4">4</option>
-                                                            <option value="5">5</option>
-                                                        </select>
-                                                        <div class="rateit" data-rateit-backingfld="#outcome-value" data-rateit-value="'.getRatingValue($_SESSION['user_id'],$facility_id, 2).'"></div>
-
-
-                                                </span>
-                                            <span class="description">How do you fare as a result of the care?</span>
-                                          </div>
-                                          <!-- /.user-block -->
-                                          <p>
-                                          </p>
-                                        </div>
-                                        <!-- /.post -->
-
-
-                                        <!-- Post -->
-                                        <div class="post">
-                                          <div class="user-block">
-                                            <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/flask.png" alt="user image">
-                                                <span class="username">
-                                                  <a href="#">Structure</a>
-                                                </span>
-                                                <span class="username">
-                                                 
-                                                      <label id="structure-id" for="'.getRatingID($_SESSION['user_id'],$facility_id, 3).'"></label>
-                                                      <label id="structure-before-id" for="'.getRatingValue($_SESSION['user_id'],$facility_id, 3).'"></label>
-                                                      <select id="structure-value">
-                                                          <option value="0">0</option>
-                                                          <option value="1">1</option>
-                                                          <option value="2">2</option>
-                                                          <option value="3">3</option>
-                                                          <option value="4">4</option>
-                                                          <option value="5">5</option>
-                                                      </select>
-                                                      <div class="rateit" data-rateit-backingfld="#structure-value" data-rateit-value="'.getRatingValue($_SESSION['user_id'],$facility_id, 3).'"></div>
-
-                                                </span>
-                                            <span class="description">How well-equipped care setting is to deliver care?</span>
-                                          </div>
-                                          <!-- /.user-block -->
-                                          <p>
-                                          </p>
-                                  
-                                        </div>
-                                        <!-- /.post -->
-
-                                        <!-- Post -->
-                                        <div class="post">
-                                          <div class="user-block">
-                                            <img class="img-circle img-bordered-sm" src="/mfspotter/dist/img/nurse.png" alt="user image">
-                                                <span class="username">
-                                                  <a href="#">Patient Experience</a>
-                                                </span>
-                                                <span class="username">
-                                                
-                                                      <label id="experience-id" for="'.getRatingID($_SESSION['user_id'],$facility_id, 4).'"></label>
-                                                      <label id="experience-before-id" for="'.getRatingValue($_SESSION['user_id'],$facility_id, 4).'"></label>
-                                                      <select id="experience-value">
-                                                          <option value="0">0</option>
-                                                          <option value="1">1</option>
-                                                          <option value="2">2</option>
-                                                          <option value="3">3</option>
-                                                          <option value="4">4</option>
-                                                          <option value="5">5</option>
-                                                      </select>
-                                                      <div class="rateit" data-rateit-backingfld="#experience-value" data-rateit-value="'.getRatingValue($_SESSION['user_id'],$facility_id, 4).'"></div>
-
-
-                                                </span>
-                                            <span class="description">How do you evaluate the care you received?</span>
-                                          </div>
-                                          <!-- /.user-block -->
-                                        </div>
-                                        <!-- /.post -->
-
-                                        <div class="post">
-                                          <div class="user-block">
-                                            <button type="submit" class="btn btn-danger pull-right btn-block btn-sm" onClick="updateRating()" >Update Ratings!</button>
-                                            
-                                            <span class="description"></span>
-                                          </div>
-                                          <!-- /.user-block -->
-                                        </div>
-                                        <!-- /.post -->
-
-                                         ';
-                                      } 
-                                      else{
-                                       echo '
-                                        <div class="post">
-                                          <div class="user-block">
-                                            <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/process.png" alt="user image">
-                                                <span class="username">
-                                                  <a href="#">Process</a>                        
-                                                </span>
-                                                  <span class="username">
-                                                        <select class="rating-processd" name="rating-process" id="backing2b">
-                                                            <option value="0">0</option>
-                                                            <option value="1">1</option>
-                                                            <option value="2">2</option>
-                                                            <option value="3">3</option>
-                                                            <option value="4">4</option>
-                                                            <option value="5">5</option>
-                                                        </select>
-                                                        <div class="rateit" data-rateit-backingfld="#backing2b"></div>
-                                                      
-                                                  </span>
-                                            <span class="description">Process measures assess whether a patient received what is known to be good care.
-                                            </span>
-                                          </div>
-                                          <!-- /.user-block -->
-                                          <p>
-                                          </p>
-                                        </div>
-                                        <!-- /.post -->
-
-                                         <!-- Post -->
-                                        <div class="post">
-                                          <div class="user-block">
-                                            <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/medical-result.png" alt="user image">
-                                                <span class="username">
-                                                  <a href="#">Outcomes</a>
-                                                </span>
-                                                <span class="username">
-                                                
-                                                        <select class="rating-processd" name="rating-outcome" id="backing3b">
-                                                            <option value="0">0</option>
-                                                            <option value="1">1</option>
-                                                            <option value="2">2</option>
-                                                            <option value="3">3</option>
-                                                            <option value="4">4</option>
-                                                            <option value="5">5</option>
-                                                        </select>
-                                                        <div class="rateit" data-rateit-backingfld="#backing3b"></div>
-                                                </span>
-                                            <span class="description">How do you fare as a result of the care?</span>
-                                          </div>
-                                          <!-- /.user-block -->
-                                          <p>
-                                          </p>
-                                        </div>
-                                        <!-- /.post -->
-
-                                         <!-- Post -->
-                                        <div class="post">
-                                          <div class="user-block">
-                                            <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/flask.png" alt="user image">
-                                                <span class="username">
-                                                  <a href="#">Structure</a>
-                                                </span>
-                                                <span class="username">
-                                                 
-                                                      <select class="rating-processd" name="rating-structure" id="backing1b">
-                                                          <option value="0">0</option>
-                                                          <option value="1">1</option>
-                                                          <option value="2">2</option>
-                                                          <option value="3">3</option>
-                                                          <option value="4">4</option>
-                                                          <option value="5">5</option>
-                                                      </select>
-                                                      <div class="rateit" data-rateit-backingfld="#backing1b"></div>
-                                                </span>
-                                            <span class="description">How well-equipped care setting is to deliver care?</span>
-                                          </div>
-                                          <!-- /.user-block -->
-                                          <p>
-                                          </p>
-                                  
-                                        </div>
-                                        <!-- /.post -->
-
-                                          <!-- Post -->
-                                        <div class="post">
-                                          <div class="user-block">
-                                            <img class="img-circle img-bordered-sm" src="/mfspotter/dist/img/nurse.png" alt="user image">
-                                                <span class="username">
-                                                  <a href="#">Patient Experience</a>
-                                                </span>
-                                                <span class="username">
-                                                
-                                                      <select class="rating-processd" name="rating-experience" id="backing0b">
-                                                          <option value="0">0</option>
-                                                          <option value="1">1</option>
-                                                          <option value="2">2</option>
-                                                          <option value="3">3</option>
-                                                          <option value="4">4</option>
-                                                          <option value="5">5</option>
-                                                      </select>
-                                                      <div class="rateit" data-rateit-backingfld="#backing0b"></div>
-                                                </span>
-                                            <span class="description">How do you evaluate the care you received?</span>
-                                          </div>
-                                          <!-- /.user-block -->
-                                        </div>
-                                        <!-- /.post -->
-
-
-                                        <div class="post">
-                                          <div class="user-block">
-                                            <button type="submit" class="btn btn-danger pull-right btn-block btn-sm" >Submit Ratings!</button>
-                                            <input type="hidden" name="submitted" value="TRUE" />
-                                            <span class="description"></span>
-                                          </div>
-                                          <!-- /.user-block -->
-                                        </div>
-                                        <!-- /.post -->
-                                        ';
-                                      }
-
-                                      
-                                    ?>
-
-                                  </div> <!-- /.box body-->
-
-                                </div> <!-- box -- >
-        
-                              </form> <!--form -->
-
+                              <span class="description"></span>
                             </div>
-                            <!-- /.tab-pane -->
+                            <!-- /.user-block -->
+                          </div>
+                          <!-- /.post -->
 
-
-                            <!-COMMENTS->
-                            <div class="tab-pane" id="ltab_3">
-                                  insert comment here
+                           ';
+                        } 
+                        else{
+                         echo '
+                          <div class="post">
+                            <div class="user-block">
+                              <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/process.png" alt="user image">
+                                  <span class="username">
+                                    <a href="#">Process</a>                        
+                                  </span>
+                                    <span class="username">
+                                          <select class="rating-processd" name="rating-process" id="backing2b">
+                                              <option value="0">0</option>
+                                              <option value="1">1</option>
+                                              <option value="2">2</option>
+                                              <option value="3">3</option>
+                                              <option value="4">4</option>
+                                              <option value="5">5</option>
+                                          </select>
+                                          <div class="rateit" data-rateit-backingfld="#backing2b"></div>
+                                        
+                                    </span>
+                              <span class="description">Process measures assess whether a patient received what is known to be good care.
+                              </span>
                             </div>
+                            <!-- /.user-block -->
+                            <p>
+                            </p>
+                          </div>
+                          <!-- /.post -->
+
+                           <!-- Post -->
+                          <div class="post">
+                            <div class="user-block">
+                              <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/medical-result.png" alt="user image">
+                                  <span class="username">
+                                    <a href="#">Outcomes</a>
+                                  </span>
+                                  <span class="username">
+                                  
+                                          <select class="rating-processd" name="rating-outcome" id="backing3b">
+                                              <option value="0">0</option>
+                                              <option value="1">1</option>
+                                              <option value="2">2</option>
+                                              <option value="3">3</option>
+                                              <option value="4">4</option>
+                                              <option value="5">5</option>
+                                          </select>
+                                          <div class="rateit" data-rateit-backingfld="#backing3b"></div>
+                                  </span>
+                              <span class="description">How do you fare as a result of the care?</span>
+                            </div>
+                            <!-- /.user-block -->
+                            <p>
+                            </p>
+                          </div>
+                          <!-- /.post -->
+
+                           <!-- Post -->
+                          <div class="post">
+                            <div class="user-block">
+                              <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/flask.png" alt="user image">
+                                  <span class="username">
+                                    <a href="#">Structure</a>
+                                  </span>
+                                  <span class="username">
+                                   
+                                        <select class="rating-processd" name="rating-structure" id="backing1b">
+                                            <option value="0">0</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                        <div class="rateit" data-rateit-backingfld="#backing1b"></div>
+                                  </span>
+                              <span class="description">How well-equipped care setting is to deliver care?</span>
+                            </div>
+                            <!-- /.user-block -->
+                            <p>
+                            </p>
+                    
+                          </div>
+                          <!-- /.post -->
+
+                            <!-- Post -->
+                          <div class="post">
+                            <div class="user-block">
+                              <img class="img-circle img-bordered-sm" src="/mfspotter/dist/img/nurse.png" alt="user image">
+                                  <span class="username">
+                                    <a href="#">Patient Experience</a>
+                                  </span>
+                                  <span class="username">
+                                  
+                                        <select class="rating-processd" name="rating-experience" id="backing0b">
+                                            <option value="0">0</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                        <div class="rateit" data-rateit-backingfld="#backing0b"></div>
+                                  </span>
+                              <span class="description">How do you evaluate the care you received?</span>
+                            </div>
+                            <!-- /.user-block -->
+                          </div>
+                          <!-- /.post -->
+
+
+                          <div class="post">
+                            <div class="user-block">
+                              <button type="submit" class="btn btn-danger pull-right btn-block btn-sm" >Submit Ratings!</button>
+                              <input type="hidden" name="submitted" value="TRUE" />
+                              <span class="description"></span>
+                            </div>
+                            <!-- /.user-block -->
+                          </div>
+                          <!-- /.post -->
+                          ';
+                        }
+
+                        
+                      ?>
+
+                    </div> <!-- /.box body-->
+
+                  </div> <!-- box -- >
+
+                </form> <!--form -->
+
+              </div>
+              <!-- /.tab-pane2 -->
+
+
+              <!-COMMENTS->
+              <div class="tab-pane" id="ltab_3">
+                insert comment here
+              </div>
    
 
 
-                          </div>
-                          <!-- /.tab-content -->
-                    </div>
-                    <!-- nav-tabs-custom -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- nav-tabs-custom -->
            
 
 
@@ -1542,7 +1558,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                     $like_count = "'like_count". $comID . "'";
                     $dislike_count = "'dislike_count". $comID . "'";
-
+                    
                       echo '
                       <div class="post">
 
@@ -1558,7 +1574,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                       <p>' . $comments[$row][0] . '</p>';
 
-                      /*
+                      
                       //CHECK IF THE USER HAS ALREADY VOTED
                       $checkQ="SELECT * FROM remark WHERE commentID = $comID AND userID = $uID";
 
@@ -1566,15 +1582,58 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                       if(mysqli_num_rows($checkUser) > 0){
                          while($row2=mysqli_fetch_array($checkUser)){
-                            $userRemark = $row2['likes'];
+                            $userRemark = $row2['remarks'];
                          }
 
                       }
-                    */
 
 
- 
-                      echo '<div class="ratings">
+                      if($userRemark == "Like"){
+                        echo '<div class="ratings">
+                        
+                        <ul class="list-inline">
+                          <li>
+                            <!-- Like Icon HTML -->
+                            <span class="glyphicon glyphicon-thumbs-up icon-success" onClick="cwRating('. $comID .', 1, '. $like_count .', '. $uID .')"></span>&nbsp;
+
+                            <!-- Like Counter -->
+                            <span class="counter" id="like_count'. $comID.'">'. $likes .'</span>&nbsp;&nbsp;&nbsp;
+
+                          </li>
+
+                          <li>
+                            <!-- Dislike Icon HTML -->
+                            <span class="glyphicon glyphicon-thumbs-down" onClick="cwRating('. $comID .', 0, '. $dislike_count .', '. $uID .')"></span>&nbsp;
+                            <!-- Dislike Counter -->
+                            <span class="counter" id="dislike_count'. $comID.'">'. $dislikes .'</span>&nbsp;&nbsp;&nbsp;
+                          </li>
+                        </ul>
+                        </div> <!-- /. ratings -->';
+                      }
+                      else if($userRemark == "Dislike"){
+                        echo '<div class="ratings">
+                        
+                        <ul class="list-inline">
+                          <li>
+                            <!-- Like Icon HTML -->
+                            <span class="glyphicon glyphicon-thumbs-up" onClick="cwRating('. $comID .', 1, '. $like_count .', '. $uID .')"></span>&nbsp;
+
+                            <!-- Like Counter -->
+                            <span class="counter" id="like_count'. $comID.'">'. $likes .'</span>&nbsp;&nbsp;&nbsp;
+
+                          </li>
+
+                          <li>
+                            <!-- Dislike Icon HTML -->
+                            <span class="glyphicon glyphicon-thumbs-down icon-fail" onClick="cwRating('. $comID .', 0, '. $dislike_count .', '. $uID .')"></span>&nbsp;
+                            <!-- Dislike Counter -->
+                            <span class="counter" id="dislike_count'. $comID.'">'. $dislikes .'</span>&nbsp;&nbsp;&nbsp;
+                          </li>
+                        </ul>
+                        </div> <!-- /. ratings -->';
+                      }
+                      else{
+                        echo '<div class="ratings">
                         
                         <ul class="list-inline">
                           <li>
@@ -1593,12 +1652,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <span class="counter" id="dislike_count'. $comID.'">'. $dislikes .'</span>&nbsp;&nbsp;&nbsp;
                           </li>
                         </ul>
-                        </div> <!-- /. ratings -->
+                        </div> <!-- /. ratings -->';
+                      }
 
-                    </div>  <!-- /.post -->';
+
+                    echo '</div>  <!-- /.post -->';
                       
                       
-                    }
+                    }// Counting remarks
                   
                   
                   }// END OF FOR EACH FOR EACH COMMENT
@@ -1613,7 +1674,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </div>
 
           <!-- /.box on Comments-->
-        </div>
+        </div><!-- col 9 -->
 
 
         <!- END OF LEFT SIDE ->
