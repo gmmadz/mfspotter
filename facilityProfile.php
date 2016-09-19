@@ -407,11 +407,34 @@ scratch. This page gets rid of all links and provides the needed markup only.
   .glyphicon-thumbs-down:hover{ color: #E10000; cursor:pointer;}
   .counter{ color:#333333;}
 
-
   </style>
+<script type="text/javascript">
+ 
+
+ function load() {
+      map = new google.maps.Map(document.getElementById("viewfaci_map"), {
+        center: new google.maps.LatLng(7.1907, 125.4553),
+        zoom: 12,
+        mapTypeId: 'roadmap',
+        icon: "marker/marker.png",
+        mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU}
+      });
+      infoWindow = new google.maps.InfoWindow();
+       var point = new google.maps.LatLng(7.1907, 125.4553));
+      var marker = new google.maps.Marker({
+                map: map,
+                position: point,
+                icon: icon.icon
+              });
+
+  }
+
+  </script>
+
+  
 </head>
 
-<body  class="hold-transition skin-green layout-top-nav">
+<body class="hold-transition skin-green layout-top-nav" onload="load()">
 
 <div class="wrapper">
 
@@ -1126,8 +1149,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             
                             <!-MAP->
                             <div class="tab-pane active" id="ltab_1">
-                                <div class="col-md-12">
-                                  <div id="map" style="width: 80%; height: 80%"></div>
+                                <div class="box box-primary box-success">
+                                  <div id="viewfaci_map" style="position: relative; width:100%; height:400px"></div>
                                 </div>
                             </div>
 
@@ -1455,7 +1478,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
 
-
+                 
           <!-- Comments-->
           <div class="box box-primary box-success">
             <div class="box-header with-border">
@@ -1588,6 +1611,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </div>
             <!-- /.box-body -->
           </div>
+
           <!-- /.box on Comments-->
         </div>
 
@@ -1625,6 +1649,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="jquery.barrating.js"></script>
 
 
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiAxt9bglMA2DTxUsQAz-MbdN1lCZwhpk"
+            type="text/javascript"></script>
 
 <script type="text/javascript" src="plugins/rateit-scripts/jquery.rateit.min.js"></script>
 
@@ -1783,6 +1809,25 @@ function cwRating(id,type,target, userId){
 
 <script type="text/javascript">
  
+
+ function load() {
+      map = new google.maps.Map(document.getElementById("viewfaci_map"), {
+        center: new google.maps.LatLng(7.1907, 125.4553),
+        zoom: 12,
+        mapTypeId: 'roadmap',
+        icon: "marker/marker.png",
+        mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU}
+      });
+      infoWindow = new google.maps.InfoWindow();
+       var point = new google.maps.LatLng(7.1907, 125.4553));
+      var marker = new google.maps.Marker({
+                map: map,
+                position: point,
+                icon: icon.icon
+              });
+
+  }
+
 function updateRating(){
 
 
@@ -1840,12 +1885,6 @@ function updateRating(){
 
 
 
-
-
-  alert("id: " + process_id + " value: " + process_value);
-  alert("id: " + outcome_id + " value: " + outcome_value);
-  alert("id: " + structure_id + " value: " + structure_value);
-  alert("id: " + experience_id + " value: " + experience_value);
 
 
   $.ajax({  
