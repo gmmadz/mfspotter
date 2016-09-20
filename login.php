@@ -51,7 +51,7 @@
         if(!empty($user) && !empty($password))
         {
           $selectQuery = "SELECT * FROM user WHERE username = '$user'";
-          $SelectSql = @mysqli_query($conn, $selectQuery);
+          $SelectSql = @mysqli_query($connect, $selectQuery);
           $row = mysqli_fetch_array($SelectSql);
         
           
@@ -99,7 +99,7 @@
         die();
       }
       
-      mysqli_close($conn);
+      mysqli_close($connect);
     ?>
 
     <!-- end of PHP -->

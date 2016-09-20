@@ -5,10 +5,10 @@ $dbuser="root";
 $dbpass="usbw";
 $dbname="mfspotter"; 
 
-$conn = mysqli_connect($dbhost,$dbuser,$dbpass);
-mysqli_select_db($conn,$dbname);
+$connect = mysqli_connect($dbhost,$dbuser,$dbpass);
+mysqli_select_db($connect,$dbname);
 
-if(!$conn)
+if(!$connect)
 	die('Could not connect to MySQL: ' . mysqli_error());
 
 ?>

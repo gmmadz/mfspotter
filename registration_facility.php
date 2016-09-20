@@ -236,7 +236,7 @@
     <?php
                   include("config.php");
                   $q = "SELECT * FROM specialization";
-                  $result = mysqli_query($conn, $q);
+                  $result = mysqli_query($connect, $q);
                   if (mysqli_num_rows($result)>0){
                     while($row = mysqli_fetch_assoc($result)){
                       echo '<option value="' . $row['specializationID'] . '">' . $row['specialization'] . '</option>';
@@ -255,7 +255,7 @@
     <?php
                   include ("config.php");
                   $q = "SELECT insurancesID, insuranceName FROM insurances";
-                  $result = mysqli_query($conn, $q);
+                  $result = mysqli_query($connect, $q);
                   if (mysqli_num_rows($result) > 0) {
     
                     while($row = mysqli_fetch_assoc($result)) {
@@ -685,44 +685,50 @@
     function initialize() {
       
       //var latlng = new google.maps.LatLng(7.057964, 125.585403);
-     
-      var options = {
-        /*zoom: 13,
-        center: latlng,
-        mapTypeId: google.maps.MapTypeId.SATELLITE
-        */
-        zoom: 13,
-        center: new google.maps.LatLng(7.057964, 125.585403),
-         // disableDefaultUI: true,
-        zoomControl: true,
-        zoomControlOptions: {
-            style: google.maps.ZoomControlStyle.SMALL
-          },
-        mapTypeId: 'terrain',
-        draggableCursor:'crosshair',
-        draggingCursor: 'move'
-      }
-      var map = new google.maps.Map(document.getElementById("map"), options);
-      var geocoder = new google.maps.Geocoder;
-      var infowindow = new google.maps.InfoWindow;   
+     if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+         var pos = {lat: position.coords.latitude, lng: position.coords.longitude};
+         var options = {
+            /*zoom: 13,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.SATELLITE
+            */
+            zoom: 13,
+            center: new google.maps.LatLng(pos.lat, pos.lng),
+             // disableDefaultUI: true,
+            zoomControl: true,
+            zoomControlOptions: {
+                style: google.maps.ZoomControlStyle.SMALL
+              },
+            draggableCursor:'crosshair',
+            draggingCursor: 'move'
+          }
+          var map = new google.maps.Map(document.getElementById("map"), options);
+          var geocoder = new google.maps.Geocoder;
+          var infowindow = new google.maps.InfoWindow;   
 
-      google.maps.event.addListener(map, 'click', function(event) {
-         //placeMarker(event.latLng);
-          marker = new google.maps.Marker({
-          position: event.latLng,
-          map: map,
-          draggable: true,
-          animation: google.maps.Animation.DROP
+          google.maps.event.addListener(map, 'click', function(event) {
+             //placeMarker(event.latLng);
+              marker = new google.maps.Marker({
+              position: event.latLng,
+              map: map,
+              draggable: true,
+              animation: google.maps.Animation.DROP
+              });
+              //place the latlng into the inputs
+              document.getElementById("longhi").value = event.latLng.lng();
+              document.getElementById("lati").value = event.latLng.lat();
+              //geocodeLatLng(geocoder, map, infowindow);
           });
-          //place the latlng into the inputs
-          document.getElementById("longhi").value = event.latLng.lng();
-          document.getElementById("lati").value = event.latLng.lat();
-          //geocodeLatLng(geocoder, map, infowindow);
-      });
 
-      
+      }, function() {handleLocationError(true, infoWindow, map.getCenter());});
+        } 
+      else{
+          handleLocationError(false, infoWindow, map.getCenter());
+      }
 
-    }
+      }
+
 
 
     function placeMarker(location){
@@ -744,7 +750,43 @@
 
       }
     }
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+    }
 
+
+   /* function initialize() {
+  // set the default center of the map
+      var latlng = new google.maps.LatLng(51.764696,5.526042);
+      // set route options (draggable means you can alter/drag the route in the map)
+      var rendererOptions = { draggable: true };
+      directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+      // set the display options for the map
+      var myOptions = {
+        zoom: 14,
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapTypeControl: false
+      };
+      // add the map to the map placeholder
+      map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
+      // bind the map to the directions
+      directionsDisplay.setMap(map);
+      // point the directions to the container for the direction details
+      directionsDisplay.setPanel(document.getElementById("directionsPanel"));
+      // start the geolocation API
+      if (navigator.geolocation) {
+        // when geolocation is available on your device, run this function
+        navigator.geolocation.getCurrentPosition(foundYou, notFound);
+      } else {
+        // when no geolocation is available, alert this message
+        alert('Geolocation not supported or not enabled.');
+      }
+    }
+*/
 </script>
 
 </body>

@@ -2,9 +2,6 @@
 //SEARCH BY INSURANCES SELECTED
 
 
-$username="root";
-$password="usbw";
-$database="mfspotter";
 $output='';
 $insurancesArray= implode(",",$_POST['insuarray']);
 
@@ -47,18 +44,28 @@ if(mysqli_num_rows($result) > 0)
 */
 
 function getOverallVotePerID($id){
-  $username="root";
-  $password="usbw";
-  $database="mfspotter";
-  $connect = mysqli_connect("localhost", $username, $password, $database); 
-  $query = "SELECT AVG(rating) as overall FROM rating, facility WHERE rating.facilityID = facility.facilityID AND facility.facilityID = ".$id." AND dateRated >= DATE_SUB(NOW(),INTERVAL 1 YEAR) GROUP BY facility.facilityID";
+  include('config.php');
+ // $query = "SELECT AVG(rating) as overall FROM rating, facility WHERE rating.facilityID = facility.facilityID AND facility.facilityID = ".$id." AND dateRated >= DATE_SUB(NOW(),INTERVAL 1 YEAR) GROUP BY facility.facilityID";
+  $query = "SELECT AVG(rating) as overall, (SELECT AVG(rating) as last FROM rating WHERE dateRated <= DATE_SUB(NOW(),INTERVAL 1 YEAR) AND rating.facilityID = ".$id.")/2 as oneYearBefore
+  FROM rating, facility 
+  WHERE rating.facilityID = facility.facilityID AND facility.facilityID = ".$id."
+            AND dateRated >= DATE_SUB(NOW(),INTERVAL 1 YEAR)
+            GROUP BY facility.facilityID";
   $result = mysqli_query($connect, $query);
  
   if(mysqli_num_rows($result) > 0)  
   {  
     while($row = mysqli_fetch_array($result)) 
     {
-      return number_format($row['overall'],2);
+      if($row['oneYearBefore'] == null)
+      {
+        return number_format($row['overall'],2);
+      }
+      else
+      {
+        return number_format(($row['overall'] + $row['oneYearBefore'])/2 ,2);
+      }
+      
     }  
     
   }
@@ -69,7 +76,7 @@ function getOverallVotePerID($id){
 }
 //SAMPLE
 
-    $connect = mysqli_connect("localhost", $username, $password, $database);  
+    include('config.php');
     $i = 1;
     $query = "SELECT f.facilityName AS Facility_Name, GROUP_CONCAT(s.specialization SEPARATOR ', ') As Has_Specialization, f.facilityID, f.longhitude, f.latitude FROM facility f, specialization s, hasspecialization hs
               WHERE f.facilityID = hs.facilityID AND s.specializationID = hs.specializationID

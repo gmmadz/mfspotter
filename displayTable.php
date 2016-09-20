@@ -47,24 +47,32 @@ if(mysqli_num_rows($result) > 0)
       echo 'Data Not Found';  
  }  
 */
+//(SELECT AVG(rating) as last FROM rating WHERE dateRated <= DATE_SUB(NOW(),INTERVAL 1 YEAR))/2
+
 
 function getOverallVotePerID($id){
-  $username="root";
-  $password="usbw";
-  $database="mfspotter";
-  $connect = mysqli_connect("localhost", $username, $password, $database); 
-
-
-  //*********************************************************************************************QUERY FOR REPUTATION
-  $query = "SELECT AVG(rating) as overall, dateRated FROM rating, facility WHERE rating.facilityID = facility.facilityID AND facility.facilityID = ".$id." AND dateRated >= DATE_SUB(NOW(),INTERVAL 1 YEAR) GROUP BY facility.facilityID";
-  //*********************************************************************************************QUERY FOR REPUTATION
+  include('config.php');
+ // $query = "SELECT AVG(rating) as overall FROM rating, facility WHERE rating.facilityID = facility.facilityID AND facility.facilityID = ".$id." AND dateRated >= DATE_SUB(NOW(),INTERVAL 1 YEAR) GROUP BY facility.facilityID";
+  $query = "SELECT AVG(rating) as overall, (SELECT AVG(rating) as last FROM rating WHERE dateRated <= DATE_SUB(NOW(),INTERVAL 1 YEAR) AND rating.facilityID = ".$id.")/2 as oneYearBefore
+  FROM rating, facility 
+  WHERE rating.facilityID = facility.facilityID AND facility.facilityID = ".$id."
+            AND dateRated >= DATE_SUB(NOW(),INTERVAL 1 YEAR)
+            GROUP BY facility.facilityID";
   $result = mysqli_query($connect, $query);
  
   if(mysqli_num_rows($result) > 0)  
   {  
     while($row = mysqli_fetch_array($result)) 
     {
-      return number_format($row['overall'],2);
+      if($row['oneYearBefore'] == null)
+      {
+        return number_format($row['overall'],2);
+      }
+      else
+      {
+        return number_format(($row['overall'] + $row['oneYearBefore'])/2 ,2);
+      }
+      
     }  
     
   }
@@ -73,8 +81,11 @@ function getOverallVotePerID($id){
     return 0;
   }
 }
-//SA
- $connect = mysqli_connect("localhost", $username, $password, $database);  
+
+
+
+    
+    include('config.php'); 
     $i = 1;
     $query = sprintf("SELECT facilityID, address, facilityName, latitude, longhitude, ( 6371 * acos( cos( radians('%s') ) * cos( radians( latitude ) ) * cos( radians( longhitude ) - radians('%s') ) + sin( radians('%s') ) * sin( radians( latitude ) ) ) ) AS distance FROM facility HAVING distance < '%s' ORDER BY distance LIMIT 0 , 20",
   mysql_real_escape_string($lati),

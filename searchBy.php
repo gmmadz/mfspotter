@@ -256,7 +256,7 @@
                    <?php
                   include ("config.php");
                   $q = "SELECT specializationID, specialization FROM specialization";
-                  $result = mysqli_query($conn, $q);
+                  $result = mysqli_query($connect, $q);
                   if (mysqli_num_rows($result) > 0) {
     
                     while($row = mysqli_fetch_assoc($result)) {
@@ -264,7 +264,7 @@
                     }
 
                   }
-                  mysqli_close($conn);             
+                  mysqli_close($connect);             
                   ?>
 
                 </select>
@@ -303,7 +303,7 @@
                   <?php
                   include ("config.php");
                   $q = "SELECT insurancesID, insuranceName FROM insurances";
-                  $result = mysqli_query($conn, $q);
+                  $result = mysqli_query($connect, $q);
                   if (mysqli_num_rows($result) > 0) {
     
                     while($row = mysqli_fetch_assoc($result)) {
@@ -311,7 +311,7 @@
                     }
 
                   }
-                  mysqli_close($conn);             
+                  mysqli_close($connect);             
                   ?>
                   </select>
                 </div>
@@ -487,13 +487,13 @@
                             <?php
                             include ("config.php");
                             $q = "SELECT specializationID, specialization FROM specialization";
-                            $result = mysqli_query($conn, $q);
+                            $result = mysqli_query($connect, $q);
                             if (mysqli_num_rows($result) > 0) {           
                               while($row = mysqli_fetch_assoc($result)) {
                                 echo '<option value="'. $row['specializationID'] . '">' . $row['specialization'] . '</option>';
                               }
                             }
-                            mysqli_close($conn);             
+                            mysqli_close($connect);             
                             ?>
                         </select>
                       </div>
@@ -504,13 +504,13 @@
                             <?php
                             include ("config.php");
                             $q = "SELECT insurancesID, insuranceName FROM insurances";
-                            $result = mysqli_query($conn, $q);
+                            $result = mysqli_query($connect, $q);
                             if (mysqli_num_rows($result) > 0) {
                               while($row = mysqli_fetch_assoc($result)) {
                                 echo '<option value="'. $row['insurancesID'] . '">' . $row['insuranceName'] . '</option>';
                               }
                             }
-                            mysqli_close($conn);             
+                            mysqli_close($connect);             
                             ?>
                           </select>
                       </div>
