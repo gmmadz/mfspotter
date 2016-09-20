@@ -408,14 +408,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
   .glyphicon-thumbs-down:hover{ color: #E10000; cursor:pointer;}
   .counter{ color:#333333;}
 
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> 045db1c01a47a57f2bc9e1dff82e2ccab2f0ffef
   .icon-success {
     color: #008000;
   }
@@ -424,12 +416,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     color: #E10000;
   }
 
-
-<<<<<<< HEAD
-=======
->>>>>>> f8d6551489fe0e647ce3fc00af2ff145096e0c6d
->>>>>>> 4dc3cbb0c0fc02dc7806de39b03e7c45cdc845b9
->>>>>>> 045db1c01a47a57f2bc9e1dff82e2ccab2f0ffef
   </style>
 <script type="text/javascript">
 
@@ -1492,8 +1478,157 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
               <!-COMMENTS->
               <div class="tab-pane" id="ltab_3">
-                insert comment here
-              </div>
+
+                  <!-- /.box-header -->
+                  <div class="box-body">
+                    <div class="post">
+                       
+                          <div class="form-group margin-bottom-none">
+                            <div class="col-sm-9">
+                              <input class="form-control input-sm" id="comment" placeholder="Post a comment">
+                              <input type="text" id="username" value="<?php echo $_SESSION["user_id"]; ?>" hidden>
+                              <input type="text" id="facilityID" value="<?php echo $facility_id; ?>" hidden>
+                            </div>
+                            <div class="col-sm-3">
+                              <button type="submit" class="btn btn-danger pull-right btn-block btn-sm" onclick="post()">Send</button>
+                            </div>
+                          </div>
+                    
+                      </div>
+
+                      <br>
+
+                      <div id = "all_comments">
+                      
+                      <?php 
+                         //COMMENTS
+                        $query4 = "SELECT commentID, comment, firstName, middleName, lastName,  DATE_FORMAT( dateRated,  '%Y-%m-%d %H:%i' ) AS dateRated FROM comment c, user u WHERE c.userID = u.userID AND facilityID = " . $facility_id . " AND YEAR( dateRated ) = YEAR( CURDATE()) ORDER BY dateRated DESC";
+
+                        $result4 = mysqli_query($connect, $query4); 
+
+                        if(mysqli_num_rows($result4) > 0)  
+                        {  
+                          while($row4 = mysqli_fetch_array($result4)) 
+                          {
+                            $name = implode(" ", array($row4['firstName'], $row4['middleName'], $row4['lastName']));
+                            $comments[] = array($row4['comment'], $name, $row4['dateRated'], $row4['commentID']);
+
+                          }  
+
+                        }
+
+
+                        for($row = 0; $row < count($comments); $row++){
+
+                        $comID = $comments[$row][3];
+                        $uID = $_SESSION["user_id"];
+                        $str_like = "like";
+
+
+                        //Select Likes and Dislikes
+                        $selectquery="SELECT COUNT(case when remarks = 'Like' then 1 end) as likes, COUNT(case when remarks = 'Dislike' then 1 end) as dislikes FROM remark WHERE commentID = '$comID'";
+
+                        $selectRemarks=mysqli_query($connect, $selectquery);
+
+
+                        if(mysqli_num_rows($selectRemarks) > 0){
+                           while($row2=mysqli_fetch_array($selectRemarks))
+                          {
+                            $likes = $row2['likes'];
+                            $dislikes = $row2['dislikes'];
+                          }
+
+                          $like_count = "'like_count". $comID . "'";
+                          $dislike_count = "'dislike_count". $comID . "'";
+                          $userRemarkLike = "";
+                          $userRemarkDis = "";
+                          
+                            echo '
+                            <div class="post">
+
+                            <div class="user-block">
+
+                              <img class="img-circle img-bordered-sm" src="/mfspotter/dist/img/user1-128x128.jpg" alt="user image">
+                                  <span class="username">
+                                    <a href="#">' . $comments[$row][1] . '</a>
+                                  </span>
+                              <span class="description">' . $comments[$row][2] . '</span>
+                            </div>
+                            <!-- /.user-block -->
+
+                            <p>' . $comments[$row][0] . '</p>';
+
+                            
+                            //CHECK IF THE USER HAS ALREADY VOTED
+                            $checkQ="SELECT * FROM remark WHERE commentID = $comID AND userID = $uID";
+
+                            $checkUser=mysqli_query($connect, $checkQ);
+
+                            if(mysqli_num_rows($checkUser) > 0){
+                               while($row2=mysqli_fetch_array($checkUser)){
+                                  if($row2['remarks'] == "Like"){
+                                    $userRemarkLike = "icon-success";
+                                  }
+                                  else if($row2['remarks'] == "Dislike"){
+                                    $userRemarkDis = "icon-fail";
+                                  }
+                                  else{
+                                    $userRemarkLike = "";
+                                    $userRemarkDis = "";
+                                  }
+                               }
+
+                            }
+
+                              echo '<div class="ratings">
+                              
+                              <ul class="list-inline">
+                                <li>
+                                  <!-- Like Icon HTML -->
+                                  <span class="glyphicon glyphicon-thumbs-up '. $userRemarkLike .'" onClick="cwRating('. $comID .', 1, '. $like_count .', '. $uID .')"></span>&nbsp;
+
+                                  <!-- Like Counter -->
+                                  <span class="counter" id="like_count'. $comID.'">'. $likes .'</span>&nbsp;&nbsp;&nbsp;
+
+                                </li>
+
+                                <li>
+                                  <!-- Dislike Icon HTML -->
+                                  <span class="glyphicon glyphicon-thumbs-down '. $userRemarkDis .'" onClick="cwRating('. $comID .', 0, '. $dislike_count .', '. $uID .')"></span>&nbsp;
+                                  <!-- Dislike Counter -->
+                                  <span class="counter" id="dislike_count'. $comID.'">'. $dislikes .'</span>&nbsp;&nbsp;&nbsp;
+                                </li>
+                              </ul>
+                              </div> <!-- /. ratings -->';
+                           // }
+                          
+
+                          echo '</div>  <!-- /.post -->';
+                            
+                            
+                          }// Counting remarks
+                        
+                        
+                        }// END OF FOR EACH FOR EACH COMMENT
+                      
+                      ?>
+                      </div>  <!-- /. all_coments -->
+                     
+                      
+
+                  </div>
+                  <!-- /.box-body -->
+                </div>
+
+                <!-- /.box on Comments-->
+
+
+
+
+
+
+
+              </div> <!-- tab pane 3 -->
    
 
 
@@ -1502,205 +1637,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </div>
           <!-- nav-tabs-custom -->
            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                 
-          <!-- Comments-->
-          <div class="box box-primary box-success">
-            <div class="box-header with-border">
-              <h3 class="box-title">Comments</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="post">
-                  <form class="form-horizontal" method='post' action="" onsubmit="return post();">
-                    <div class="form-group margin-bottom-none">
-                      <div class="col-sm-9">
-                        <input class="form-control input-sm" id="comment" placeholder="Post a comment">
-                        <input type="text" id="username" value="<?php echo $_SESSION["user_id"]; ?>" hidden>
-                        <input type="text" id="facilityID" value="<?php echo $facility_id; ?>" hidden>
-                      </div>
-                      <div class="col-sm-3">
-                        <button type="submit" class="btn btn-danger pull-right btn-block btn-sm">Send</button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-
-                <div id = "all_comments">
-                <?php 
-                   //COMMENTS
-                  $query4 = "SELECT commentID, comment, firstName, middleName, lastName,  DATE_FORMAT( dateRated,  '%Y-%m-%d %H:%i' ) AS dateRated FROM comment c, user u WHERE c.userID = u.userID AND facilityID = " . $facility_id . " AND YEAR( dateRated ) = YEAR( CURDATE()) ORDER BY dateRated DESC";
-
-                  $result4 = mysqli_query($connect, $query4); 
-
-                  if(mysqli_num_rows($result4) > 0)  
-                  {  
-                    while($row4 = mysqli_fetch_array($result4)) 
-                    {
-                      $name = implode(" ", array($row4['firstName'], $row4['middleName'], $row4['lastName']));
-                      $comments[] = array($row4['comment'], $name, $row4['dateRated'], $row4['commentID']);
-
-                    }  
-
-                  }
-
-
-                  for($row = 0; $row < count($comments); $row++){
-
-                  $comID = $comments[$row][3];
-                  $uID = $_SESSION["user_id"];
-                  $str_like = "like";
-
-
-                  //Select Likes and Dislikes
-                  $selectquery="SELECT COUNT(case when remarks = 'Like' then 1 end) as likes, COUNT(case when remarks = 'Dislike' then 1 end) as dislikes FROM remark WHERE commentID = '$comID'";
-
-                  $selectRemarks=mysqli_query($connect, $selectquery);
-
-
-                  if(mysqli_num_rows($selectRemarks) > 0){
-                     while($row2=mysqli_fetch_array($selectRemarks))
-                    {
-                      $likes = $row2['likes'];
-                      $dislikes = $row2['dislikes'];
-                    }
-
-                    $like_count = "'like_count". $comID . "'";
-                    $dislike_count = "'dislike_count". $comID . "'";
-                    
-                      echo '
-                      <div class="post">
-
-                      <div class="user-block">
-
-                        <img class="img-circle img-bordered-sm" src="/mfspotter/dist/img/user1-128x128.jpg" alt="user image">
-                            <span class="username">
-                              <a href="#">' . $comments[$row][1] . '</a>
-                            </span>
-                        <span class="description">' . $comments[$row][2] . '</span>
-                      </div>
-                      <!-- /.user-block -->
-
-                      <p>' . $comments[$row][0] . '</p>';
-
-                      
-                      //CHECK IF THE USER HAS ALREADY VOTED
-                      $checkQ="SELECT * FROM remark WHERE commentID = $comID AND userID = $uID";
-
-                      $checkUser=mysqli_query($connect, $checkQ);
-
-                      if(mysqli_num_rows($checkUser) > 0){
-                         while($row2=mysqli_fetch_array($checkUser)){
-                            $userRemark = $row2['remarks'];
-                         }
-
-                      }
-
-
-                      if($userRemark == "Like"){
-                        echo '<div class="ratings">
-                        
-                        <ul class="list-inline">
-                          <li>
-                            <!-- Like Icon HTML -->
-                            <span class="glyphicon glyphicon-thumbs-up icon-success" onClick="cwRating('. $comID .', 1, '. $like_count .', '. $uID .')"></span>&nbsp;
-
-                            <!-- Like Counter -->
-                            <span class="counter" id="like_count'. $comID.'">'. $likes .'</span>&nbsp;&nbsp;&nbsp;
-
-                          </li>
-
-                          <li>
-                            <!-- Dislike Icon HTML -->
-                            <span class="glyphicon glyphicon-thumbs-down" onClick="cwRating('. $comID .', 0, '. $dislike_count .', '. $uID .')"></span>&nbsp;
-                            <!-- Dislike Counter -->
-                            <span class="counter" id="dislike_count'. $comID.'">'. $dislikes .'</span>&nbsp;&nbsp;&nbsp;
-                          </li>
-                        </ul>
-                        </div> <!-- /. ratings -->';
-                      }
-                      else if($userRemark == "Dislike"){
-                        echo '<div class="ratings">
-                        
-                        <ul class="list-inline">
-                          <li>
-                            <!-- Like Icon HTML -->
-                            <span class="glyphicon glyphicon-thumbs-up" onClick="cwRating('. $comID .', 1, '. $like_count .', '. $uID .')"></span>&nbsp;
-
-                            <!-- Like Counter -->
-                            <span class="counter" id="like_count'. $comID.'">'. $likes .'</span>&nbsp;&nbsp;&nbsp;
-
-                          </li>
-
-                          <li>
-                            <!-- Dislike Icon HTML -->
-                            <span class="glyphicon glyphicon-thumbs-down icon-fail" onClick="cwRating('. $comID .', 0, '. $dislike_count .', '. $uID .')"></span>&nbsp;
-                            <!-- Dislike Counter -->
-                            <span class="counter" id="dislike_count'. $comID.'">'. $dislikes .'</span>&nbsp;&nbsp;&nbsp;
-                          </li>
-                        </ul>
-                        </div> <!-- /. ratings -->';
-                      }
-                      else{
-                        echo '<div class="ratings">
-                        
-                        <ul class="list-inline">
-                          <li>
-                            <!-- Like Icon HTML -->
-                            <span class="glyphicon glyphicon-thumbs-up" onClick="cwRating('. $comID .', 1, '. $like_count .', '. $uID .')"></span>&nbsp;
-
-                            <!-- Like Counter -->
-                            <span class="counter" id="like_count'. $comID.'">'. $likes .'</span>&nbsp;&nbsp;&nbsp;
-
-                          </li>
-
-                          <li>
-                            <!-- Dislike Icon HTML -->
-                            <span class="glyphicon glyphicon-thumbs-down" onClick="cwRating('. $comID .', 0, '. $dislike_count .', '. $uID .')"></span>&nbsp;
-                            <!-- Dislike Counter -->
-                            <span class="counter" id="dislike_count'. $comID.'">'. $dislikes .'</span>&nbsp;&nbsp;&nbsp;
-                          </li>
-                        </ul>
-                        </div> <!-- /. ratings -->';
-                      }
-
-
-                    echo '</div>  <!-- /.post -->';
-                      
-                      
-                    }// Counting remarks
-                  
-                  
-                  }// END OF FOR EACH FOR EACH COMMENT
-                
-                ?>
-                </div>  <!-- /. all_coments -->
-               
-                
-
-            </div>
-            <!-- /.box-body -->
-          </div>
-
-          <!-- /.box on Comments-->
+  
+          
         </div><!-- col 9 -->
 
 
