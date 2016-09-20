@@ -1,10 +1,5 @@
 <?php
 
-
-$username="root";
-$password="usbw";
-$database="mfspotter";
-
 $newProcessRating = $_POST['pval'];
 $newOutcomeRating = $_POST['oval'];
 $newStructureRating = $_POST['sval'];
@@ -19,13 +14,13 @@ $experienceID = $_POST['eid'];
 $userID = $_POST['usid'];
 $facilityID = $_POST['faid'];
 
-$mysqli = new mysqli("localhost", $username, $password, $database); 
+include('config2.php');
 $mysqli->autocommit(false);
 
-$mysqli->query("UPDATE rating SET rating = $newProcessRating WHERE ratingID = $processID AND facilityID = $facilityID AND userID = $userID");
-$mysqli->query("UPDATE rating SET rating = $newOutcomeRating WHERE ratingID = $outcomeID AND facilityID = $facilityID AND userID = $userID");
-$mysqli->query("UPDATE rating SET rating = $newStructureRating WHERE ratingID = $structureID AND facilityID = $facilityID AND userID = $userID");
-$mysqli->query("UPDATE rating SET rating = $newExperienceRating WHERE ratingID = $experienceID AND facilityID = $facilityID AND userID = $userID");        
+$mysqli->query("UPDATE rating SET rating = $newProcessRating, dateRated = NOW() WHERE ratingID = $processID AND facilityID = $facilityID AND userID = $userID");
+$mysqli->query("UPDATE rating SET rating = $newOutcomeRating, dateRated = NOW() WHERE ratingID = $outcomeID AND facilityID = $facilityID AND userID = $userID");
+$mysqli->query("UPDATE rating SET rating = $newStructureRating, dateRated = NOW() WHERE ratingID = $structureID AND facilityID = $facilityID AND userID = $userID");
+$mysqli->query("UPDATE rating SET rating = $newExperienceRating, dateRated = NOW()WHERE ratingID = $experienceID AND facilityID = $facilityID AND userID = $userID");        
 $mysqli->commit();
               
 
