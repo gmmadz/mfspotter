@@ -46,9 +46,9 @@
 
 
 <?php
-    //include ("config.php");
+    include ("config2.php");
 
-    $mysqli = new mysqli('localhost', 'root', 'usbw', 'mfspotter');
+    //$mysqli = new mysqli('localhost', 'root', 'usbw', 'mfspotter');
     $mysqli->autocommit(false);
 
 

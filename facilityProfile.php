@@ -3,13 +3,11 @@
     
   $facility_id = $_GET["id"];
   session_start();
-  $username="root";
-  $password="usbw";
-  $database="mfspotter";
-
+ 
+  include('config.php');
   $operating_period = array();
 
-  $connect = mysqli_connect("localhost", $username, $password, $database);  
+
   
   $query = "SELECT * FROM `facility` WHERE facilityID = " . $facility_id . " ";
 
@@ -79,7 +77,8 @@
 
 
   //RATINGS
-  $mysqli = new mysqli('localhost', 'root', 'usbw', 'mfspotter');
+  //$mysqli = new mysqli('localhost', 'root', 'usbw', 'mfspotter');
+  include('config2.php');
   $mysqli->autocommit(false);
   
     if(isset($_POST['submitted']))
@@ -113,33 +112,22 @@
     }
 
 function getOverallVotePerID($id){
-<<<<<<< HEAD
+
   include('config.php');
  // $query = "SELECT AVG(rating) as overall FROM rating, facility WHERE rating.facilityID = facility.facilityID AND facility.facilityID = ".$id." AND dateRated >= DATE_SUB(NOW(),INTERVAL 1 YEAR) GROUP BY facility.facilityID";
   $query = "SELECT AVG(rating) as overall, (SELECT AVG(rating) as last FROM rating WHERE dateRated <= DATE_SUB(NOW(),INTERVAL 1 YEAR) AND rating.facilityID = ".$id.")/2 as oneYearBefore
-=======
-  $username="root";
-  $password="usbw";
-  $database="mfspotter";
-  $connect = mysqli_connect("localhost", $username, $password, $database); 
-  $query = "SELECT AVG(rating) as overall 
->>>>>>> 571559ef7c687b70ab8f53edd5c65c7797a454e7
   FROM rating, facility 
   WHERE rating.facilityID = facility.facilityID AND facility.facilityID = ".$id."
             AND dateRated >= DATE_SUB(NOW(),INTERVAL 1 YEAR)
             GROUP BY facility.facilityID";
-<<<<<<< HEAD
-  $result = mysqli_query($connect, $query);
- 
-=======
 
   $result = mysqli_query($connect, $query);
->>>>>>> 571559ef7c687b70ab8f53edd5c65c7797a454e7
+
   if(mysqli_num_rows($result) > 0)  
   {  
     while($row = mysqli_fetch_array($result)) 
     {
-<<<<<<< HEAD
+
       if($row['oneYearBefore'] == null)
       {
         return number_format($row['overall'],2);
@@ -148,22 +136,14 @@ function getOverallVotePerID($id){
       {
         return number_format(($row['overall'] + $row['oneYearBefore'])/2 ,2);
       }
-      
-=======
-      return $row['overall'];
->>>>>>> 571559ef7c687b70ab8f53edd5c65c7797a454e7
-    }  
-    
+    }
   }
   else
   {
     return 0;
   }
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> 571559ef7c687b70ab8f53edd5c65c7797a454e7
 function getTotalVotesPerCategory($category, $fid){
   $username="root";
   $password="usbw";
@@ -434,13 +414,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   .glyphicon-thumbs-down:hover{ color: #E10000; cursor:pointer;}
   .counter{ color:#333333;}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> ca80bf708e1b71f67f8bec6633e21ec7bc5ebca4
-=======
->>>>>>> 571559ef7c687b70ab8f53edd5c65c7797a454e7
   .icon-success {
     color: #008000;
   }
@@ -449,13 +423,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     color: #E10000;
   }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> ca80bf708e1b71f67f8bec6633e21ec7bc5ebca4
-=======
->>>>>>> 571559ef7c687b70ab8f53edd5c65c7797a454e7
   </style>
 <script type="text/javascript">
 
@@ -513,11 +481,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                         <p>
-<<<<<<< HEAD
+
                           Alexander Pierce
-=======
+
                           '.$_SESSION["firstname"].' '.$_SESSION["lastname"] .'
->>>>>>> 571559ef7c687b70ab8f53edd5c65c7797a454e7
+
                           <small>'. $_SESSION["usertype"] .'</small>
                         </p>
                       </li>';            
@@ -666,11 +634,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <b>Telephone Number</b> <a class="pull-right"><?php echo $facility_tel ?></a>
                 </li>
               </ul>
-<<<<<<< HEAD
+
                <a href="#" class="btn btn-success btn-block"><b>Set an Appointment</b></a>
-=======
+
                <a href="appointment.php?id=<?php echo $facility_id ?>" class="btn btn-success btn-block"><b>Set an Appointment</b></a>
->>>>>>> 571559ef7c687b70ab8f53edd5c65c7797a454e7
+
             </div>
             <!-- /.box-body -->
           </div>
