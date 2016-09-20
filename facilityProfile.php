@@ -22,7 +22,8 @@
       $facility_name = $row['facilityName'];
       $facility_tel = $row['telephoneNumber'];
       $facility_address = $row['address'];
-
+      $facility_lat = $row['latitude'];
+      $facility_lng = $row['longhitude'];
     }  
     
   }
@@ -407,8 +408,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   .glyphicon-thumbs-down:hover{ color: #E10000; cursor:pointer;}
   .counter{ color:#333333;}
 
-<<<<<<< HEAD
-=======
+
   .icon-success {
     color: #008000;
   }
@@ -418,28 +418,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
   }
 
 
->>>>>>> f8d6551489fe0e647ce3fc00af2ff145096e0c6d
   </style>
 <script type="text/javascript">
- 
 
- function load() {
-      map = new google.maps.Map(document.getElementById("viewfaci_map"), {
-        center: new google.maps.LatLng(7.1907, 125.4553),
-        zoom: 12,
-        mapTypeId: 'roadmap',
-        icon: "marker/marker.png",
-        mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU}
-      });
-      infoWindow = new google.maps.InfoWindow();
-       var point = new google.maps.LatLng(7.1907, 125.4553));
-      var marker = new google.maps.Marker({
-                map: map,
-                position: point,
-                icon: icon.icon
-              });
 
-  }
 
   </script>
 
@@ -548,7 +530,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <div class="box box-primary box-success">
             <div class="box-body box-profile">
               <img class="profile-user-img img-responsive" src="/mfspotter/dist/img/photo1.png" alt="User profile picture">
-
+              <?php
+                echo '
+                <label id="facility_lati" for="'. $facility_lat . '"></label>
+                <label id="facility_long" for="'. $facility_lng. '"></label>
+                <label id="facility_name" for="'. $facility_name. '"></label>
+                ';
+              ?>
               <h3 class="profile-username text-center"><?php echo $facility_name ?></h3>
 
               <ul class="list-group list-group-unbordered">
@@ -636,8 +624,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <b>Telephone Number</b> <a class="pull-right"><?php echo $facility_tel ?></a>
                 </li>
               </ul>
-
-              <a href="#" class="btn btn-success btn-block"><b>Set an Appointment</b></a>
+               <a href="#" class="btn btn-success btn-block"><b>Set an Appointment</b></a>
             </div>
             <!-- /.box-body -->
           </div>
@@ -688,8 +675,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         </div>
         <!-- /.col -->
+     
 
 
+   
 
         <!-RATING DETAILS MODAL->
         <div class="modal fade modal-default" id="ratingDetailsModal">
@@ -1158,19 +1147,45 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             <div class="tab-content">
                             
-<<<<<<< HEAD
-                            <!-MAP->
-                            <div class="tab-pane active" id="ltab_1">
-                                <div class="box box-primary box-success">
-                                  <div id="viewfaci_map" style="position: relative; width:100%; height:400px"></div>
-                                </div>
-=======
+
               <!-MAP->
               <div class="tab-pane active" id="ltab_1">
-                  <div class="col-md-12">
-                    <div id="map" style="width: 80%; height: 80%"></div>
+                <div class="box box-primary box-success">
+                  <div id="viewfaci_map" style="position: relative; width:100%; height:400px"></div>
+                </div>
+
+                <div class="post">
+                  <div class="user-block">
+                    
+                      <label>
+                        From: <br />
+                        <input type="text" id="routeStart">
+                              <br><a href="#" class="autoLink" style="display: none;">Use current location: <span>not found</span></a>
+                      </label>
+                        <br>
+                        <label>
+                        
+                        <br>
+                      <label><input type="radio" name="travelMode" value="DRIVING" checked /> Driving</label>
+                      <label><input type="radio" name="travelMode" value="BICYCLING" /> Bicylcing</label>
+                      <label><input type="radio" name="travelMode" value="TRANSIT" /> Public transport</label>
+                      <label><input type="radio" name="travelMode" value="WALKING" /> Walking</label>
+                      <br><input type="submit" value="Calculate route" onclick="calcRoute();return false">
+                    
                   </div>
+                </div>
+
+                <div class="post">
+                  <div class="user-block">
+                    <div id="directionsPanel">
+                      Enter a starting point and click "Calculate route".
+                    </div>
+                  </div>
+                </div>
+
               </div>
+
+
 
               <!-RATING->
               <!-- /.tab-pane -->
@@ -1217,7 +1232,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </span>
                               <span class="description">Process measures assess whether a patient received what is known to be good care.
                               </span>
->>>>>>> f8d6551489fe0e647ce3fc00af2ff145096e0c6d
+
                             </div>
                             <!-- /.user-block -->
                           </div>
@@ -1716,12 +1731,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script type="text/javascript" src="plugins/rateit-scripts/jquery.rateit.min.js"></script>
 
 <script type="text/javascript">
-    document.getElementById("medOption").onclick = function () {
+   /* document.getElementById("medOption").onclick = function () {
         location.href = "/mfspotter/searchCenter2.php";
-    };
+    };*/
 
     //FOR COMMENTS
-  function post()
+function post()
   {
     var comment = document.getElementById("comment").value;
     var name = document.getElementById("username").value;
@@ -1755,7 +1770,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   }
 
   //FOR THE REMARKS
-  function insert_like(uID, cID)
+function insert_like(uID, cID)
   {
 
     //var uID = document.getElementById("user").value;
@@ -1778,7 +1793,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       });
   }
 
-  function insert_dislike()
+function insert_dislike()
   {
     $.ajax({
       type: 'post',
@@ -1793,7 +1808,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   }
 
   //REMARKS Trial 2
-  function addLikes(user,id,action) {
+function addLikes(user,id,action) {
     console.log(user);
     console.log(id);
     console.log(action);
@@ -1871,23 +1886,6 @@ function cwRating(id,type,target, userId){
 <script type="text/javascript">
  
 
- function load() {
-      map = new google.maps.Map(document.getElementById("viewfaci_map"), {
-        center: new google.maps.LatLng(7.1907, 125.4553),
-        zoom: 12,
-        mapTypeId: 'roadmap',
-        icon: "marker/marker.png",
-        mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU}
-      });
-      infoWindow = new google.maps.InfoWindow();
-       var point = new google.maps.LatLng(7.1907, 125.4553));
-      var marker = new google.maps.Marker({
-                map: map,
-                position: point,
-                icon: icon.icon
-              });
-
-  }
 
 function updateRating(){
 
@@ -1968,6 +1966,130 @@ function updateRating(){
 
  
 }
+
+var directionDisplay, map;
+var directionsService = new google.maps.DirectionsService();
+var geocoder = new google.maps.Geocoder();
+
+
+ function load() {
+      var lat = document.getElementById("facility_lati").htmlFor;
+      var lng = document.getElementById("facility_long").htmlFor;
+      var facname = document.getElementById("facility_name").htmlFor;
+      var rendererOptions = { draggable: true };
+      directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+
+      map = new google.maps.Map(document.getElementById("viewfaci_map"), {
+        center: new google.maps.LatLng(lat, lng),
+        zoom: 17,
+        mapTypeId: 'roadmap',
+        icon: "marker/marker.png",
+        mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU}
+      });
+      infoWindow = new google.maps.InfoWindow();
+      var point = new google.maps.LatLng(lat, lng);
+      var marker = new google.maps.Marker({
+                map: map,
+                position: point
+              });
+      google.maps.event.addListener(marker, 'click', function() {
+        infoWindow.setContent("<b>Facility Name: " + facname + "</b>");
+        infoWindow.open(map, marker);
+      });
+
+      directionsDisplay.setMap(map);
+      // point the directions to the container for the direction details
+      directionsDisplay.setPanel(document.getElementById("directionsPanel"));
+      // start the geolocation API
+      if (navigator.geolocation) {
+        // when geolocation is available on your device, run this function
+        navigator.geolocation.getCurrentPosition(foundYou, notFound);
+      } else {
+        // when no geolocation is available, alert this message
+        alert('Geolocation not supported or not enabled.');
+      }
+
+  }
+
+function calcRoute() {
+  // get the travelmode, startpoint and via point from the form   
+  var travelMode = $('input[name="travelMode"]:checked').val();
+  var start = $("#routeStart").val();
+  //var end = $("#routeEnd").val();//
+
+  var lat = document.getElementById("facility_lati").htmlFor;
+  var lng = document.getElementById("facility_long").htmlFor;
+  // compose a array with options for the directions/route request
+  var request = {
+    origin: start,
+    destination: lat + ',' + lng,
+    unitSystem: google.maps.UnitSystem.IMPERIAL,
+    travelMode: google.maps.DirectionsTravelMode[travelMode]
+  };
+  // call the directions API
+  directionsService.route(request, function(response, status) {
+    if (status == google.maps.DirectionsStatus.OK) {
+      // directions returned by the API, clear the directions panel before adding new directions
+      $('#directionsPanel').empty();
+      // display the direction details in the container
+      directionsDisplay.setDirections(response);
+    } else {
+      // alert an error message when the route could nog be calculated.
+      if (status == 'ZERO_RESULTS') {
+        alert('No route could be found between the origin and destination.');
+      } else if (status == 'UNKNOWN_ERROR') {
+        alert('A directions request could not be processed due to a server error. The request may succeed if you try again.');
+      } else if (status == 'REQUEST_DENIED') {
+        alert('This webpage is not allowed to use the directions service.');
+      } else if (status == 'OVER_QUERY_LIMIT') {
+        alert('The webpage has gone over the requests limit in too short a period of time.');
+      } else if (status == 'NOT_FOUND') {
+        alert('At least one of the origin, destination, or waypoints could not be geocoded.');
+      } else if (status == 'INVALID_REQUEST') {
+        alert('The DirectionsRequest provided was invalid.');         
+      } else {
+        alert("There was an unknown error in your request. Requeststatus: nn"+status);
+      }
+    }
+  });
+}
+
+function foundYou(position) {
+  // convert the position returned by the geolocation API to a google coordinate object
+  var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+  // then try to reverse geocode the location to return a human-readable address
+  geocoder.geocode({'latLng': latlng}, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      // if the geolocation was recognized and an address was found
+      if (results[0]) {
+        // add a marker to the map on the geolocated point
+        
+        /*marker = new google.maps.Marker({
+            position: latlng,
+            map: map
+        });*/
+
+        // compose a string with the address parts
+        var address = results[0].address_components[1].long_name+' '+results[0].address_components[0].long_name+', '+results[0].address_components[3].long_name
+        // set the located address to the link, show the link and add a click event handler
+        $('.autoLink span').html(address).parent().show().click(function(){
+          // onclick, set the geocoded address to the start-point formfield
+          $('#routeStart').val(address);
+          // call the calcRoute function to start calculating the route
+          calcRoute();
+        });
+      }
+    } else {
+      // if the address couldn't be determined, alert and error with the status message
+      alert("Geocoder failed due to: " + status);
+    }
+  });
+}
+
+function notFound(msg) {  
+  alert('Could not find your location :(')
+}
+
 $(function() {
       $('.rating-process').barrating({
         theme: 'fontawesome-stars',
