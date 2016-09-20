@@ -408,7 +408,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
   .glyphicon-thumbs-down:hover{ color: #E10000; cursor:pointer;}
   .counter{ color:#333333;}
 
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> 045db1c01a47a57f2bc9e1dff82e2ccab2f0ffef
   .icon-success {
     color: #008000;
   }
@@ -418,6 +425,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
   }
 
 
+<<<<<<< HEAD
+=======
+>>>>>>> f8d6551489fe0e647ce3fc00af2ff145096e0c6d
+>>>>>>> 4dc3cbb0c0fc02dc7806de39b03e7c45cdc845b9
+>>>>>>> 045db1c01a47a57f2bc9e1dff82e2ccab2f0ffef
   </style>
 <script type="text/javascript">
 
