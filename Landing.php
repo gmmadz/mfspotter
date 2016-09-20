@@ -95,7 +95,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                         <p>
-                          Alexander Pierce
+                          '.$_SESSION["firstname"].' '.$_SESSION["lastname"] .'
                           <small>'. $_SESSION["usertype"] .'</small>
                         </p>
                       </li>';            
