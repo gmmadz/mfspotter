@@ -473,7 +473,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                         <p>
-                          Alexander Pierce
+                          '.$_SESSION["firstname"].' '.$_SESSION["lastname"] .'
                           <small>'. $_SESSION["usertype"] .'</small>
                         </p>
                       </li>';            
@@ -622,7 +622,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <b>Telephone Number</b> <a class="pull-right"><?php echo $facility_tel ?></a>
                 </li>
               </ul>
-               <a href="#" class="btn btn-success btn-block"><b>Set an Appointment</b></a>
+               <a href="appointment.php?id=<?php echo $facility_id ?>" class="btn btn-success btn-block"><b>Set an Appointment</b></a>
             </div>
             <!-- /.box-body -->
           </div>

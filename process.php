@@ -3,12 +3,16 @@ include('config.php');
 
 $type = $_POST['type'];
 
+
 if($type == 'new')
 {
+	$facility_id = $_POST['facility_id'];
+	$user_id = $_POST['user_id'];
 	$startdate = $_POST['startdate'].'+'.$_POST['zone'];
 	$title = $_POST['title'];
-	$insert = mysqli_query($con,"INSERT INTO calendar(`title`, `startdate`, `enddate`, `allDay`) VALUES('$title','$startdate','$startdate','false')");
-	$lastid = mysqli_insert_id($con);
+
+	$insert = mysqli_query($conn,"INSERT INTO `calendar`(`title`, `startDate`, `endDate`, `allDay`, `userID`, `facilityID`) VALUES('$title','$startdate','$startdate','false','$user_id','$facility_id')");
+	$lastid = mysqli_insert_id($conn);
 	echo json_encode(array('status'=>'success','eventid'=>$lastid));
 }
 
@@ -16,7 +20,8 @@ if($type == 'changetitle')
 {
 	$eventid = $_POST['eventid'];
 	$title = $_POST['title'];
-	$update = mysqli_query($con,"UPDATE calendar SET title='$title' where id='$eventid'");
+
+	$update = mysqli_query($conn,"UPDATE calendar SET title='$title' where calendarID='$eventid'");
 	if($update)
 		echo json_encode(array('status'=>'success'));
 	else
@@ -29,7 +34,9 @@ if($type == 'resetdate')
 	$startdate = $_POST['start'];
 	$enddate = $_POST['end'];
 	$eventid = $_POST['eventid'];
-	$update = mysqli_query($con,"UPDATE calendar SET title='$title', startdate = '$startdate', enddate = '$enddate' where id='$eventid'");
+
+
+	$update = mysqli_query($conn,"UPDATE calendar SET title='$title', startDate = '$startdate', endDate = '$enddate' where calendarID='$eventid'");
 	if($update)
 		echo json_encode(array('status'=>'success'));
 	else
@@ -39,7 +46,10 @@ if($type == 'resetdate')
 if($type == 'remove')
 {
 	$eventid = $_POST['eventid'];
-	$delete = mysqli_query($con,"DELETE FROM calendar where id='$eventid'");
+
+	echo $eventid;
+	echo "<br>";
+	$delete = mysqli_query($conn,"DELETE FROM calendar where calendarID='$eventid'");
 	if($delete)
 		echo json_encode(array('status'=>'success'));
 	else
@@ -48,15 +58,18 @@ if($type == 'remove')
 
 if($type == 'fetch')
 {
+	$facility_id = $_POST['facility_id'];
+	$user_id = $_POST['user_id'];
+
 	$events = array();
-	$query = mysqli_query($con, "SELECT * FROM calendar");
+	$query = mysqli_query($conn, "SELECT * FROM calendar WHERE facilityID = '$facility_id' AND userID = '$user_id'");
 	while($fetch = mysqli_fetch_array($query,MYSQLI_ASSOC))
 	{
 	$e = array();
-    $e['id'] = $fetch['id'];
+    $e['id'] = $fetch['calendarID'];
     $e['title'] = $fetch['title'];
-    $e['start'] = $fetch['startdate'];
-    $e['end'] = $fetch['enddate'];
+    $e['start'] = $fetch['startDate'];
+    $e['end'] = $fetch['endDate'];
 
     $allday = ($fetch['allDay'] == "true") ? true : false;
     $e['allDay'] = $allday;
