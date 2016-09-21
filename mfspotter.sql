@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 21, 2016 at 09:13 AM
+-- Generation Time: Sep 21, 2016 at 08:43 PM
 -- Server version: 5.6.13
 -- PHP Version: 5.4.17
 
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `calendar` (
   `userID` int(11) NOT NULL,
   `facilityID` int(11) NOT NULL,
   PRIMARY KEY (`calendarID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -401,7 +401,7 @@ CREATE TABLE IF NOT EXISTS `specialization` (
   `specializationID` int(4) NOT NULL AUTO_INCREMENT,
   `specialization` varchar(70) NOT NULL,
   PRIMARY KEY (`specializationID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=109 ;
 
 --
 -- Dumping data for table `specialization`
@@ -409,7 +409,113 @@ CREATE TABLE IF NOT EXISTS `specialization` (
 
 INSERT INTO `specialization` (`specializationID`, `specialization`) VALUES
 (1, 'Dentistry'),
-(2, 'EENT');
+(2, 'EENT'),
+(3, 'Allergy and Immunology'),
+(4, 'Anesthesiology'),
+(5, 'Cardiology'),
+(6, 'Cardiovascular Anesthesia'),
+(7, 'Cardiovascular Pathology'),
+(8, 'Cataract and Refractive Surgery'),
+(9, 'Child Neurology'),
+(10, 'Colon and Rectal Surgery'),
+(11, 'Cornea'),
+(12, 'Cosmetic & Reconstructive Surgery'),
+(13, 'Cosmetic Surgery'),
+(14, 'Dermatology'),
+(15, 'Developmental and Behavioral Pediatrics'),
+(16, 'Diabetology'),
+(17, 'EENT'),
+(18, 'Emergency Medicine'),
+(19, 'Endocrinology'),
+(20, 'Endoscopy and Laparoscopy'),
+(21, 'ENT (Otolaryngology)'),
+(22, 'Epidemiology'),
+(23, 'Family Medicine'),
+(24, 'Foot and Ankle Orthopedic'),
+(25, 'Gastroenterology'),
+(26, 'General Practice'),
+(27, 'Geriatrics'),
+(28, 'Glaucoma'),
+(29, 'Hand Surgery'),
+(30, 'Head & Neck Surgery'),
+(31, 'Hematology'),
+(32, 'Hematology-Oncology'),
+(33, 'Hepatology'),
+(34, 'Hip & Knee'),
+(35, 'Ilizarov Specialist'),
+(36, 'Infectious Diseases'),
+(37, 'Internal Medicine'),
+(38, 'Interventional Radiology'),
+(39, 'Laparoscopy'),
+(40, 'Medico Legal Medicine'),
+(41, 'Muscoskeletal Tumor'),
+(42, 'Neonatology'),
+(43, 'Nephrology'),
+(44, 'Neuro-Ophthalmology'),
+(45, 'Neurology'),
+(46, 'Neurosurgery'),
+(47, 'Nuclear Medicine'),
+(48, 'OB Ultrasound'),
+(49, 'Obstetric Anesthesia'),
+(50, 'Obstetrics & Gynecology'),
+(51, 'Occupational Medicine'),
+(52, 'Ocular Inflammation'),
+(53, 'Oncology'),
+(54, 'Oncology & Colposcopy'),
+(55, 'Ophthalmic Plastic & Reconstructive Surgery'),
+(56, 'Ophthalmology'),
+(57, 'Orthopedic Surgery'),
+(58, 'Pain Medicine'),
+(59, 'Pathology'),
+(60, 'Pediatric Cardiology'),
+(61, 'Pediatric Endocrinology'),
+(62, 'Pediatric Gastroenterology'),
+(63, 'Pediatric Infectious Disease'),
+(64, 'Pediatric Intensivist'),
+(65, 'Pediatric Nephrology'),
+(66, 'Pediatric Oncology'),
+(67, 'Pediatric Ophthalmology & Strabismus'),
+(68, 'Pediatric Orthopedic'),
+(69, 'Pediatric Pulmonology'),
+(70, 'Pediatric Surgery'),
+(71, 'Pediatrics'),
+(72, 'Perinatology'),
+(73, 'Pharmacology'),
+(74, 'Physical Medicine and Rehabilitation'),
+(75, 'Plastic and Reconstructive Surgery'),
+(76, 'Psychiatry'),
+(77, 'Public Health'),
+(78, 'Pulmonology'),
+(79, 'Radiation Oncology'),
+(80, 'Radiology'),
+(81, 'Rehabilitation Medicine'),
+(82, 'Reproductive Endocrinology and Infertility'),
+(83, 'Rheumatology'),
+(84, 'Shoulder'),
+(85, 'Spine'),
+(86, 'Sports Medicine'),
+(87, 'Surgery'),
+(88, 'Surgical Oncology'),
+(89, 'Thoracic Cardiovascular Surgery'),
+(90, 'Toxicology'),
+(91, 'Transplant Surgery'),
+(92, 'Trophoblastic'),
+(93, 'Ultrasonography'),
+(94, 'Urology'),
+(95, 'Vascular Surgery'),
+(96, 'Venereology'),
+(97, 'Vitreo-Retina'),
+(98, 'Cosmetic Dentistry'),
+(99, 'Dental Surgery'),
+(100, 'Endodontics'),
+(101, 'General Dentistry'),
+(102, 'Hospital Dentistry'),
+(103, 'Implant Dentistry'),
+(104, 'Oral Surgery'),
+(105, 'Orthodontics'),
+(106, 'Pediatric Dentistry'),
+(107, 'Periodontics'),
+(108, 'Prosthodontics');
 
 -- --------------------------------------------------------
 

@@ -151,14 +151,33 @@
       <!-Menu on the left side->
        
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse pull-right" id="navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="#">About</a></li>
-            <li><a href="#">Log In</a></li>
-          </ul>
+        <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <li><a href="#">About</a></li>
+          <!-- User Account: style can be found in dropdown.less -->
+
+          <?php
+            include("config.php");
+            session_start();
+            include("header.php");
+          ?>
           
-        </div>
-        <!-- /.navbar-collapse -->
+             
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                </div>
+                <div class="pull-right">
+                  <a href="logout.php" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+          
+        </ul>
+      </div>
+        <!-- /.navbar -->
 
     </nav>
 

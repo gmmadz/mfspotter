@@ -406,6 +406,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="plugins/select2/select2.min.css">
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect.
@@ -503,7 +505,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
      <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
-          Facility Profile
+          Manage Facility Profile
         </h1>
       </section>
 
@@ -621,7 +623,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </li>
               </ul>
 
-               <a href="appointment.php?id=<?php echo $facility_id ?>" class="btn btn-success btn-block"><b>Set an Appointment</b></a>
+               <a href="appointment.php?id=<?php echo $facility_id ?>" class="btn btn-success btn-block"><b>Manage Appointments</b></a>
 
             </div>
             <!-- /.box-body -->
@@ -636,6 +638,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- /.box-header -->
             <div class="box-body">
               <strong><i class="fa fa-book margin-r-5"></i> Specialization</strong>
+              <div class="pull-right hidden-xs">
+                <a href="#" data-toggle="modal" data-target="#editSpecializationModal">Edit</a>
+              </div>
+              
 
               <p class="text-muted">
                 <?php
@@ -651,12 +657,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <hr>
 
               <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
+              <div class="pull-right hidden-xs">
+                <a href="#" data-toggle="modal" data-target="#editLocationModal">Edit</a>
+              </div>
 
               <p class="text-muted"><?php echo $facility_address ?></p>
 
               <hr>
 
-              <strong><i class="fa fa-pencil margin-r-5"></i> Insurances Included</strong>
+              <strong><i class="fa fa-edit margin-r-5"></i> Insurances Included</strong>
+              <div class="pull-right hidden-xs">
+                <a href="#" data-toggle="modal" data-target="#editInsurancesModal">Edit</a>
+              </div>
 
               <p>
                 <?php
@@ -680,7 +692,140 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         </div>
         <!-- /.col -->
-     
+        
+        <!-ABOUT FACILITY MODALS ->
+
+        <!- SPECIALIZATION ->
+        <div class="modal fade modal-success" id="editSpecializationModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Specialization</h4>
+            </div>
+            <div class="modal-body">
+            
+              <div class="form-group">
+
+                <label>Specialization:</label>
+
+                <select name="selected_specialization[]" class="form-control select2" multiple="multiple" data-placeholder="Select Specialization" style="width: 100%;">
+
+                <?php
+                  include("config.php");
+                  $q = "SELECT * FROM specialization";
+                  $result = mysqli_query($connect, $q);
+                  if (mysqli_num_rows($result)>0){
+                    while($row = mysqli_fetch_assoc($result)){
+                      echo '<option value="' . $row['specializationID'] . '">' . $row['specialization'] . '</option>';
+                    }
+                  }
+                mysqli_close($conn);             
+                ?>
+                </select>
+
+              </div>
+              </br>
+             
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline" onclick="searchLocationsNear()">Search</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+
+      <!- LOCATION ->
+        <div class="modal fade modal-success" id="editLocationModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Location</h4>
+            </div>
+            <div class="modal-body">
+            
+              <div class="col-xs-5">
+                <label class="control-label">Radius:</label>
+                <select id="radiusSelect" style="color: orange;">
+                  <option value="1">1km</option>
+                  <option value="5">5km</option>
+                  <option value="25" selected>25km</option>
+                  <option value="100">100km</option>
+                  <option value="200">200km</option>
+                </select>
+                <label class="control-label">km</label>
+              </div>
+              </br>
+              <!--
+              <button type="button" class="btn btn-block btn-danger" onclick="searchLocationsNear()">Search</button>
+
+              <button type="button" class="btn btn-block btn-danger btn-lg" onclick="getCurrentLocation()">Search from current location</button>
+              -->
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline" onclick="searchLocationsNear()">Search</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+
+      <!- INSURANCES ->
+        <div class="modal fade modal-success" id="editInsurancesModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Location</h4>
+            </div>
+            <div class="modal-body">
+            
+              <div class="col-xs-5">
+                <label class="control-label">Radius:</label>
+                <select id="radiusSelect" style="color: orange;">
+                  <option value="1">1km</option>
+                  <option value="5">5km</option>
+                  <option value="25" selected>25km</option>
+                  <option value="100">100km</option>
+                  <option value="200">200km</option>
+                </select>
+                <label class="control-label">km</label>
+              </div>
+              </br>
+              <!--
+              <button type="button" class="btn btn-block btn-danger" onclick="searchLocationsNear()">Search</button>
+
+              <button type="button" class="btn btn-block btn-danger btn-lg" onclick="getCurrentLocation()">Search from current location</button>
+              -->
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-outline" onclick="searchLocationsNear()">Search</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+
+
+
+
+
+
+
 
 
    
@@ -1674,6 +1819,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/app.min.js"></script>
+<!-- Select2 -->
+<script src="plugins/select2/select2.full.min.js"></script>
+<!-- InputMask -->
+<script src="plugins/input-mask/jquery.inputmask.js"></script>
+<script src="plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<!-- SlimScroll 1.3.0 -->
+<script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script src="jquery.barrating.js"></script>
@@ -1683,6 +1836,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
             type="text/javascript"></script>
 
 <script type="text/javascript" src="plugins/rateit-scripts/jquery.rateit.min.js"></script>
+
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $(".select2").select2();
+    $(".select2").select2({
+      placeholder: "Select a Specialization",
+      allowClear: true
+    });
+    
+</script>
+
+
+
 
 <script type="text/javascript">
    /* document.getElementById("medOption").onclick = function () {

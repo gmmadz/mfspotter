@@ -73,43 +73,11 @@
          <!-- User Account: style can be found in dropdown.less -->
 
           <?php
+            include("config.php");
             session_start();
-
-            if(!(isset($_SESSION['username'])) && !(isset($_SESSION['password'])))
-            {
-              echo "<script>alert('Not Logged in!')</script>";
-              redirect('login.php');
-                
-            }
-              
-            else
-            {
-
-              echo '<li class="dropdown user user-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                      <img src="dist/img/profpic/'.$_SESSION["profilePicture"].'.jpg" class="user-image" alt="User Image">
-                      <span class="hidden-xs">'.$_SESSION["firstname"].' '.$_SESSION["lastname"] .'</span>
-                    </a>
-                    <ul class="dropdown-menu">
-                      <!-- User image -->
-                      <li class="user-header">
-                        <img src="dist/img/profpic/'.$_SESSION["profilePicture"].'.jpg" class="img-circle" alt="User Image">
-
-                        <p>
-                          '.$_SESSION["firstname"].' '.$_SESSION["lastname"] .'
-                          <small>'. $_SESSION["usertype"] .'</small>
-                        </p>
-                      </li>';            
-            }
-              
-            
-            function redirect($url)
-            {
-              echo '<META HTTP-EQUIV=Refresh CONTENT="1; URL='.$url.'">';
-              die();
-            }
-            
+            include("header.php");
           ?>
+          
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
