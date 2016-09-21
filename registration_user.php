@@ -48,14 +48,20 @@
     <?php
       include("config.php");
       
-      //START OF CODE
       
-      if( isset($_POST["username"]) || isset($_POST["password"]))
+      
+      if( isset($_POST["firstname"]) && isset($_POST["middlename"]) && isset($_POST["lastname"]) && isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["repassword"]))
       {
+        $fName = $_POST["firstname"];
+        $mName = $_POST["middlename"];
+        $lName = $_POST["lastname"];
         $user = $_POST["username"];
-        $password = $_POST["password"];
-        
-        if(!empty($user) && !empty($password))
+        $pword = $_POST["password"];
+        $repword = $_POST["repassword"];
+
+        //Check if inputs are filled
+
+        if(!empty($fName) && !empty($mName) && !empty($lName) && !empty($user) && !empty($pword) && !empty($repword))
         {
           $selectQuery = "SELECT * FROM user WHERE username = '$user'";
           $SelectSql = @mysqli_query($connect, $selectQuery);
@@ -63,29 +69,38 @@
         
           
           //Username Existence Validation
-          
-          if(mysqli_num_rows($SelectSql) == 0)
-            echo "<br/> Username does not exist!";
+          if(mysqli_num_rows($SelectSql) > 0)
+            echo "<br/> Username already exist!";
           
           //Password Validation
+          else if(!($pword == $repword))
+            echo "<br/>Password does not match!";
           
-          else if(!($row['password'] == $password))
-            echo "<br/>Password is incorrect!";
-          
-          //If everything is correct and valid
-          
+          //If everything is correct and valid   
           else
           { 
+            //INSERT TO DATABASE
+            $insertquery = "INSERT INTO `user`(`userType`, `username`, `password`, `firstName`, `middleName`, `lastName`, `picture`) VALUES ('User', '$user', '$pword', '$fName', '$mName', '$lName', 'default')";
+
+            $insert=mysqli_query($connect, $insertquery);
+
+            //SELECT AGAIN THE NEWLY INSERTED USER
+            $selectQuery2 = "SELECT * FROM user WHERE username = '$user'";
+            $SelectSql2 = @mysqli_query($connect, $selectQuery2);
+            $row2 = mysqli_fetch_array($SelectSql2);
+
+            //START THE SESSION
 
             session_start();
             // Set session variables
             $_SESSION["username"] = $user;
-            $_SESSION["password"] = $password;
-            $_SESSION["user_id"] = $row['userID'];
-            $_SESSION["firstname"] = $row['firstName'];
-            $_SESSION["middlename"] = $row['middleName'];
-            $_SESSION["lastname"] = $row['lastName'];
-            $_SESSION["usertype"] = $row['userType'];
+            $_SESSION["password"] = $pword;
+            $_SESSION["user_id"] = $row2['userID'];
+            $_SESSION["firstname"] = $row2['firstName'];
+            $_SESSION["middlename"] = $row2['middleName'];
+            $_SESSION["lastname"] = $row2['lastName'];
+            $_SESSION["usertype"] = $row2['userType'];
+            $_SESSION["profilePicture"] = $row2['picture'];
 
             
             redirect("Landing.php");
@@ -94,9 +109,9 @@
         }
         
         else
-          echo "<script>alert('INVALID! Input All fields')</script>";
+          echo "<script>alert('Please fill up all fields!')</script>";
       
-      }
+      }      
       else
         echo "";
       

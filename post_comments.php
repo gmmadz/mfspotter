@@ -9,6 +9,7 @@
 
   if(isset($_POST['user_comm']) && isset($_POST['user_name']) && isset($_POST['facility_id']))
   {
+    session_start();
 
     $comment=$_POST['user_comm'];
     $name=$_POST['user_name'];
@@ -60,7 +61,7 @@
 
             <div class="user-block">
 
-              <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/user1-128x128.jpg" alt="user image">
+              <img class="img-circle img-bordered-sm" src="/mfspotter/dist/img/profpic/<?php echo $_SESSION["profilePicture"] ?>.jpg" alt="user image">
                   <span class="username">
                     <a href="#"><?php echo ''. $namae . ''; ?></a>
                   </span>

@@ -75,7 +75,7 @@
         $specID = isset($_POST['selected_specialization']) ? $_POST['selected_specialization'] : false;
 
         //INSERT INTO FACILITY
-        $mysqli->query("INSERT INTO facility(facilityName, telephoneNumber,address, longhitude, latitude) VALUES ('$facilityName', '$telephoneNumber', '$address', '$longhitude', '$latitude')");
+        $mysqli->query("INSERT INTO facility(facilityName, telephoneNumber,address, longhitude, latitude, facilityPicture) VALUES ('$facilityName', '$telephoneNumber', '$address', '$longhitude', '$latitude', 'default')");
 
         //GENERATE FACILITY ID
         $facID = $mysqli->insert_id;

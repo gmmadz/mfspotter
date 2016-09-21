@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-  <title>MFSpotter</title>
+  <title>Searching a Medical Facility</title>
 
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -48,11 +48,11 @@
     <header class="main-header">
 
        <!-- Logo -->
-      <a href="/mfspotter/Landing.html" class="logo">
+      <a href="/mfspotter/Landing.php" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>MF</b>S</span>
+        <span class="logo-mini"><b>MFS</b></span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>MF</b>Spotter</span>
+        <span class="logo-lg"><b>MFS</b>potter</span>
       </a>
 
       <!-- Header Navbar: style can be found in header.less -->
@@ -87,13 +87,13 @@
 
               echo '<li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                      <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                      <img src="dist/img/profpic/'.$_SESSION["profilePicture"].'.jpg" class="user-image" alt="User Image">
                       <span class="hidden-xs">'.$_SESSION["firstname"].' '.$_SESSION["lastname"] .'</span>
                     </a>
                     <ul class="dropdown-menu">
                       <!-- User image -->
                       <li class="user-header">
-                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                        <img src="dist/img/profpic/'.$_SESSION["profilePicture"].'.jpg" class="img-circle" alt="User Image">
 
                         <p>
                           '.$_SESSION["firstname"].' '.$_SESSION["lastname"] .'
@@ -137,7 +137,7 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
           <div class="pull-left image">
-            <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+            <img src="dist/img/profpic/<?php echo $_SESSION["profilePicture"] ?>.jpg" class="img-circle" alt="User Image">
           </div>
           <div class="pull-left info">
             <p><?php echo "". $_SESSION["firstname"] ." ". $_SESSION["lastname"] . ""; ?></p>
@@ -200,7 +200,7 @@
 
     <!- LOCATION ->
     
-      <div class="modal fade modal-primary" id="locationModal">
+      <div class="modal fade modal-success" id="locationModal">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -696,10 +696,6 @@
 
 
 
-
-
-
-
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
@@ -749,7 +745,7 @@
           <!-- /.box-body -->
 
         <div class="box-footer">
-          <i>Insert instruction here</i>
+          <i></i>
         </div>
     </div>
     <!-- / end of Main content -->
@@ -763,7 +759,7 @@
   <footer class="main-footer">
     <!-- To the right -->
     <div class="pull-right hidden-xs">
-      Anything you want
+      Version 1.0
     </div>
     <!-- Default to the left -->
     <strong>Copyright &copy; 2016 <a href="#">MFSpotter</a>.</strong> All rights reserved.

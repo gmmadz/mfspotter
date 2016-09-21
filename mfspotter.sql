@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 15, 2016 at 03:25 AM
+-- Generation Time: Sep 21, 2016 at 09:13 AM
 -- Server version: 5.6.13
 -- PHP Version: 5.4.17
 
@@ -21,6 +21,23 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `mfspotter` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `mfspotter`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `calendar`
+--
+
+CREATE TABLE IF NOT EXISTS `calendar` (
+  `calendarID` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(300) NOT NULL,
+  `startDate` varchar(50) NOT NULL,
+  `endDate` varchar(50) NOT NULL,
+  `allDay` varchar(5) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `facilityID` int(11) NOT NULL,
+  PRIMARY KEY (`calendarID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
@@ -57,7 +74,17 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `comment` varchar(500) NOT NULL,
   `dateRated` datetime NOT NULL,
   PRIMARY KEY (`commentID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `comment`
+--
+
+INSERT INTO `comment` (`commentID`, `userID`, `facilityID`, `comment`, `dateRated`) VALUES
+(1, 18, 25, '1', '2016-09-21 13:06:57'),
+(2, 27, 25, '12', '2016-09-21 17:01:42'),
+(3, 27, 25, '2', '2016-09-21 17:02:52'),
+(4, 27, 25, '3', '2016-09-21 17:03:14');
 
 -- --------------------------------------------------------
 
@@ -72,6 +99,7 @@ CREATE TABLE IF NOT EXISTS `facility` (
   `longhitude` double DEFAULT NULL,
   `latitude` double DEFAULT NULL,
   `address` varchar(40) NOT NULL,
+  `facilityPicture` varchar(30) NOT NULL,
   PRIMARY KEY (`facilityID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=33 ;
 
@@ -79,23 +107,23 @@ CREATE TABLE IF NOT EXISTS `facility` (
 -- Dumping data for table `facility`
 --
 
-INSERT INTO `facility` (`facilityID`, `facilityName`, `telephoneNumber`, `longhitude`, `latitude`, `address`) VALUES
-(1, 'Sample1', '(123) 456-7890', 125.68084716796875, 7.0702295954887475, 'Davao'),
-(2, 'Sample2', '(456) 789-8765', 125.4553409, 7.190708, 'asdad'),
-(3, 'wawa', '(123) 456-7665', 125.61630249023438, 7.0651188851749716, 'Davao'),
-(13, 'autoco', '(234) 576-5432', 125.58815002441406, 7.057282352971582, 'auto'),
-(14, 'bonnga', '(123) 245-6543', 125.61922073364258, 7.067163176082755, 'Davao'),
-(15, 'warwar', '(123) 456-7543', 125.62591552734375, 7.072444219068159, 'dav'),
-(16, 'rerere', '(222) 222-2222', 125.62248229980469, 7.068355674936543, 'rererere'),
-(22, 'asdsad', '(213) 424-3423', 125.61226844787598, 7.058730417833918, 'ada'),
-(25, 'wawaw', '(234) 567-8987', 125.61887741088867, 7.068355674936543, 'wawawa'),
-(26, 'POPO', '(000) 000-0000', 125.62162399291992, 7.067333533250265, 'POPOPOPO'),
-(27, 'UYUYUY', '(000) 000-0000', 125.62076568603516, 7.060008118360919, 'UYUYUY'),
-(28, 'Teeth and Ears', '(444) 444-4444', 125.63089370727539, 7.0496160517644455, 'TRTRTRTR'),
-(29, 'QWQW', '(222) 222-2222', 125.6205940246582, 7.0697185270010126, 'QWQW'),
-(30, 'wawawawa', '(243) 456-7867', 125.29220581054688, 6.98776992815563, 'wawawa'),
-(31, 'wawa', '(435) 345-3453', 125.60274124145508, 7.061370995033533, 'wawawa'),
-(32, 'opopo', '(678) 567-8546', 125.61063766479492, 7.054726933338916, 'popopo');
+INSERT INTO `facility` (`facilityID`, `facilityName`, `telephoneNumber`, `longhitude`, `latitude`, `address`, `facilityPicture`) VALUES
+(1, 'Sample1', '(123) 456-7890', 125.68084716796875, 7.0702295954887475, 'Davao', 'default'),
+(2, 'Sample2', '(456) 789-8765', 125.4553409, 7.190708, 'asdad', 'default'),
+(3, 'wawa', '(123) 456-7665', 125.61630249023438, 7.0651188851749716, 'Davao', 'default'),
+(13, 'autoco', '(234) 576-5432', 125.58815002441406, 7.057282352971582, 'auto', 'default'),
+(14, 'bonnga', '(123) 245-6543', 125.61922073364258, 7.067163176082755, 'Davao', 'default'),
+(15, 'warwar', '(123) 456-7543', 125.62591552734375, 7.072444219068159, 'dav', 'default'),
+(16, 'rerere', '(222) 222-2222', 125.62248229980469, 7.068355674936543, 'rererere', 'default'),
+(22, 'asdsad', '(213) 424-3423', 125.61226844787598, 7.058730417833918, 'ada', 'default'),
+(25, 'wawaw', '(234) 567-8987', 125.61887741088867, 7.068355674936543, 'wawawa', 'default'),
+(26, 'POPO', '(000) 000-0000', 125.62162399291992, 7.067333533250265, 'POPOPOPO', 'default'),
+(27, 'UYUYUY', '(000) 000-0000', 125.62076568603516, 7.060008118360919, 'UYUYUY', 'default'),
+(28, 'Teeth and Ears', '(444) 444-4444', 125.63089370727539, 7.0496160517644455, 'TRTRTRTR', 'default'),
+(29, 'QWQW', '(222) 222-2222', 125.6205940246582, 7.0697185270010126, 'QWQW', 'default'),
+(30, 'wawawawa', '(243) 456-7867', 125.29220581054688, 6.98776992815563, 'wawawa', 'default'),
+(31, 'wawa', '(435) 345-3453', 125.60274124145508, 7.061370995033533, 'wawawa', 'default'),
+(32, 'opopo', '(678) 567-8546', 125.61063766479492, 7.054726933338916, 'popopo', 'default');
 
 -- --------------------------------------------------------
 
@@ -278,7 +306,7 @@ CREATE TABLE IF NOT EXISTS `rating` (
   `rating` int(2) NOT NULL,
   `dateRated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ratingID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=88 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=96 ;
 
 --
 -- Dumping data for table `rating`
@@ -332,7 +360,15 @@ INSERT INTO `rating` (`ratingID`, `userID`, `facilityID`, `categoryID`, `rating`
 (84, 1, 32, 1, 0, '2016-09-14 16:07:12'),
 (85, 1, 32, 2, 0, '2016-09-14 16:07:12'),
 (86, 1, 32, 3, 0, '2016-09-14 16:07:12'),
-(87, 1, 32, 4, 0, '2016-09-14 16:07:12');
+(87, 1, 32, 4, 0, '2016-09-14 16:07:12'),
+(88, 18, 25, 1, 5, '2016-09-21 05:02:20'),
+(89, 18, 25, 2, 5, '2016-09-21 05:02:20'),
+(90, 18, 25, 3, 5, '2016-09-21 05:02:20'),
+(91, 18, 25, 4, 1, '2016-09-21 05:02:20'),
+(92, 27, 25, 1, 0, '2016-09-21 09:01:42'),
+(93, 27, 25, 2, 0, '2016-09-21 09:01:42'),
+(94, 27, 25, 3, 0, '2016-09-21 09:01:42'),
+(95, 27, 25, 4, 0, '2016-09-21 09:01:42');
 
 -- --------------------------------------------------------
 
@@ -346,7 +382,14 @@ CREATE TABLE IF NOT EXISTS `remark` (
   `commentID` int(11) NOT NULL,
   `remarks` varchar(50) NOT NULL,
   PRIMARY KEY (`remarkID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `remark`
+--
+
+INSERT INTO `remark` (`remarkID`, `userID`, `commentID`, `remarks`) VALUES
+(1, 18, 1, 'Dislike');
 
 -- --------------------------------------------------------
 
@@ -382,26 +425,34 @@ CREATE TABLE IF NOT EXISTS `user` (
   `firstName` varchar(30) NOT NULL,
   `middleName` varchar(30) DEFAULT NULL,
   `lastName` varchar(30) DEFAULT NULL,
+  `picture` varchar(50) NOT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`userID`, `userType`, `username`, `password`, `firstName`, `middleName`, `lastName`) VALUES
-(1, 'staff', 'rere', 'rere', 'rerere', 'rererer', 'rerere'),
-(7, 'staff', 'dasdsad', 'usbw', 'asdsad', 'asdsad', 'asdsad'),
-(8, 'staff', 'dsfsdf', 'fdsfsf', 'fsdfsdf', 'sdfsd', 'fsdfsdf'),
-(9, 'staff', 'fsdfsd', 'fsdfsdf', 'dfsf', 'sfsdfsd', 'fsdfsdfsd'),
-(10, 'staff', 'wawwaw', 'awwawa', 'wawaw', 'awawwa', 'wawaw'),
-(11, 'staff', 'OPOPO', 'POPO', 'POPO', 'POPOPO', 'POPOPOP'),
-(12, 'staff', 'YUYU', 'YUYUY', 'UYUYUY', 'UYUY', 'UYUYU'),
-(13, 'staff', 'TRT', 'RTRTR', 'TRTR', 'RTR', 'TRTR'),
-(14, 'staff', 'WQWQ', 'WQWQWQ', 'QWQW', 'QWQ', 'WQWQWQ'),
-(15, 'staff', 'aawaw', 'wawwawawaw', 'wawawawa', 'waawawaw', 'waawawa'),
-(16, 'staff', 'awawaw', 'waawaw', 'wawa', 'wawaaw', 'waawaw'),
-(17, 'staff', 'popopop', 'popo', 'opopo', 'popo', 'popop');
+INSERT INTO `user` (`userID`, `userType`, `username`, `password`, `firstName`, `middleName`, `lastName`, `picture`) VALUES
+(1, 'staff', 'rere', 'rere', 'rerere', 'rererer', 'rerere', 'default'),
+(7, 'staff', 'dasdsad', 'usbw', 'asdsad', 'asdsad', 'asdsad', 'default'),
+(8, 'staff', 'dsfsdf', 'fdsfsf', 'fsdfsdf', 'sdfsd', 'fsdfsdf', 'default'),
+(9, 'staff', 'fsdfsd', 'fsdfsdf', 'dfsf', 'sfsdfsd', 'fsdfsdfsd', 'default'),
+(10, 'staff', 'wawwaw', 'awwawa', 'wawaw', 'awawwa', 'wawaw', 'default'),
+(11, 'staff', 'OPOPO', 'POPO', 'POPO', 'POPOPO', 'POPOPOP', 'default'),
+(12, 'staff', 'YUYU', 'YUYUY', 'UYUYUY', 'UYUY', 'UYUYU', 'default'),
+(13, 'staff', 'TRT', 'RTRTR', 'TRTR', 'RTR', 'TRTR', 'default'),
+(14, 'staff', 'WQWQ', 'WQWQWQ', 'QWQW', 'QWQ', 'WQWQWQ', 'default'),
+(15, 'staff', 'aawaw', 'wawwawawaw', 'wawawawa', 'waawawaw', 'waawawa', 'default'),
+(16, 'staff', 'awawaw', 'waawaw', 'wawa', 'wawaaw', 'waawaw', 'default'),
+(17, 'staff', 'popopop', 'popo', 'opopo', 'popo', 'popop', 'default'),
+(18, 'User', 'joan', 'joan', 'Joahnne', 'Perez', 'Filosopo', 'joan'),
+(19, 'User', 'gems', 'gems', 'Gerald ', 'Conanan', 'Madarang', 'gems'),
+(20, 'User', 'buta', 'buta', 'Dan', 'Buta', 'Vicente', 'buta'),
+(21, 'User', 'tats', 'tats', 'Miguelito', 'Magat', 'Tating', 'tats'),
+(22, 'User', 'bae', 'bae', 'Damrey', 'Terec', 'Rizon', 'dam'),
+(23, 'User', 'dan', 'dan', 'Dan Angelo', 'Buta', 'Vicente', 'dan'),
+(27, 'User', 'tags', 'tags', 'John Neil', 'Balboa', 'Tagudin', 'default');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

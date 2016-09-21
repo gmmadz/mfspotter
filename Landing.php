@@ -57,7 +57,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     
     <nav class="navbar navbar-static-top">
       <div class="navbar-header">
-        <a href="/mfspotter/Landing.html" class="navbar-brand"><b>MF</b>Spotter</a>
+        <a href="/mfspotter/Landing.php" class="navbar-brand"><b>MFS</b>potter</a>
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
           <i class="fa fa-bars"></i>
         </button>
@@ -86,13 +86,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
               echo '<li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                      <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                      <img src="dist/img/profpic/'.$_SESSION["profilePicture"].'.jpg" class="user-image" alt="User Image">
                       <span class="hidden-xs">'.$_SESSION["firstname"].' '.$_SESSION["lastname"] .'</span>
                     </a>
                     <ul class="dropdown-menu">
                       <!-- User image -->
                       <li class="user-header">
-                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                        <img src="dist/img/profpic/'.$_SESSION["profilePicture"].'.jpg" class="img-circle" alt="User Image">
 
                         <p>
                           '.$_SESSION["firstname"].' '.$_SESSION["lastname"] .'
@@ -148,7 +148,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="col-md-12 text-center">
               <span><h1 class="white typed">Finding Medical Facility with Ease </h1></span>
 
-              <button type="button" class="btn bg-navy margin"><h3>Find the Nearest Medical Facility</h3></button>
+              <!-- <button type="button" class="btn bg-navy margin"><h3>Find the Nearest Medical Facility</h3></button> -->
               <br>
               <button id="medOption" type="button" class="btn bg-orange margin"><h3>Find Medical Facility by Options</h3></button>
 
@@ -165,7 +165,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <footer class="main-footer">
     <!-- To the right -->
     <div class="pull-right hidden-xs">
-      Anything you want
+      Version 1.0
     </div>
     <!-- Default to the left -->
     <strong>Copyright &copy; 2016 <a href="#">Company</a>.</strong> All rights reserved.
@@ -184,7 +184,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <script type="text/javascript">
     document.getElementById("medOption").onclick = function () {
-        location.href = "/mfspotter/searchCenter2.php";
+        location.href = "/mfspotter/searchBy.php";
     };
 </script>
 

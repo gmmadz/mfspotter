@@ -1,6 +1,24 @@
 <?php
   $facility_id = $_GET["id"];
+ 
+  include('config.php');
   
+  $query = "SELECT * FROM `facility` WHERE facilityID = " . $facility_id . " ";
+
+  $result = mysqli_query($connect, $query); 
+
+  if(mysqli_num_rows($result) > 0)  
+  {  
+    while($row = mysqli_fetch_array($result)) 
+    {
+      $facility_name = $row['facilityName'];
+      //$facility_tel = $row['telephoneNumber'];
+      //$facility_address = $row['address'];
+     // $facility_lat = $row['latitude'];
+     // $facility_lng = $row['longhitude'];
+    }  
+    
+  }
 
 ?>
 <!DOCTYPE html>
@@ -15,7 +33,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
    <!--LINKS included on the page -->
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MFSpotter </title>
+  <title><?php echo $facility_name ?> | Set an Appointment</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -115,7 +133,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     
     <nav class="navbar navbar-static-top">
       <div class="navbar-header">
-        <a href="/mfspotter/Landing.html" class="navbar-brand"><b>MF</b>Spotter</a>
+        <a href="/mfspotter/Landing.php" class="navbar-brand"><b>MFS</b>potter</a>
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
           <i class="fa fa-bars"></i>
         </button>
@@ -144,13 +162,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
               echo '<li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                      <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                      <img src="dist/img/profpic/'.$_SESSION["profilePicture"].'.jpg" class="user-image" alt="User Image">
                       <span class="hidden-xs">'.$_SESSION["firstname"].' '.$_SESSION["lastname"] .'</span>
                     </a>
                     <ul class="dropdown-menu">
                       <!-- User image -->
                       <li class="user-header">
-                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                        <img src="dist/img/profpic/'.$_SESSION["profilePicture"].'.jpg" class="img-circle" alt="User Image">
 
                         <p>
                           '.$_SESSION["firstname"].' '.$_SESSION["lastname"] .'
@@ -193,6 +211,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
+
     <?php 
 
     echo '
@@ -233,7 +252,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <footer class="main-footer">
     <!-- To the right -->
     <div class="pull-right hidden-xs">
-      Anything you want
+      Version 1.0
     </div>
     <!-- Default to the left -->
     <strong>Copyright &copy; 2016 <a href="#">Company</a>.</strong> All rights reserved.

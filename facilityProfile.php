@@ -6,9 +6,10 @@
  
   include('config.php');
   $operating_period = array();
+  $special = array();
+  $insurance_name = array();
 
-
-  
+  //Facility
   $query = "SELECT * FROM `facility` WHERE facilityID = " . $facility_id . " ";
 
   $result = mysqli_query($connect, $query); 
@@ -22,12 +23,28 @@
       $facility_address = $row['address'];
       $facility_lat = $row['latitude'];
       $facility_lng = $row['longhitude'];
+      $facility_picture = $row['facilityPicture'];
     }  
     
   }
 
+  //Specialization
+  $query4 = "SELECT specialization FROM specialization sp, hasspecialization hs, facility f WHERE f.facilityID = hs.facilityID AND sp.specializationID = hs.specializationID AND f.facilityID = " . $facility_id . " ";
+
+  $result4 = mysqli_query($connect, $query4); 
+
+  if(mysqli_num_rows($result4) > 0)  
+  {  
+    while($row4 = mysqli_fetch_array($result4)) 
+    {
+      $special[] = $row4['specialization'];
+    }  
+    
+  }
+
+
   //OPERATING HOURS
-  $query2 = "SELECT * FROM operatingperiod WHERE facilityID = " . $facility_id . " ";
+  $query2 = "SELECT dayofweek, DATE_FORMAT(timeOpened, '%h:%i %p') AS Opening_Time, DATE_FORMAT(timeClosed, '%h:%i %p') AS Closing_Time FROM `operatingperiod` WHERE facilityID = " . $facility_id . " ";
 
   $result2 = mysqli_query($connect, $query2); 
 
@@ -35,7 +52,7 @@
   {  
     while($row2 = mysqli_fetch_array($result2)) 
     {
-      $operating_period[] = array($row2['dayofweek'],$row2['timeOpened'], $row2['timeClosed']);
+      $operating_period[] = array($row2['dayofweek'],$row2['Opening_Time'], $row2['Closing_Time']);
 
     }  
 
@@ -378,7 +395,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
    <!--LINKS included on the page -->
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MFSpotter </title>
+  <title><?php echo $facility_name ?></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -443,7 +460,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     
     <nav class="navbar navbar-static-top">
       <div class="navbar-header">
-        <a href="../mfspotter/Landing.html" class="navbar-brand"><b>MF</b>Spotter</a>
+        <a href="../mfspotter/Landing.php" class="navbar-brand"><b>MFS</b>potter</a>
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
           <i class="fa fa-bars"></i>
         </button>
@@ -472,13 +489,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
               echo '<li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                      <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                      <img src="dist/img/profpic/'.$_SESSION["profilePicture"].'.jpg" class="user-image" alt="User Image">
                       <span class="hidden-xs">'.$_SESSION["firstname"].' '.$_SESSION["lastname"] .'</span>
                     </a>
                     <ul class="dropdown-menu">
                       <!-- User image -->
                       <li class="user-header">
-                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                        <img src="dist/img/profpic/'.$_SESSION["profilePicture"].'.jpg" class="img-circle" alt="User Image">
 
                         <p>
 
@@ -539,7 +556,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- Profile-->
           <div class="box box-primary box-success">
             <div class="box-body box-profile">
-              <img class="profile-user-img img-responsive" src="/mfspotter/dist/img/photo1.png" alt="User profile picture">
+              <img class="profile-user-img img-responsive" src="/mfspotter/dist/img/facilitypic/<?php echo $facility_picture ?>.jpg" alt="User profile picture">
               <?php
                 echo '
                 <label id="facility_lati" for="'. $facility_lat . '"></label>
@@ -573,69 +590,73 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <li class="list-group-item">
                   <b>Operating Hours</b> <a class="pull-right">
                   <?php
-                    for($row = 0; $row < count($operating_period); $row++){
+                    for($row = 0; $row < count($operating_period); $row++)
+                    {
 
-                      for($col = 0; $col < 3; $col++)
+                      //FOR THE DAYS
+                      if($operating_period[$row][0] == 0)
                       {
+                        $operating_period[$row][0] = "Su";
+                        //$days[] = $operating_period[$row][$col];
 
-                        //FOR THE DAYS
-                        if($operating_period[$row][$col] == 0)
-                        {
-                          $operating_period[$row][$col] = "Su";
-                          $days[] = $operating_period[$row][$col];
-
-                        }
-                        else if($operating_period[$row][$col] == 1)
-                        {
-                          $operating_period[$row][$col] = "Mo";
-                          $days[] = $operating_period[$row][$col];
-                        }
-                        else if($operating_period[$row][$col] == 2)
-                        {
-                          $operating_period[$row][$col] = "Tu";
-                          $days[] = $operating_period[$row][$col];
-                        }
-                        else if($operating_period[$row][$col] == 3)
-                        {
-                          $operating_period[$row][$col] = "We";
-                          $days[] = $operating_period[$row][$col];
-                        }
-                        else if($operating_period[$row][$col] == 4)
-                        {
-                          $operating_period[$row][$col] = "Th";
-                          $days[] = $operating_period[$row][$col];
-                        }
-                        else if($operating_period[$row][$col] == 5)
-                        {
-                          $operating_period[$row][$col] = "Fr";
-                          $days[] = $operating_period[$row][$col];
-                        }
-                        else if($operating_period[$row][$col] == 6)
-                        {
-                          $operating_period[$row][$col] = "Sa";
-                          $days[] = $operating_period[$row][$col];
-                        }
-      
-
-                        echo ''. $operating_period[$row][$col] . ' ';
                       }
+                      else if($operating_period[$row][0] == 1)
+                      {
+                        $operating_period[$row][0] = "Mo";
+                        //$days[] = $operating_period[$row][$col];
+                      }
+                      else if($operating_period[$row][0] == 2)
+                      {
+                        $operating_period[$row][0] = "Tu";
+                        //$days[] = $operating_period[$row][$col];
+                      }
+                      else if($operating_period[$row][0] == 3)
+                      {
+                        $operating_period[$row][0] = "We";
+                        //$days[] = $operating_period[$row][$col];
+                      }
+                      else if($operating_period[$row][0] == 4)
+                      {
+                        $operating_period[$row][0] = "Th";
+                        //$days[] = $operating_period[$row][$col];
+                      }
+                      else if($operating_period[$row][0] == 5)
+                      {
+                        $operating_period[$row][0] = "Fr";
+                        //$days[] = $operating_period[$row][$col];
+                      }
+                      else if($operating_period[$row][0] == 6)
+                      {
+                        $operating_period[$row][0] = "Sa";
+                        //$days[] = $operating_period[$row][$col];
+                      }
+
+
+                      echo ''. $operating_period[$row][0] . ' '. $operating_period[$row][1] .' - '. $operating_period[$row][2] ;
+
+                    
                       echo '<br/>';
 
                     }
-
 
                   ?>
 
 
                   </a>
-                  </br> </br></br>
+                  <?php
+
+                    for($i = 0; $i < count($operating_period); $i++)
+                    {
+                      echo "</br>";
+                    }
+
+                   ?>
+
                 </li>
                 <li class="list-group-item">
                   <b>Telephone Number</b> <a class="pull-right"><?php echo $facility_tel ?></a>
                 </li>
               </ul>
-
-               <a href="#" class="btn btn-success btn-block"><b>Set an Appointment</b></a>
 
                <a href="appointment.php?id=<?php echo $facility_id ?>" class="btn btn-success btn-block"><b>Set an Appointment</b></a>
 
@@ -651,10 +672,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <strong><i class="fa fa-book margin-r-5"></i> Desciption</strong>
+              <strong><i class="fa fa-book margin-r-5"></i> Specialization</strong>
 
               <p class="text-muted">
-               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.
+                <?php
+                  foreach($special as $sp)
+                  {
+                    echo '<span class="label label-success">'. $sp .'</span> ';
+
+                  }
+              
+                ?>
               </p>
 
               <hr>
@@ -1518,6 +1546,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       
                       <?php 
                          //COMMENTS
+                        $comments = array();
+
                         $query4 = "SELECT commentID, comment, firstName, middleName, lastName,  DATE_FORMAT( dateRated,  '%Y-%m-%d %H:%i' ) AS dateRated FROM comment c, user u WHERE c.userID = u.userID AND facilityID = " . $facility_id . " AND YEAR( dateRated ) = YEAR( CURDATE()) ORDER BY dateRated DESC";
 
                         $result4 = mysqli_query($connect, $query4); 
@@ -1564,7 +1594,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                             <div class="user-block">
 
-                              <img class="img-circle img-bordered-sm" src="/mfspotter/dist/img/user1-128x128.jpg" alt="user image">
+                              <img class="img-circle img-bordered-sm" src="/mfspotter/dist/img/profpic/'.$_SESSION["profilePicture"].'.jpg" alt="user image">
                                   <span class="username">
                                     <a href="#">' . $comments[$row][1] . '</a>
                                   </span>
@@ -1639,11 +1669,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- /.box on Comments-->
 
 
-
-
-
-
-
               </div> <!-- tab pane 3 -->
    
 
@@ -1671,7 +1696,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <footer class="main-footer">
     <!-- To the right -->
     <div class="pull-right hidden-xs">
-      Anything you want
+      Version 1.0
     </div>
     <!-- Default to the left -->
     <strong>Copyright &copy; 2016 <a href="#">Company</a>.</strong> All rights reserved.
@@ -1773,49 +1798,8 @@ function insert_dislike()
       });
   }
 
-  //REMARKS Trial 2
-function addLikes(user,id,action) {
-    console.log(user);
-    console.log(id);
-    console.log(action);
 
-    $('#totalvotes-'+id+' li').each(function(index) {
-      $(this).addClass('selected');
-      $('#like_count-'+id+' #rating').val((index+1));
-      if(index == $('#totalvotes-'+id+' li').index(obj)) {
-        return false; 
-      }
-    });
-    $.ajax({
-    url: "add_likes.php",
-    data:'usid='+user+'id='+id+'&action='+action,
-    type: "POST",
-    beforeSend: function(){
-      $('#totalvotes-'+id+' .btn-likes').html("<img src='/mfspotter/dist/img/remarks/loaderIcon.gif'/>");
-    },
-    success: function(data){
-    var likes = parseInt($('#likes-'+id).val());
-    switch(action) {
-      case "like":
-      $('#totalvotes-'+id+' .btn-likes').html('<a href="#" title="Unlike" class="unlike" onclick="addLikes('+id+',\'unlike\')" />');
-      likes = likes+1;
-      break;
-      case "unlike":
-      $('#totalvotes-'+id+' .btn-likes').html('<a href="#" title="Like" class="like"  onclick="addLikes('+id+',\'like\')" />')
-      likes = likes-1;
-      break;
-    }
-    $('#likes-'+id).val(likes);
-    if(likes>0) {
-      $('#totalvotes-'+id+' .label-likes').html(likes+" Like(s)");
-    } else {
-      $('#totalvotes-'+id+' .label-likes').html('');
-    }
-    }
-    });
-}
-
-//REMARKS TRIAL 3
+//FINAL REMARKS
 function cwRating(id,type,target, userId){
   console.log(id);
   console.log(type);
