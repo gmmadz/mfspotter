@@ -513,173 +513,173 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <section class="content">
         <div class="row">
 
-        <!- RIGHT SIDE MORE ON FACILITY DETAILS ->
-        <div class="col-md-3">
+          <!- RIGHT SIDE MORE ON FACILITY DETAILS ->
+          <div class="col-md-3">
 
-          <!-- Profile-->
-          <div class="box box-primary box-success">
-            <div class="box-body box-profile">
-              <img class="profile-user-img img-responsive" src="/mfspotter/dist/img/facilitypic/<?php echo $facility_picture ?>.jpg" alt="User profile picture">
-              <?php
-                echo '
-                <label id="facility_lati" for="'. $facility_lat . '"></label>
-                <label id="facility_long" for="'. $facility_lng. '"></label>
-                <label id="facility_name" for="'. $facility_name. '"></label>
-                ';
-              ?>
-              <h3 class="profile-username text-center"><?php echo $facility_name ?></h3>
+            <!-- Profile-->
+            <div class="box box-primary box-success">
+              <div class="box-body box-profile">
+                <img class="profile-user-img img-responsive" src="/mfspotter/dist/img/facilitypic/<?php echo $facility_picture ?>.jpg" alt="User profile picture">
+                <?php
+                  echo '
+                  <label id="facility_lati" for="'. $facility_lat . '"></label>
+                  <label id="facility_long" for="'. $facility_lng. '"></label>
+                  <label id="facility_name" for="'. $facility_name. '"></label>
+                  ';
+                ?>
+                <h3 class="profile-username text-center"><?php echo $facility_name ?></h3>
 
-              <ul class="list-group list-group-unbordered">
+                <ul class="list-group list-group-unbordered">
 
-                <li class="list-group-item">
-                  <b>Overall Rating</b> 
-                      <a class="pull-right">
-                        <div class="rateit" data-rateit-value="<?php echo getOverallVotePerID($facility_id)?>"  data-rateit-ispreset="true" data-rateit-readonly="true">
-                        </div>
+                  <li class="list-group-item">
+                    <b>Overall Rating</b> 
+                        <a class="pull-right">
+                          <div class="rateit" data-rateit-value="<?php echo getOverallVotePerID($facility_id)?>"  data-rateit-ispreset="true" data-rateit-readonly="true">
+                          </div>
 
-                      </a>
-                </li>
+                        </a>
+                  </li>
 
-                <!-add php script to hide this if user has already voted->
-                <li class="list-group-item">
-                  <b>View Rating Details</b> 
-                      <a class="pull-right">
-                       <b><a data-toggle="modal" href="#ratingDetailsModal" class="pull-right"><?php echo number_format(getOverallVotePerID($facility_id),2)?></a></b>
+                  <!-add php script to hide this if user has already voted->
+                  <li class="list-group-item">
+                    <b>View Rating Details</b> 
+                        <a class="pull-right">
+                         <b><a data-toggle="modal" href="#ratingDetailsModal" class="pull-right"><?php echo number_format(getOverallVotePerID($facility_id),2)?></a></b>
 
-                      </a>
-                </li>
+                        </a>
+                  </li>
 
 
-                <li class="list-group-item">
-                  <b>Operating Hours</b> <a class="pull-right">
+                  <li class="list-group-item">
+                    <b>Operating Hours</b> <a class="pull-right">
+                    <?php
+                      for($row = 0; $row < count($operating_period); $row++)
+                      {
+
+                        //FOR THE DAYS
+                        if($operating_period[$row][0] == 0)
+                        {
+                          $operating_period[$row][0] = "Su";
+                          //$days[] = $operating_period[$row][$col];
+
+                        }
+                        else if($operating_period[$row][0] == 1)
+                        {
+                          $operating_period[$row][0] = "Mo";
+                          //$days[] = $operating_period[$row][$col];
+                        }
+                        else if($operating_period[$row][0] == 2)
+                        {
+                          $operating_period[$row][0] = "Tu";
+                          //$days[] = $operating_period[$row][$col];
+                        }
+                        else if($operating_period[$row][0] == 3)
+                        {
+                          $operating_period[$row][0] = "We";
+                          //$days[] = $operating_period[$row][$col];
+                        }
+                        else if($operating_period[$row][0] == 4)
+                        {
+                          $operating_period[$row][0] = "Th";
+                          //$days[] = $operating_period[$row][$col];
+                        }
+                        else if($operating_period[$row][0] == 5)
+                        {
+                          $operating_period[$row][0] = "Fr";
+                          //$days[] = $operating_period[$row][$col];
+                        }
+                        else if($operating_period[$row][0] == 6)
+                        {
+                          $operating_period[$row][0] = "Sa";
+                          //$days[] = $operating_period[$row][$col];
+                        }
+
+
+                        echo ''. $operating_period[$row][0] . ' '. $operating_period[$row][1] .' - '. $operating_period[$row][2] ;
+
+                      
+                        echo '<br/>';
+
+                      }
+
+                    ?>
+
+
+                    </a>
+                    <?php
+
+                      for($i = 0; $i < count($operating_period); $i++)
+                      {
+                        echo "</br>";
+                      }
+
+                     ?>
+
+                  </li>
+                  <li class="list-group-item">
+                    <b>Telephone Number</b> <a class="pull-right"><?php echo $facility_tel ?></a>
+                  </li>
+                </ul>
+
+                 <a href="appointment.php?id=<?php echo $facility_id ?>" class="btn btn-success btn-block"><b>Set an Appointment</b></a>
+
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+            <!-- About the Facility-->
+            <div class="box box-primary box-success">
+              <div class="box-header with-border">
+                <h3 class="box-title">About the Facility</h3>
+              </div>
+              <!-- /.box-header -->
+              <div class="box-body">
+                <strong><i class="fa fa-book margin-r-5"></i> Specialization</strong>
+
+                <p class="text-muted">
                   <?php
-                    for($row = 0; $row < count($operating_period); $row++)
+                    foreach($special as $sp)
                     {
-
-                      //FOR THE DAYS
-                      if($operating_period[$row][0] == 0)
-                      {
-                        $operating_period[$row][0] = "Su";
-                        //$days[] = $operating_period[$row][$col];
-
-                      }
-                      else if($operating_period[$row][0] == 1)
-                      {
-                        $operating_period[$row][0] = "Mo";
-                        //$days[] = $operating_period[$row][$col];
-                      }
-                      else if($operating_period[$row][0] == 2)
-                      {
-                        $operating_period[$row][0] = "Tu";
-                        //$days[] = $operating_period[$row][$col];
-                      }
-                      else if($operating_period[$row][0] == 3)
-                      {
-                        $operating_period[$row][0] = "We";
-                        //$days[] = $operating_period[$row][$col];
-                      }
-                      else if($operating_period[$row][0] == 4)
-                      {
-                        $operating_period[$row][0] = "Th";
-                        //$days[] = $operating_period[$row][$col];
-                      }
-                      else if($operating_period[$row][0] == 5)
-                      {
-                        $operating_period[$row][0] = "Fr";
-                        //$days[] = $operating_period[$row][$col];
-                      }
-                      else if($operating_period[$row][0] == 6)
-                      {
-                        $operating_period[$row][0] = "Sa";
-                        //$days[] = $operating_period[$row][$col];
-                      }
-
-
-                      echo ''. $operating_period[$row][0] . ' '. $operating_period[$row][1] .' - '. $operating_period[$row][2] ;
-
-                    
-                      echo '<br/>';
+                      echo '<span class="label label-success">'. $sp .'</span> ';
 
                     }
-
+                
                   ?>
+                </p>
 
+                <hr>
 
-                  </a>
+                <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
+
+                <p class="text-muted"><?php echo $facility_address ?></p>
+
+                <hr>
+
+                <strong><i class="fa fa-pencil margin-r-5"></i> Insurances Included</strong>
+
+                <p>
                   <?php
-
-                    for($i = 0; $i < count($operating_period); $i++)
+                    foreach($insurance_name as $i)
                     {
-                      echo "</br>";
+                      echo '<span class="label label-success">'. $i .'</span> ';
+
                     }
+                
+                  ?>
+                </p>
 
-                   ?>
-
-                </li>
-                <li class="list-group-item">
-                  <b>Telephone Number</b> <a class="pull-right"><?php echo $facility_tel ?></a>
-                </li>
-              </ul>
-
-               <a href="appointment.php?id=<?php echo $facility_id ?>" class="btn btn-success btn-block"><b>Set an Appointment</b></a>
-
+              </div>
+              <!-- /.box-body -->
             </div>
-            <!-- /.box-body -->
+            <!-- /.box on About the Facility -->
+
+            <!-- Ratings -->
+        
+
+
           </div>
-          <!-- /.box -->
-
-          <!-- About the Facility-->
-          <div class="box box-primary box-success">
-            <div class="box-header with-border">
-              <h3 class="box-title">About the Facility</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <strong><i class="fa fa-book margin-r-5"></i> Specialization</strong>
-
-              <p class="text-muted">
-                <?php
-                  foreach($special as $sp)
-                  {
-                    echo '<span class="label label-success">'. $sp .'</span> ';
-
-                  }
-              
-                ?>
-              </p>
-
-              <hr>
-
-              <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
-
-              <p class="text-muted"><?php echo $facility_address ?></p>
-
-              <hr>
-
-              <strong><i class="fa fa-pencil margin-r-5"></i> Insurances Included</strong>
-
-              <p>
-                <?php
-                  foreach($insurance_name as $i)
-                  {
-                    echo '<span class="label label-success">'. $i .'</span> ';
-
-                  }
-              
-                ?>
-              </p>
-
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box on About the Facility -->
-
-          <!-- Ratings -->
-      
-
-
-        </div>
-        <!-- /.col -->
+          <!-- /.col -->
      
 
 
@@ -1113,29 +1113,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </div>
           <!-- /.modal-dialog -->
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         <!- Left side Comments->
@@ -1627,17 +1604,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                   </div>
                   <!-- /.box-body -->
-                </div>
+                </div><!-- tab pane 3 -->
 
-                <!-- /.box on Comments-->
-
-
-              </div> <!-- tab pane 3 -->
    
 
-
-            </div>
-            <!-- /.tab-content -->
+            </div> <!-- tab content -->
+            
           </div>
           <!-- nav-tabs-custom -->
            
@@ -1645,13 +1617,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
           
         </div><!-- col 9 -->
 
+        </div>
+
 
         <!- END OF LEFT SIDE ->
 
-        </div>
-       </section>
-
-      <!-- /.content -->
+        </div><!-- row-->
+       </section><!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
 

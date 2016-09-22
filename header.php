@@ -21,6 +21,9 @@
     if($type == "staff"){
       echo ' <li><a href="staff_facilityProfile.php?id='. $roww['facilityID'] .'">Manage Medical Facility</a></li>';
     }
+    else if($type == "User"){
+      echo ' <li><a href="registration_facility.php">Register a Facility</a></li>';
+    }
 
     echo '<li class="dropdown user user-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">

@@ -404,6 +404,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="plugins/select2/select2.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
   <!-- Select2 -->
@@ -707,24 +709,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="modal-body">
             
               <div class="form-group">
-
-                <label>Specialization:</label>
-
-                <select name="selected_specialization[]" class="form-control select2" multiple="multiple" data-placeholder="Select Specialization" style="width: 100%;">
-
-                <?php
-                  include("config.php");
-                  $q = "SELECT * FROM specialization";
-                  $result = mysqli_query($connect, $q);
-                  if (mysqli_num_rows($result)>0){
-                    while($row = mysqli_fetch_assoc($result)){
-                      echo '<option value="' . $row['specializationID'] . '">' . $row['specialization'] . '</option>';
-                    }
-                  }
-                mysqli_close($conn);             
-                ?>
+                <label>Multiple</label>
+                <select class="form-control select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%;">
+                  <option>Alabama</option>
+                  <option>Alaska</option>
+                  <option>California</option>
+                  <option>Delaware</option>
+                  <option>Tennessee</option>
+                  <option>Texas</option>
+                  <option>Washington</option>
                 </select>
-
               </div>
               </br>
              
@@ -1354,8 +1348,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                        
                       <?php 
 
-                        if (userHasVoted($_SESSION['user_id'], $facility_id)){
-
                           echo '
                           <label id="userids" for="'.$_SESSION['user_id'].'"></label>
                           <label id="facilityids" for="'.$facility_id.'"></label>
@@ -1366,18 +1358,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <a href="#">Process</a>                        
                                   </span>
                                     <span class="username">
-                                          <label id="process-id" for="'.getRatingID($_SESSION['user_id'],$facility_id, 1).'"></label>
-                                          <label id="process-before-id" for="'.getRatingValue($_SESSION['user_id'],$facility_id, 1).'"></label>
-                                          <select id="process-value">
-                                              <option value="0">0</option>
-                                              <option value="1">1</option>
-                                              <option value="2">2</option>
-                                              <option value="3">3</option>
-                                              <option value="4">4</option>
-                                              <option value="5">5</option>
-                                          </select>
-                                          <div class="rateit" data-rateit-backingfld="#process-value" data-rateit-value="'.getRatingValue($_SESSION['user_id'],$facility_id, 1).'"></div>
+                                       
 
+                                    <div class="rateit" data-rateit-value="'. getRatingValue($_SESSION['user_id'],$facility_id, 1).'"  data-rateit-ispreset="true" data-rateit-readonly="true"></div>
 
                                     </span>
                               <span class="description">Process measures assess whether a patient received what is known to be good care.
@@ -1398,17 +1381,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                   </span>
                                   <span class="username">
                                   
-                                          <label id="outcome-id" for="'.getRatingID($_SESSION['user_id'],$facility_id, 2).'"></label>
-                                          <label id="outcome-before-id" for="'.getRatingValue($_SESSION['user_id'],$facility_id, 2).'"></label>
-                                          <select id="outcome-value">
-                                              <option value="0">0</option>
-                                              <option value="1">1</option>
-                                              <option value="2">2</option>
-                                              <option value="3">3</option>
-                                              <option value="4">4</option>
-                                              <option value="5">5</option>
-                                          </select>
-                                          <div class="rateit" data-rateit-backingfld="#outcome-value" data-rateit-value="'.getRatingValue($_SESSION['user_id'],$facility_id, 2).'"></div>
+                                        <div class="rateit" data-rateit-value="'. getRatingValue($_SESSION['user_id'],$facility_id, 2).'"  data-rateit-ispreset="true" data-rateit-readonly="true"></div>
 
 
                                   </span>
@@ -1430,17 +1403,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                   </span>
                                   <span class="username">
                                    
-                                        <label id="structure-id" for="'.getRatingID($_SESSION['user_id'],$facility_id, 3).'"></label>
-                                        <label id="structure-before-id" for="'.getRatingValue($_SESSION['user_id'],$facility_id, 3).'"></label>
-                                        <select id="structure-value">
-                                            <option value="0">0</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                        </select>
-                                        <div class="rateit" data-rateit-backingfld="#structure-value" data-rateit-value="'.getRatingValue($_SESSION['user_id'],$facility_id, 3).'"></div>
+                                       <div class="rateit" data-rateit-value="'. getRatingValue($_SESSION['user_id'],$facility_id, 3).'"  data-rateit-ispreset="true" data-rateit-readonly="true"></div>
 
                                   </span>
                               <span class="description">How well-equipped care setting is to deliver care?</span>
@@ -1461,160 +1424,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                   </span>
                                   <span class="username">
                                   
-                                        <label id="experience-id" for="'.getRatingID($_SESSION['user_id'],$facility_id, 4).'"></label>
-                                        <label id="experience-before-id" for="'.getRatingValue($_SESSION['user_id'],$facility_id, 4).'"></label>
-                                        <select id="experience-value">
-                                            <option value="0">0</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                        </select>
-                                        <div class="rateit" data-rateit-backingfld="#experience-value" data-rateit-value="'.getRatingValue($_SESSION['user_id'],$facility_id, 4).'"></div>
-
+                                       <div class="rateit" data-rateit-value="'. getRatingValue($_SESSION['user_id'],$facility_id, 4).'"  data-rateit-ispreset="true" data-rateit-readonly="true"></div>
 
                                   </span>
                               <span class="description">How do you evaluate the care you received?</span>
-                            </div>
-                            <!-- /.user-block -->
-                          </div>
-                          <!-- /.post -->
-
-                          <div class="post">
-                            <div class="user-block">
-                              <button type="submit" class="btn btn-danger pull-right btn-block btn-sm" onClick="updateRating()" >Update Ratings!</button>
-                              
-                              <span class="description"></span>
                             </div>
                             <!-- /.user-block -->
                           </div>
                           <!-- /.post -->
 
                            ';
-                        } 
-                        else{
-                         echo '
-                          <div class="post">
-                            <div class="user-block">
-                              <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/process.png" alt="user image">
-                                  <span class="username">
-                                    <a href="#">Process</a>                        
-                                  </span>
-                                    <span class="username">
-                                          <select class="rating-processd" name="rating-process" id="backing2b">
-                                              <option value="0">0</option>
-                                              <option value="1">1</option>
-                                              <option value="2">2</option>
-                                              <option value="3">3</option>
-                                              <option value="4">4</option>
-                                              <option value="5">5</option>
-                                          </select>
-                                          <div class="rateit" data-rateit-backingfld="#backing2b"></div>
-                                        
-                                    </span>
-                              <span class="description">Process measures assess whether a patient received what is known to be good care.
-                              </span>
-                            </div>
-                            <!-- /.user-block -->
-                            <p>
-                            </p>
-                          </div>
-                          <!-- /.post -->
-
-                           <!-- Post -->
-                          <div class="post">
-                            <div class="user-block">
-                              <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/medical-result.png" alt="user image">
-                                  <span class="username">
-                                    <a href="#">Outcomes</a>
-                                  </span>
-                                  <span class="username">
-                                  
-                                          <select class="rating-processd" name="rating-outcome" id="backing3b">
-                                              <option value="0">0</option>
-                                              <option value="1">1</option>
-                                              <option value="2">2</option>
-                                              <option value="3">3</option>
-                                              <option value="4">4</option>
-                                              <option value="5">5</option>
-                                          </select>
-                                          <div class="rateit" data-rateit-backingfld="#backing3b"></div>
-                                  </span>
-                              <span class="description">How do you fare as a result of the care?</span>
-                            </div>
-                            <!-- /.user-block -->
-                            <p>
-                            </p>
-                          </div>
-                          <!-- /.post -->
-
-                           <!-- Post -->
-                          <div class="post">
-                            <div class="user-block">
-                              <img class="img-circle img-bordered-sm" src="../mfspotter/dist/img/flask.png" alt="user image">
-                                  <span class="username">
-                                    <a href="#">Structure</a>
-                                  </span>
-                                  <span class="username">
-                                   
-                                        <select class="rating-processd" name="rating-structure" id="backing1b">
-                                            <option value="0">0</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                        </select>
-                                        <div class="rateit" data-rateit-backingfld="#backing1b"></div>
-                                  </span>
-                              <span class="description">How well-equipped care setting is to deliver care?</span>
-                            </div>
-                            <!-- /.user-block -->
-                            <p>
-                            </p>
-                    
-                          </div>
-                          <!-- /.post -->
-
-                            <!-- Post -->
-                          <div class="post">
-                            <div class="user-block">
-                              <img class="img-circle img-bordered-sm" src="/mfspotter/dist/img/nurse.png" alt="user image">
-                                  <span class="username">
-                                    <a href="#">Patient Experience</a>
-                                  </span>
-                                  <span class="username">
-                                  
-                                        <select class="rating-processd" name="rating-experience" id="backing0b">
-                                            <option value="0">0</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                        </select>
-                                        <div class="rateit" data-rateit-backingfld="#backing0b"></div>
-                                  </span>
-                              <span class="description">How do you evaluate the care you received?</span>
-                            </div>
-                            <!-- /.user-block -->
-                          </div>
-                          <!-- /.post -->
-
-
-                          <div class="post">
-                            <div class="user-block">
-                              <button type="submit" class="btn btn-danger pull-right btn-block btn-sm" >Submit Ratings!</button>
-                              <input type="hidden" name="submitted" value="TRUE" />
-                              <span class="description"></span>
-                            </div>
-                            <!-- /.user-block -->
-                          </div>
-                          <!-- /.post -->
-                          ';
-                        }
-
                         
                       ?>
 
@@ -1817,14 +1636,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/app.min.js"></script>
 <!-- Select2 -->
 <script src="plugins/select2/select2.full.min.js"></script>
-<!-- InputMask -->
-<script src="plugins/input-mask/jquery.inputmask.js"></script>
-<script src="plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
-<script src="plugins/input-mask/jquery.inputmask.extensions.js"></script>
+
+<!-- AdminLTE App -->
+<script src="dist/js/app.min.js"></script>
+
 <!-- SlimScroll 1.3.0 -->
 <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
 
@@ -1841,11 +1658,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
   $(function () {
     //Initialize Select2 Elements
     $(".select2").select2();
+
     $(".select2").select2({
       placeholder: "Select a Specialization",
       allowClear: true
     });
-    
+  });
 </script>
 
 

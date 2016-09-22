@@ -45,94 +45,6 @@
 
 
 
-<?php
-    include ("config2.php");
-
-    //$mysqli = new mysqli('localhost', 'root', 'usbw', 'mfspotter');
-    $mysqli->autocommit(false);
-
-
-    if(isset($_POST['submitted']))
-    {
-        $facilityName = $_POST['fname'];
-        $telephoneNumber = $_POST['telnum'];
-        $address = $_POST['address'];
-        $longhitude = $_POST['lng'];
-        $latitude = $_POST['lat'];
-
-        $userType = "staff";
-        $username = $_POST['usn'];
-        $password = $_POST['pw'];
-        $fn = $_POST['fname'];
-        $mn = $_POST['mname'];   
-        $ln = $_POST['lname'];  
-
-        $days = isset($_POST['days']) ? $_POST['days'] : false;
-        $ot = isset($_POST['opentime']) ? $_POST['opentime'] : false;
-        $ct = isset($_POST['closetime']) ? $_POST['closetime'] : false;
-
-        $insID = isset($_POST['selected_insurances']) ? $_POST['selected_insurances'] : false;
-        $specID = isset($_POST['selected_specialization']) ? $_POST['selected_specialization'] : false;
-
-        //INSERT INTO FACILITY
-        $mysqli->query("INSERT INTO facility(facilityName, telephoneNumber,address, longhitude, latitude, facilityPicture) VALUES ('$facilityName', '$telephoneNumber', '$address', '$longhitude', '$latitude', 'default')");
-
-        //GENERATE FACILITY ID
-        $facID = $mysqli->insert_id;
-
-        //GENERATE INSURANCES ID FROM SELECT2 TAG
-       
-
-
-        //INSERT INTO DAYS
-        if($days && $ot && $ct)
-        {
-          foreach($days as $d)
-          {
-            $mysqli->query("INSERT INTO operatingperiod(facilityID, dayofweek, timeopened, timeclosed) VALUES('".$facID."', '".$d."', '".$ot."', '".$ct."')");
-          }
-
-        }
-
-
-        //INSERT INTO INSURANCES
-        if($insID)
-        {
-          foreach ($insID as $i)
-          {
-            $mysqli->query("INSERT INTO insurancescovered(facilityID, insuranceID) VALUES('".$facID."', '".$i."')");
-          }
-        }
-
-        //INSERT INTO SPECIALIZATION
-        if($specID)
-        {
-          foreach($specID as $s)
-          {
-            $mysqli->query("INSERT INTO hasspecialization(specializationID, facilityID) VALUES('".$s."', '".$facID."')");
-          }
-        }
-        
-
-        //INSERT INTO USERS
-        $mysqli->query("INSERT INTO user(userType, username, password, firstName, middleName, lastName) VALUES('".$userType."', '".$username."', '".$password."', '".$fn."', '".$mn."', '".$ln."')");
-
-
-        //GENERATE USERID
-        $usrID = $mysqli->insert_id;
-
-
-        //ASSOCIATE FACILITY AND USER TABLES
-        $mysqli->query("INSERT INTO facilityhasstaff(facilityID, userID) VALUES('".$facID."', '".$usrID."')");
-        
-        $mysqli->commit();
-              
-    }
-      
-?>
-
-
-
 <body class="hold-transition skin-purple layout-top-nav" onload="initialize()">
 
 <div class="wrapper">
@@ -183,6 +95,125 @@
 
   </header>
 
+  <?php
+    include ("config2.php");
+
+    //$mysqli = new mysqli('localhost', 'root', 'usbw', 'mfspotter');
+    $mysqli->autocommit(false);
+
+
+    if(isset($_POST['submitted']))
+    {
+        $facilityName = $_POST['facname'];
+        $telephoneNumber = $_POST['telnum'];
+        $address = $_POST['address'];
+        $longhitude = $_POST['lng'];
+        $latitude = $_POST['lat'];
+
+        $userType = "staff";
+        $username = $_POST['usn'];
+        $password = $_POST['pw'];
+        $conPassword = $_POST['cpw'];
+        $fn = $_POST['fname'];
+        $mn = $_POST['mname'];   
+        $ln = $_POST['lname'];  
+
+        $days = isset($_POST['days']) ? $_POST['days'] : false;
+        $ot = isset($_POST['opentime']) ? $_POST['opentime'] : false;
+        $ct = isset($_POST['closetime']) ? $_POST['closetime'] : false;
+
+        $insID = isset($_POST['selected_insurances']) ? $_POST['selected_insurances'] : false;
+        $specID = isset($_POST['selected_specialization']) ? $_POST['selected_specialization'] : false;
+
+
+        //Validate first if user already exists!
+        $validateUser = $mysqli->query("SELECT * FROM user WHERE username = '$username'");
+        $validUSerRow = mysqli_fetch_array($validateUser);
+
+        //Validate first if facility already exists!
+        $validateFac = $mysqli->query("SELECT * FROM facility WHERE facilityName = '$facilityName'");
+        $validFacRow = mysqli_fetch_array($validateFac);
+        
+          
+        //Username Existence Validation
+        if(mysqli_num_rows($validateUser) > 0)
+          echo "<script>alert('Username already exists!')</script>";
+        
+        //Password Validation
+        else if(!($password == $conPassword))
+          echo "<script>alert('Password does not match!')</script>";
+        else if(mysqli_num_rows($validateFac) > 0)
+          echo "<script>alert('Facility already exists!')</script>";
+
+
+        //If everything is correct and valid
+        else
+        {
+          //INSERT INTO FACILITY
+          $mysqli->query("INSERT INTO facility(facilityName, telephoneNumber,address, longhitude, latitude, facilityPicture) VALUES ('$facilityName', '$telephoneNumber', '$address', '$longhitude', '$latitude', 'default')");
+
+          //GENERATE FACILITY ID
+          $facID = $mysqli->insert_id;
+
+          //GENERATE INSURANCES ID FROM SELECT2 TAG
+         
+
+
+          //INSERT INTO DAYS
+          if($days && $ot && $ct)
+          {
+            foreach($days as $d)
+            {
+              $mysqli->query("INSERT INTO operatingperiod(facilityID, dayofweek, timeopened, timeclosed) VALUES('".$facID."', '".$d."', '".$ot."', '".$ct."')");
+            }
+
+          }
+
+
+          //INSERT INTO INSURANCES
+          if($insID)
+          {
+            foreach ($insID as $i)
+            {
+              $mysqli->query("INSERT INTO insurancescovered(facilityID, insuranceID) VALUES('".$facID."', '".$i."')");
+            }
+          }
+
+          //INSERT INTO SPECIALIZATION
+          if($specID)
+          {
+            foreach($specID as $s)
+            {
+              $mysqli->query("INSERT INTO hasspecialization(specializationID, facilityID) VALUES('".$s."', '".$facID."')");
+            }
+          }
+
+          //INSERT INTO USERS
+          $mysqli->query("INSERT INTO user(userType, username, password, firstName, middleName, lastName, picture) VALUES('".$userType."', '".$username."', '".$password."', '".$fn."', '".$mn."', '".$ln."', 'default')");
+
+
+          //GENERATE USERID
+          $usrID = $mysqli->insert_id;
+
+
+          //ASSOCIATE FACILITY AND USER TABLES
+          $mysqli->query("INSERT INTO facilityhasstaff(facilityID, userID) VALUES('".$facID."', '".$usrID."')");
+          
+          $mysqli->commit();
+
+          echo "<script>alert('Facility successfully registered!')</script>";
+          redirect("Landing.php");
+          
+        }// end of else
+
+        
+        
+    }
+    echo "";
+      
+      
+?>
+
 
   <!-CONTENT WRAPPER>
   <div class="content-wrapper">
@@ -227,7 +258,7 @@
                   <div class="input-group-addon">
                     <i class="fa fa-hospital-o"></i>
                   </div>
-                  <input type="text" class="form-control" id="facilityName" name="fname" placeholder="Facility Name" required>
+                  <input type="text" class="form-control" id="facilityName" name="facname" placeholder="Facility Name" required>
                 </div>
               </div>
 
