@@ -65,7 +65,7 @@
   for($i=0; $i < count($days2); $i++){
     $theDay = $days2[$i];
     $query3 = "SELECT c.facilityID, comment, DATE_FORMAT( dateRated,  '%h:%i %p' ) AS timeRated, facilityName FROM `comment` c, `facility` f WHERE c.facilityID = f.facilityID AND dateRated LIKE '%$theDay%' AND userID = " . $user_id . " ";
-    echo $query3.'<br>';
+    //echo $query3.'<br>';
 
     $result3 = mysqli_query($connect, $query3); 
 
@@ -83,7 +83,7 @@
   for($i=0; $i < count($days2); $i++){
     $theDay = $days2[$i];
     $query4 = "SELECT r.facilityID, DATE_FORMAT( dateRated,  '%h:%i %p' ) AS timeRated, facilityName FROM `rating` r, `facility` f WHERE r.facilityID = f.facilityID AND dateRated LIKE '%$theDay%' AND userID = " . $user_id . " GROUP BY r.facilityID";
-    echo $query4.'<br>';
+    //echo $query4.'<br>';
 
     $result4 = mysqli_query($connect, $query4); 
 
@@ -294,6 +294,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                       <span class="time"><i class="fa fa-clock-o"></i> <?php echo $rates[$i][$z][2] ?></span>
 
                       <h3 class="timeline-header">You rated a facility <a href="facilityProfile.php?id=<?php echo $rates[$i][$z][1] ?>"><?php echo $rates[$i][$z][3] ?></a></h3>
+                      
 
    
                       <div class="timeline-footer">
