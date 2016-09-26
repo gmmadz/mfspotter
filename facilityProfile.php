@@ -59,8 +59,8 @@
   } 
 
   //INSURANCES COVERED
-  $query3 = "SELECT * FROM insurances WHERE insurancesID IN ( SELECT insurancesID FROM insurancescovered WHERE facilityID = " . $facility_id . " )";
-
+  //$query3 = "SELECT * FROM insurances WHERE insurancesID IN ( SELECT insurancesID FROM insurancescovered WHERE facilityID = " . $facility_id . " )";
+  $query3 = "SELECT insuranceName FROM insurances i, insurancescovered ic WHERE i.insurancesID = ic.insuranceID AND ic.facilityID = " . $facility_id . "";
   $result3 = mysqli_query($connect, $query3); 
 
   if(mysqli_num_rows($result3) > 0)  
