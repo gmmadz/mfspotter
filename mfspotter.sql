@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 22, 2016 at 05:34 AM
+-- Generation Time: Sep 26, 2016 at 04:32 AM
 -- Server version: 5.6.13
 -- PHP Version: 5.4.17
 
@@ -37,14 +37,20 @@ CREATE TABLE IF NOT EXISTS `calendar` (
   `userID` int(11) NOT NULL,
   `facilityID` int(11) NOT NULL,
   PRIMARY KEY (`calendarID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `calendar`
 --
 
 INSERT INTO `calendar` (`calendarID`, `title`, `startDate`, `endDate`, `allDay`, `userID`, `facilityID`) VALUES
-(1, 'Check up', '2016-09-22T09:00:00', '2016-09-22T10:00:00', 'false', 19, 40);
+(1, 'Check up', '2016-09-22T09:00:00', '2016-09-22T10:00:00', 'false', 19, 40),
+(2, 'Sex', '2016-09-15T00:00:00+05:30', '2016-09-15T00:00:00+05:30', 'false', 44, 25),
+(4, 'New Event', '2016-08-31T00:00:00+05:30', '2016-08-31T00:00:00+05:30', 'false', 46, 3),
+(5, 'New Event', '2016-08-30T00:00:00+05:30', '2016-08-30T00:00:00+05:30', 'false', 46, 3),
+(6, 'Shet memeng', '2016-09-22', '2016-09-22', 'false', 23, 41),
+(9, 'Derma', '2016-09-08T10:00:00', '2016-09-08T10:00:00', 'false', 47, 47),
+(10, 'Palinis ng Paa', '2016-09-30T12:00:00', '2016-09-30T15:30:00', 'false', 27, 47);
 
 -- --------------------------------------------------------
 
@@ -81,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `comment` varchar(500) NOT NULL,
   `dateRated` datetime NOT NULL,
   PRIMARY KEY (`commentID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `comment`
@@ -93,7 +99,13 @@ INSERT INTO `comment` (`commentID`, `userID`, `facilityID`, `comment`, `dateRate
 (3, 27, 25, '2', '2016-09-21 17:02:52'),
 (4, 27, 25, '3', '2016-09-21 17:03:14'),
 (5, 35, 13, 'ryd', '2016-09-22 13:23:57'),
-(6, 19, 40, 'hello pig :)', '2016-09-22 13:31:05');
+(6, 19, 40, 'hello pig :)', '2016-09-22 13:31:05'),
+(7, 44, 25, 'Ang Pangit', '2016-09-22 17:12:08'),
+(8, 23, 39, 'wow ganda!', '2016-09-22 17:37:23'),
+(9, 18, 28, 'fdf', '2016-09-22 17:44:26'),
+(10, 47, 47, 'tating bading', '2016-09-22 18:13:15'),
+(11, 40, 43, 'wag kayo dito', '2016-09-22 18:19:06'),
+(12, 49, 48, 'best dental clinic.', '2016-09-22 19:00:36');
 
 -- --------------------------------------------------------
 
@@ -110,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `facility` (
   `address` varchar(40) NOT NULL,
   `facilityPicture` varchar(30) NOT NULL,
   PRIMARY KEY (`facilityID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=49 ;
 
 --
 -- Dumping data for table `facility`
@@ -135,7 +147,15 @@ INSERT INTO `facility` (`facilityID`, `facilityName`, `telephoneNumber`, `longhi
 (32, 'opopo', '(678) 567-8546', 125.61063766479492, 7.054726933338916, 'popopo', 'default'),
 (33, 'Martin', '(082) 300-1236', 125.61216115951538, 7.072188686120165, 'Ateneo Clinic', 'default'),
 (39, 'Buta Clinic', '(082) 300-1234', 125.40687561035156, 7.181969589168454, 'Davao City', 'default'),
-(40, 'Gmmadz', '(082) 305-6262', 125.44275283813477, 7.17600854128153, 'Davao City', 'default');
+(40, 'Gmmadz', '(082) 305-6262', 125.44275283813477, 7.17600854128153, 'Davao City', 'default'),
+(41, 'ELIZA YU FAMILY DENTISTRY', '(082) 224-5924', 125.61206728219986, 7.0722099805379095, 'Davao City', 'default'),
+(42, 'Molar World Dental Clinic', '(082) 284-4557', 125.61146914958954, 7.071555176743535, 'unit 3 cva bldg cm recto st.davao city', 'default'),
+(43, 'dasd', '(425) 858-5885', 125.57991027832031, 7.06528924309593, 'Davao City', 'default'),
+(44, 'marie kristine f del rosario', '(093) 095-1442', 125.60671895742416, 7.0638811265204895, 'art center del rosario building', 'default'),
+(45, 'maligad dental clinic', '(091) 823-1445', 125.60671761631966, 7.063910406871016, 'art center del rosario building', 'default'),
+(46, 'Magallanes DOCTORS & Laboratory Inc.', '(082) 221-2599', 125.60673236846924, 7.063947672768994, 'Del Rosario Building, Magallanes Street', 'default'),
+(47, 'Tating Reproduction Facility', '(232) 332-3232', 125.61201095581055, 7.071592442025045, 'art center del rosario building', 'default'),
+(48, 'Tagskie Dental Clinic', '(082) 298-0446', 125.6191349029541, 7.064437452863348, 'Tagskie Street, Isda Ponciaco Fishery. D', 'default');
 
 -- --------------------------------------------------------
 
@@ -148,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `facilityhasstaff` (
   `facilityID` int(4) NOT NULL,
   `userID` int(4) NOT NULL,
   PRIMARY KEY (`facilityHasStaffID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=26 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=34 ;
 
 --
 -- Dumping data for table `facilityhasstaff`
@@ -179,7 +199,15 @@ INSERT INTO `facilityhasstaff` (`facilityHasStaffID`, `facilityID`, `userID`) VA
 (22, 37, 32),
 (23, 38, 33),
 (24, 39, 34),
-(25, 40, 36);
+(25, 40, 36),
+(26, 41, 38),
+(27, 42, 39),
+(28, 43, 40),
+(29, 44, 41),
+(30, 45, 42),
+(31, 46, 43),
+(32, 47, 45),
+(33, 48, 49);
 
 -- --------------------------------------------------------
 
@@ -192,7 +220,7 @@ CREATE TABLE IF NOT EXISTS `hasspecialization` (
   `specializationID` int(4) NOT NULL,
   `facilityID` int(4) NOT NULL,
   PRIMARY KEY (`hasSpecializationID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=43 ;
 
 --
 -- Dumping data for table `hasspecialization`
@@ -226,7 +254,21 @@ INSERT INTO `hasspecialization` (`hasSpecializationID`, `specializationID`, `fac
 (25, 5, 39),
 (26, 5, 40),
 (27, 6, 40),
-(28, 8, 40);
+(28, 8, 40),
+(29, 1, 41),
+(30, 105, 42),
+(31, 3, 43),
+(32, 71, 44),
+(33, 1, 45),
+(34, 105, 45),
+(35, 1, 46),
+(36, 2, 46),
+(37, 23, 46),
+(38, 37, 46),
+(39, 50, 46),
+(40, 71, 46),
+(41, 5, 47),
+(42, 1, 48);
 
 -- --------------------------------------------------------
 
@@ -260,7 +302,7 @@ CREATE TABLE IF NOT EXISTS `insurancescovered` (
   `facilityID` int(4) NOT NULL,
   `insuranceID` int(4) NOT NULL,
   PRIMARY KEY (`insurancesCoveredID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
 
 --
 -- Dumping data for table `insurancescovered`
@@ -298,7 +340,10 @@ INSERT INTO `insurancescovered` (`insurancesCoveredID`, `facilityID`, `insurance
 (31, 36, 2),
 (32, 37, 2),
 (33, 38, 2),
-(34, 39, 2);
+(34, 39, 2),
+(35, 43, 1),
+(36, 47, 2),
+(37, 48, 3);
 
 -- --------------------------------------------------------
 
@@ -313,7 +358,7 @@ CREATE TABLE IF NOT EXISTS `operatingperiod` (
   `timeOpened` time NOT NULL,
   `timeClosed` time NOT NULL,
   PRIMARY KEY (`operatingperiodID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=46 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=80 ;
 
 --
 -- Dumping data for table `operatingperiod`
@@ -364,7 +409,41 @@ INSERT INTO `operatingperiod` (`operatingperiodID`, `facilityID`, `dayofweek`, `
 (42, 39, 5, '12:45:00', '19:45:00'),
 (43, 40, 1, '13:15:00', '18:15:00'),
 (44, 40, 3, '13:15:00', '18:15:00'),
-(45, 40, 5, '13:15:00', '18:15:00');
+(45, 40, 5, '13:15:00', '18:15:00'),
+(46, 41, 1, '09:00:00', '19:00:00'),
+(47, 41, 2, '09:00:00', '19:00:00'),
+(48, 41, 3, '09:00:00', '19:00:00'),
+(49, 41, 4, '09:00:00', '19:00:00'),
+(50, 41, 5, '09:00:00', '19:00:00'),
+(51, 41, 6, '09:00:00', '19:00:00'),
+(52, 42, 1, '09:00:00', '18:00:00'),
+(53, 42, 2, '09:00:00', '18:00:00'),
+(54, 42, 3, '09:00:00', '18:00:00'),
+(55, 42, 4, '09:00:00', '18:00:00'),
+(56, 42, 5, '09:00:00', '18:00:00'),
+(57, 42, 6, '09:00:00', '18:00:00'),
+(58, 43, 1, '16:00:00', '16:00:00'),
+(59, 44, 1, '09:15:00', '17:00:00'),
+(60, 44, 2, '09:15:00', '17:00:00'),
+(61, 44, 3, '09:15:00', '17:00:00'),
+(62, 44, 4, '09:15:00', '17:00:00'),
+(63, 44, 5, '09:15:00', '17:00:00'),
+(64, 44, 6, '09:15:00', '17:00:00'),
+(65, 45, 1, '09:00:00', '17:00:00'),
+(66, 45, 2, '09:00:00', '17:00:00'),
+(67, 45, 3, '09:00:00', '17:00:00'),
+(68, 45, 4, '09:00:00', '17:00:00'),
+(69, 45, 5, '09:00:00', '17:00:00'),
+(70, 45, 6, '09:00:00', '17:00:00'),
+(71, 46, 1, '09:30:00', '17:00:00'),
+(72, 46, 2, '09:30:00', '17:00:00'),
+(73, 46, 3, '09:30:00', '17:00:00'),
+(74, 46, 4, '09:30:00', '17:00:00'),
+(75, 46, 5, '09:30:00', '17:00:00'),
+(76, 46, 6, '09:30:00', '17:00:00'),
+(77, 47, 0, '17:00:00', '17:00:00'),
+(78, 48, 0, '10:45:00', '20:45:00'),
+(79, 48, 6, '10:45:00', '20:45:00');
 
 -- --------------------------------------------------------
 
@@ -380,7 +459,7 @@ CREATE TABLE IF NOT EXISTS `rating` (
   `rating` int(2) NOT NULL,
   `dateRated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ratingID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=116 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=160 ;
 
 --
 -- Dumping data for table `rating`
@@ -458,7 +537,51 @@ INSERT INTO `rating` (`ratingID`, `userID`, `facilityID`, `categoryID`, `rating`
 (112, 19, 40, 1, 4, '2016-09-22 05:30:17'),
 (113, 19, 40, 2, 1, '2016-09-22 05:30:17'),
 (114, 19, 40, 3, 1, '2016-09-22 05:30:17'),
-(115, 19, 40, 4, 5, '2016-09-22 05:30:17');
+(115, 19, 40, 4, 5, '2016-09-22 05:30:17'),
+(116, 37, 41, 1, 4, '2016-09-22 06:53:55'),
+(117, 37, 41, 2, 4, '2016-09-22 06:53:55'),
+(118, 37, 41, 3, 4, '2016-09-22 06:53:55'),
+(119, 37, 41, 4, 5, '2016-09-22 06:53:55'),
+(120, 39, 42, 1, 3, '2016-09-22 07:18:40'),
+(121, 39, 42, 2, 4, '2016-09-22 07:18:40'),
+(122, 39, 42, 3, 3, '2016-09-22 07:18:40'),
+(123, 39, 42, 4, 4, '2016-09-22 07:18:40'),
+(124, 42, 45, 1, 3, '2016-09-22 08:22:00'),
+(125, 42, 45, 2, 4, '2016-09-22 08:22:00'),
+(126, 42, 45, 3, 4, '2016-09-22 08:22:00'),
+(127, 42, 45, 4, 4, '2016-09-22 08:22:00'),
+(128, 18, 45, 1, 4, '2016-09-22 08:46:46'),
+(129, 18, 45, 2, 4, '2016-09-22 08:46:46'),
+(130, 18, 45, 3, 4, '2016-09-22 08:46:46'),
+(131, 18, 45, 4, 4, '2016-09-22 08:46:46'),
+(132, 44, 25, 1, 1, '2016-09-22 09:12:38'),
+(133, 44, 25, 2, 5, '2016-09-22 09:12:38'),
+(134, 44, 25, 3, 5, '2016-09-22 09:12:38'),
+(135, 44, 25, 4, 5, '2016-09-22 09:12:38'),
+(136, 23, 41, 1, 2, '2016-09-22 09:31:54'),
+(137, 23, 41, 2, 3, '2016-09-22 09:31:54'),
+(138, 23, 41, 3, 1, '2016-09-22 09:31:54'),
+(139, 23, 41, 4, 2, '2016-09-22 09:31:54'),
+(140, 23, 39, 1, 5, '2016-09-22 09:37:14'),
+(141, 23, 39, 2, 5, '2016-09-22 09:37:14'),
+(142, 23, 39, 3, 5, '2016-09-22 09:37:14'),
+(143, 23, 39, 4, 5, '2016-09-22 09:37:14'),
+(144, 18, 28, 1, 0, '2016-09-22 09:44:26'),
+(145, 18, 28, 2, 0, '2016-09-22 09:44:26'),
+(146, 18, 28, 3, 0, '2016-09-22 09:44:26'),
+(147, 18, 28, 4, 0, '2016-09-22 09:44:26'),
+(148, 47, 47, 1, 1, '2016-09-22 10:12:48'),
+(149, 47, 47, 2, 1, '2016-09-22 10:12:48'),
+(150, 47, 47, 3, 1, '2016-09-22 10:12:48'),
+(151, 47, 47, 4, 1, '2016-09-22 10:12:48'),
+(152, 50, 28, 1, 4, '2016-09-22 15:06:57'),
+(153, 50, 28, 2, 4, '2016-09-22 15:06:57'),
+(154, 50, 28, 3, 3, '2016-09-22 15:06:57'),
+(155, 50, 28, 4, 3, '2016-09-22 15:06:57'),
+(156, 51, 46, 1, 3, '2016-09-22 15:20:15'),
+(157, 51, 46, 2, 3, '2016-09-22 15:20:15'),
+(158, 51, 46, 3, 4, '2016-09-22 15:20:15'),
+(159, 51, 46, 4, 5, '2016-09-22 15:20:15');
 
 -- --------------------------------------------------------
 
@@ -472,7 +595,7 @@ CREATE TABLE IF NOT EXISTS `remark` (
   `commentID` int(11) NOT NULL,
   `remarks` varchar(50) NOT NULL,
   PRIMARY KEY (`remarkID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `remark`
@@ -481,7 +604,13 @@ CREATE TABLE IF NOT EXISTS `remark` (
 INSERT INTO `remark` (`remarkID`, `userID`, `commentID`, `remarks`) VALUES
 (1, 18, 1, 'Dislike'),
 (2, 35, 5, 'Dislike'),
-(3, 19, 6, 'Dislike');
+(3, 19, 6, 'Dislike'),
+(4, 44, 4, 'Like'),
+(5, 44, 7, 'Dislike'),
+(6, 23, 8, 'Like'),
+(7, 18, 9, 'Like'),
+(8, 47, 10, 'Dislike'),
+(9, 49, 12, 'Like');
 
 -- --------------------------------------------------------
 
@@ -493,7 +622,7 @@ CREATE TABLE IF NOT EXISTS `specialization` (
   `specializationID` int(4) NOT NULL AUTO_INCREMENT,
   `specialization` varchar(70) NOT NULL,
   PRIMARY KEY (`specializationID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=109 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=110 ;
 
 --
 -- Dumping data for table `specialization`
@@ -607,7 +736,8 @@ INSERT INTO `specialization` (`specializationID`, `specialization`) VALUES
 (105, 'Orthodontics'),
 (106, 'Pediatric Dentistry'),
 (107, 'Periodontics'),
-(108, 'Prosthodontics');
+(108, 'Prosthodontics'),
+(109, 'Clinical Psychology');
 
 -- --------------------------------------------------------
 
@@ -625,7 +755,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `lastName` varchar(30) DEFAULT NULL,
   `picture` varchar(50) NOT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=37 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=52 ;
 
 --
 -- Dumping data for table `user`
@@ -654,7 +784,22 @@ INSERT INTO `user` (`userID`, `userType`, `username`, `password`, `firstName`, `
 (28, 'staff', 'gmmadz', 'gmmadz', 'Martin', 'Conanan', 'Madz', 'default'),
 (34, 'staff', 'butaclinic', 'pig', 'Angelo', 'Buta', 'Vicente', 'default'),
 (35, 'User', 'samoy', 'samoy', 'Samoy', 'Balang', 'Macacua', 'default'),
-(36, 'staff', 'gmmadzClinic', 'madz', 'gmmadz', 'Conanan', 'Madarang', 'default');
+(36, 'staff', 'gmmadzClinic', 'madz', 'gmmadz', 'Conanan', 'Madarang', 'default'),
+(37, 'User', 'YU Dental Center', '1234', 'ELIZA ', 'QUIROG', 'YU', 'default'),
+(38, 'staff', 'nathalie29', 'natnat29', 'Nathalie', 'Amora', 'Quicoy', 'default'),
+(39, 'staff', 'molarworld', '2844557', 'Genibie', 'Rellon', 'Genibie', 'default'),
+(40, 'staff', '11', '11', 'trial1', '1', '2', 'default'),
+(41, 'staff', 'jiana', 'jiana', 'jessa ', 'delos santos', 'baylosis', 'default'),
+(42, 'staff', 'sweetrose', 'sweetie', 'Sweet Rose', 'Albaran', 'Rillo', 'default'),
+(43, 'staff', 'nimfa', '0330', 'Nimfa', 'Mayol', 'Tech', 'default'),
+(44, 'User', 'SynerGenix', 'migspogi', 'Migz', 'Magat', 'Tating', 'default'),
+(45, 'staff', 'root', 'root', 'Migzz', 'Magat', 'Tating', 'default'),
+(46, 'User', 'NikoLakiTITI', 'lakititi', 'Taylor', 'Batungbacal', 'Lautner', 'default'),
+(47, 'User', 'levi123', 'one123', 'Levi', 'Dela', 'Mata', 'default'),
+(48, 'User', 'anjo', 'anjo', 'anjo', 'joan', 'anjo', 'default'),
+(49, 'staff', 'jcbtagudin', 'jcbtagudin', 'Shem', 'Rono', 'Tagudin', 'default'),
+(50, 'User', 'jfilosopo', 'rabbit', 'Julian ', 'Perez', 'Filosopo', 'default'),
+(51, 'User', 'dyico2016', 'olson2016', 'sophie', 'herrera', 'dy ico', 'default');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

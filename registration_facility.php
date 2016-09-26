@@ -68,14 +68,22 @@
           <li><a href="#">About</a></li>
           <!-- User Account: style can be found in dropdown.less -->
 
+          
           <?php
             include("config.php");
             session_start();
-            include("header.php");
+            //include("header.php");
+            function redirect($url)
+            {
+              echo '<META HTTP-EQUIV=Refresh CONTENT="1; URL='.$url.'">';
+              die();
+            }
           ?>
+
           
              
               <!-- Menu Footer-->
+              <!--
               <li class="user-footer">
                 <div class="pull-left">
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
@@ -84,6 +92,7 @@
                   <a href="logout.php" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
+              -->
             </ul>
           </li>
           
@@ -202,7 +211,7 @@
           $mysqli->commit();
 
           echo "<script>alert('Facility successfully registered!')</script>";
-          redirect("Landing.php");
+          redirect("login.php");
           
         }// end of else
 
