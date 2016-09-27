@@ -462,7 +462,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     
     <nav class="navbar navbar-static-top">
       <div class="navbar-header">
-        <a href="../mfspotter/Landing.php" class="navbar-brand"><b>MFS</b>potter</a>
+        <a href="/mfspotter/Landing.php" class="navbar-brand"><b>MFS</b>potter</a>
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
           <i class="fa fa-bars"></i>
         </button>
@@ -484,7 +484,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="userProfile.php?id=<?php echo $_SESSION['user_id'] ?>" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
                   <a href="logout.php" class="btn btn-default btn-flat">Sign out</a>
@@ -1490,7 +1490,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                          //COMMENTS
                         $comments = array();
 
-                        $query4 = "SELECT commentID, comment, firstName, middleName, lastName,  DATE_FORMAT( dateRated,  '%Y-%m-%d %H:%i' ) AS dateRated FROM comment c, user u WHERE c.userID = u.userID AND facilityID = " . $facility_id . " AND YEAR( dateRated ) = YEAR( CURDATE()) ORDER BY dateRated DESC";
+                        $query4 = "SELECT commentID, comment, firstName, middleName, lastName,  DATE_FORMAT( dateRated,  '%Y-%m-%d %l:%i %p' ) AS dateRated, picture, c.userID FROM comment c, user u WHERE c.userID = u.userID AND facilityID = " . $facility_id . " AND YEAR( dateRated ) = YEAR( CURDATE()) ORDER BY dateRated DESC";
 
                         $result4 = mysqli_query($connect, $query4); 
 
@@ -1499,7 +1499,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                           while($row4 = mysqli_fetch_array($result4)) 
                           {
                             $name = implode(" ", array($row4['firstName'], $row4['middleName'], $row4['lastName']));
-                            $comments[] = array($row4['comment'], $name, $row4['dateRated'], $row4['commentID']);
+                            $comments[] = array($row4['comment'], $name, $row4['dateRated'], $row4['commentID'], $row4['picture'], $row4['userID']);
 
                           }  
 
@@ -1536,9 +1536,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                             <div class="user-block">
 
-                              <img class="img-circle img-bordered-sm" src="/mfspotter/dist/img/profpic/'.$_SESSION["profilePicture"].'.jpg" alt="user image">
+                              <img class="img-circle img-bordered-sm" src="/mfspotter/dist/img/profpic/'. $comments[$row][4]. '.jpg" alt="user image">
                                   <span class="username">
-                                    <a href="#">' . $comments[$row][1] . '</a>
+                                    <a href="userProfile.php?id='. $comments[$row][5] .'">' . $comments[$row][1] . '</a>
                                   </span>
                               <span class="description">' . $comments[$row][2] . '</span>
                             </div>

@@ -404,12 +404,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- iCheck for checkboxes and radio inputs -->
+  <link rel="stylesheet" href="plugins/iCheck/all.css">
+  <!-- Bootstrap time Picker -->
+  <link rel="stylesheet" href="plugins/timepicker/bootstrap-timepicker.min.css">
   <!-- Select2 -->
   <link rel="stylesheet" href="plugins/select2/select2.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-  <!-- Select2 -->
-  <link rel="stylesheet" href="plugins/select2/select2.min.css">
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect.
@@ -464,7 +466,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     
     <nav class="navbar navbar-static-top">
       <div class="navbar-header">
-        <a href="../mfspotter/Landing.php" class="navbar-brand"><b>MFS</b>potter</a>
+        <a href="/mfspotter/Landing.php" class="navbar-brand"><b>MFS</b>potter</a>
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
           <i class="fa fa-bars"></i>
         </button>
@@ -781,31 +783,39 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">Location</h4>
+              <h4 class="modal-title">Insurances Covered</h4>
             </div>
             <div class="modal-body">
             
-              <div class="col-xs-5">
-                <label class="control-label">Radius:</label>
-                <select id="radiusSelect" style="color: orange;">
-                  <option value="1">1km</option>
-                  <option value="5">5km</option>
-                  <option value="25" selected>25km</option>
-                  <option value="100">100km</option>
-                  <option value="200">200km</option>
-                </select>
-                <label class="control-label">km</label>
-              </div>
-              </br>
-              <!--
-              <button type="button" class="btn btn-block btn-danger" onclick="searchLocationsNear()">Search</button>
+              <div class="box-body">
 
-              <button type="button" class="btn btn-block btn-danger btn-lg" onclick="getCurrentLocation()">Search from current location</button>
-              -->
+                <div class="form-group">
+                  <label>Insurances Covered:</label>
+                  <select name="selected_insurances[]" id="select2_insurances" class="form-control input-group select2" multiple="multiple" placeholder="Select Insurances" style="width: 100%;">
+                  <?php
+                    include ("config.php");
+                    $q = "SELECT insurancesID, insuranceName FROM insurances";
+                    $result = mysqli_query($connect, $q);
+                    if (mysqli_num_rows($result) > 0) {
+      
+                      while($row = mysqli_fetch_assoc($result)) {
+                        echo '<option value="'. $row['insurancesID'] . '">' . $row['insuranceName'] . '</option>';
+                      }
+
+                    }
+                  mysqli_close($conn);             
+                  ?>
+                  </select>
+   
+                
+                </div><!-- form group -->
+
+       
+              </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-outline" onclick="searchLocationsNear()">Search</button>
+              <button type="button" class="btn btn-outline" onclick="addInsurance()">Search</button>
             </div>
           </div>
           <!-- /.modal-content -->
@@ -1638,12 +1648,32 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <!-- Select2 -->
 <script src="plugins/select2/select2.full.min.js"></script>
+<!-- InputMask -->
+<script src="plugins/input-mask/jquery.inputmask.js"></script>
+<script src="plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<!-- date-range-picker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="plugins/daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap datepicker -->
+<script src="plugins/datepicker/bootstrap-datepicker.js"></script>
+<!-- bootstrap color picker -->
+<script src="plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
+<!-- bootstrap time picker -->
+<script src="plugins/timepicker/bootstrap-timepicker.min.js"></script>
 
 <!-- AdminLTE App -->
 <script src="dist/js/app.min.js"></script>
 
 <!-- SlimScroll 1.3.0 -->
 <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- iCheck 1.0.1 -->
+<script src="plugins/iCheck/icheck.min.js"></script>
+<!-- FastClick -->
+<script src="plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script src="jquery.barrating.js"></script>
@@ -1658,12 +1688,31 @@ scratch. This page gets rid of all links and provides the needed markup only.
   $(function () {
     //Initialize Select2 Elements
     $(".select2").select2();
-
     $(".select2").select2({
       placeholder: "Select a Specialization",
       allowClear: true
     });
+
+    //Datemask dd/mm/yyyy
+    $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+    //Datemask2 mm/dd/yyyy
+    $("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+    //Money Euro
+    $("[data-mask]").inputmask();
+
+
+    //Timepicker
+    $(".timepicker").timepicker({
+      showInputs: false,
+      showMeridian: false
+    });
   });
+
+    //iCheck for checkbox and radio inputs
+    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+      checkboxClass: 'icheckbox_minimal-blue',
+      radioClass: 'iradio_minimal-blue'
+    });
 </script>
 
 
@@ -2101,6 +2150,22 @@ $(function() {
       });
 
    });
+
+function addNewInsurance(){
+
+      var newInsurance = document.getElementById("newInsuranceModal").value;
+      
+       $.ajax({  
+                     url:"addNewInsurances.php",  
+                     method:"post",  
+                     data:{insu: newInsurance},  
+                     dataType:"text",  
+                     success:function(data)  
+                     {  
+                        window.location.reload();  
+                     }  
+                });  
+}
 
 
 

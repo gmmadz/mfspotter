@@ -131,7 +131,7 @@
 
 
     <a href="/mfspotter/registration_user.php" class="text-center">Register a new membership</a><br>
-    <a href="/mfspotter/registration_facility.php" class="text-center">Register a facility</a>
+    <a href="/mfspotter/registration_facility2.php" class="text-center">Register a facility</a>
   </div>
   <!-- /.login-box-body -->
 </div>

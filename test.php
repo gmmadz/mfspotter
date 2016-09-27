@@ -1,96 +1,34 @@
-<?php
-include_once("tutorial.php");
-$tutorial = new Tutorial();
-$trows = $tutorial->get_rows();
-?>
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Like and Dislike using jQuery, Ajax and PHP</title>
-<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<style type="text/css">
-.row{ margin:20px 20px 20px 20px;}
-.ratings{ font-size:25px !important;}
-.thumbnail img {
-    width: 100%;
-}
-
-.ratings {
-    padding-right: 10px;
-    padding-left: 10px;
-    color: #d17581;
-}
-
-.thumbnail {
-    padding: 0;
-}
-
-.thumbnail .caption-full {
-    padding: 9px;
-    color: #333;
-}
-.glyphicon-thumbs-up:hover{ color:#008000; cursor:pointer;}
-.glyphicon-thumbs-down:hover{ color: #E10000; cursor:pointer;}
-.counter{ color:#333333;}
-.thumbnail img{height:200px;}
-</style>
-
-<script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript">
-/**
-* Function Name: cwRating()
-* Function Author: CodexWorld
-* Description: cwRating() function is used for implement the rating system. cwRating() function insert like or dislike data into the database and display the rating count at the target div.
-* id = Unique ID, like or dislike is based on this ID.
-* type = Use 1 for like and 0 for dislike.
-* target = Target div ID where the total number of likes or dislikes will display.
-**/
-function cwRating(id,type,target){
-	$.ajax({
-		type:'POST',
-		url:'rating.php',
-		data:'id='+id+'&type='+type,
-		success:function(msg){
-			if(msg == 'err'){
-				alert('Some problem occured, please try again.');
-			}else{
-				$('#'+target).html(msg);
-			}
-		}
-	});
-}
-</script>
-</head>
-
+<html>
 <body>
-<div class="row">
-	<?php foreach($trows as $trow){ ?>
-    <div class="col-sm-4 col-lg-4 col-md-4">
-        <div class="thumbnail">
-            <img src="<?php echo 'images/'.$trow['image']; ?>" alt="" />
-            <div class="caption">
-                <h4><a href="javascript:void(0);"><?php echo $trow['title']; ?></a></h4>
-                <p><?php echo $trow['details']; ?></p>
-            </div>
-            <div class="ratings">
-                <p class="pull-right"></p>
-                <p>
-                    <!-- Like Icon HTML -->
-                    <span class="glyphicon glyphicon-thumbs-up" onClick="cwRating(<?php echo $trow['id']; ?>,1,'like_count<?php echo $trow['id']; ?>')"></span>&nbsp;
-                    <!-- Like Counter -->
-                    <span class="counter" id="like_count<?php echo $trow['id']; ?>"><?php echo $trow['like_num']; ?></span>&nbsp;&nbsp;&nbsp;
-                    
-                    <!-- Dislike Icon HTML -->
-                    <span class="glyphicon glyphicon-thumbs-down" onClick="cwRating(<?php echo $trow['id']; ?>,0,'dislike_count<?php echo $trow['id']; ?>')"></span>&nbsp;
-                    <!-- Dislike Counter -->
-                    <span class="counter" id="dislike_count<?php echo $trow['id']; ?>"><?php echo $trow['dislike_num']; ?></span>
-                </p>
-            </div>
-        </div>
-    </div>
-    <?php } ?>
-</div>
+
+<?php
+$cars2 = array("2016","2017", "2018", "2019");
+  
+
+//echo $cars[1][0].": In stock: ".$cars[1][1].", sold: ".$cars[1][2].".<br>";
+//echo $cars[2][0].": In stock: ".$cars[2][1].", sold: ".$cars[2][2].".<br>";
+//echo $cars[3][0].": In stock: ".$cars[3][1].", sold: ".$cars[3][2].".<br>";
+
+
+//for($i=0; $i < count($cars); $i++){
+    $cars[0] = array(array("25","1", "01:06PM"), array("25A","1A", "01:06PMA"));
+    $cars[1] = array(array("28","fdf", "05:44PM"));
+    $cars[2][] = array("33","sadsa", "03:14PM");
+    $cars[2][] = array("33A","sadsaA", "03:14PMA");
+
+
+
+    //array_push($cars[2], array("33A","sadsaA", "03:14PMA"));
+    //array_push($cars[3], array("s","sa", "sad"));
+    //echo $cars[0][0][0].": In stock: ".$cars[0][0][1].", sold: ".$cars[0][0][2].".<br>";
+    //echo $cars[0][1][0].": In stock: ".$cars[0][1][1].", sold: ".$cars[0][1][2].".<br>";
+    //echo $cars[1][0][0].": In stock: ".$cars[1][0][1].", sold: ".$cars[1][0][2].".<br>";
+    echo $cars[2][0][0].": In stock: ".$cars[2][0][1].", sold: ".$cars[2][0][2].".<br>";
+     echo $cars[2][1][0].": In stock: ".$cars[2][1][1].", sold: ".$cars[2][1][2].".<br>";
+   
+//}
+?>
+
 </body>
 </html>

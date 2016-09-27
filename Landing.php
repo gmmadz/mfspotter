@@ -11,7 +11,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
    <!--LINKS included on the page -->
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MFSpotter </title>
+  <title>MFSpotter | Home</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -76,12 +76,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
             session_start();
             include("header.php");
           ?>
-          
+
              
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="userProfile.php?id=<?php echo $_SESSION['user_id'] ?>" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
                   <a href="logout.php" class="btn btn-default btn-flat">Sign out</a>
