@@ -8,6 +8,7 @@
   $operating_period = array();
   $special = array();
   $insurance_name = array();
+  $viewNums = 0;
 
   //Facility
   $query = "SELECT * FROM `facility` WHERE facilityID = " . $facility_id . " ";
@@ -24,6 +25,21 @@
       $facility_lat = $row['latitude'];
       $facility_lng = $row['longhitude'];
       $facility_picture = $row['facilityPicture'];
+    }  
+    
+  }
+
+  //Number of Views
+  //Facility
+  $query9 = "SELECT COUNT(viewID) AS viewID FROM `views` WHERE facilityID = " . $facility_id . " ";
+
+  $result9 = mysqli_query($connect, $query9); 
+
+  if(mysqli_num_rows($result9) > 0)  
+  {  
+    while($row9 = mysqli_fetch_array($result9)) 
+    {
+      $viewNums = $row9['viewID'];
     }  
     
   }
@@ -532,6 +548,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <h3 class="profile-username text-center"><?php echo $facility_name ?></h3>
 
                 <ul class="list-group list-group-unbordered">
+
+                  <li class="list-group-item">
+                    <b>Views</b> 
+                        <a class="pull-right">
+                          <?php echo $viewNums ?>
+
+                        </a>
+                  </li>
 
                   <li class="list-group-item">
                     <b>Overall Rating</b> 
