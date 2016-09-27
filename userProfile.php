@@ -60,7 +60,8 @@
   $days2 = array_unique($predays2);
   $comments = array();
   $rates = array();
-  $p = 0;
+
+
   //date to comments
   for($i=0; $i < count($days2); $i++){
     $theDay = $days2[$i];
@@ -77,6 +78,10 @@
       }  
       
     }
+    else
+    {
+      $comments[$i][] = array('null','null', 'null', 'null', 'null');
+    }
   }
 
   //date to ratings
@@ -92,9 +97,12 @@
       while($row4 = mysqli_fetch_array($result4)) 
       {
         $rates[$i][] = array('rating', $row4['facilityID'], $row4['timeRated'], $row4['facilityName']);
-        $p++;
       }  
       
+    }
+    else
+    {
+      $rates[$i][] = array('null','null', 'null', 'null');
     }
   }
 
@@ -250,8 +258,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <?php 
                   if(count($comments[$i]) > 0){
                     $trial2 = count($comments[$i]);
-                    echo $trial2;
+                    //echo $trial2;
                     for($y=0; $y < count($comments[$i]); $y++){
+                      if($comments[$i][$y][0] != 'null'){
+
 
 
 
@@ -276,13 +286,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </li>
                     <!-- END timeline item -->
                 <?php
-                    } 
+                      } 
+                    }
                   }
                   
                   if(count($rates[$i]) > 0){
                     $trial = count($rates[$i]);
-                    echo $trial;
+                    //echo $trial;
                     for($z=0; $z < count($rates[$i]); $z++){
+                      if($rates[$i][$z][0] != 'null'){
 
                     
                 ?>
@@ -307,6 +319,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
                 <?php
+                      }
                     }
                   }
                 ?>

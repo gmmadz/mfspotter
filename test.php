@@ -24,9 +24,29 @@ $cars2 = array("2016","2017", "2018", "2019");
     //echo $cars[0][0][0].": In stock: ".$cars[0][0][1].", sold: ".$cars[0][0][2].".<br>";
     //echo $cars[0][1][0].": In stock: ".$cars[0][1][1].", sold: ".$cars[0][1][2].".<br>";
     //echo $cars[1][0][0].": In stock: ".$cars[1][0][1].", sold: ".$cars[1][0][2].".<br>";
-    echo $cars[2][0][0].": In stock: ".$cars[2][0][1].", sold: ".$cars[2][0][2].".<br>";
+   
+
+     for($u=0;$u > 4; $u++){
+        for($a=0;$a > 3; $a++){
+            for($d=0;$d > 3; $d++){
+            if (!empty($cars[$u][$a][$d])) {
+               $cars[$u][$a][$d] = "";
+
+            }
+            }
+           
+        }
+     }
+
+      echo $cars[2][0][0].": In stock: ".$cars[2][0][1].", sold: ".$cars[2][0][2].".<br>";
      echo $cars[2][1][0].": In stock: ".$cars[2][1][1].", sold: ".$cars[2][1][2].".<br>";
    
+   echo $cars[1][0][0].": In stock: ".$cars[1][0][1].", sold: ".$cars[1][0][2].".<br>";
+     echo $cars[1][1][0].": In stock: ".$cars[1][1][1].", sold: ".$cars[1][1][2].".<br>";
+
+     echo $cars[3][0][0].": In stock: ".$cars[3][0][1].", sold: ".$cars[3][0][2].".<br>";
+     echo $cars[3][1][0].": In stock: ".$cars[3][1][1].", sold: ".$cars[3][1][2].".<br>";
+     
 //}
 ?>
 

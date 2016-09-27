@@ -638,15 +638,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <div class="box box-primary box-success">
             <div class="box-header with-border">
               <h3 class="box-title">About the Facility</h3>
+              <div class="pull-right hidden-xs">
+                <a href="editFacilityProfile.php?id=<?php echo $facility_id ?>">Edit</a>
+              </div>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <strong><i class="fa fa-book margin-r-5"></i> Specialization</strong>
-              <div class="pull-right hidden-xs">
-                <a href="#" data-toggle="modal" data-target="#editSpecializationModal">Edit</a>
-              </div>
-              
 
+              
               <p class="text-muted">
                 <?php
                   foreach($special as $sp)
@@ -661,18 +661,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <hr>
 
               <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
-              <div class="pull-right hidden-xs">
-                <a href="#" data-toggle="modal" data-target="#editLocationModal">Edit</a>
-              </div>
 
               <p class="text-muted"><?php echo $facility_address ?></p>
 
               <hr>
 
               <strong><i class="fa fa-edit margin-r-5"></i> Insurances Included</strong>
-              <div class="pull-right hidden-xs">
-                <a href="#" data-toggle="modal" data-target="#editInsurancesModal">Edit</a>
-              </div>
 
               <p>
                 <?php
