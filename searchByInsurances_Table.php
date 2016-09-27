@@ -93,8 +93,8 @@ function getOverallVotePerID($id){
           { ?>
            
             <link rel="stylesheet" href="plugins/rateit-scripts/rateit.css">
-            <div class="col-md-4">
-                         <div class="box box-widget widget-user ">
+            <div class="col-md-12">
+                         <div class="box-body box-widget widget-user ">
                             <div class="widget-user-header bg-green">
                               <h2 class="widget-user-username "><?php echo $row['Facility_Name'] ?></h2>
                               <h5 class="widget-user-desc "><?php echo $row['Insurances_Covered'] ?></h5>
@@ -134,7 +134,7 @@ function getOverallVotePerID($id){
               <script type="text/javascript" src="plugins/rateit-scripts/jquery.rateit.min.js"></script>
             
             <?php 
-            if($i % 4 == 4) echo "</div> <div class = 'row'>";
+            if($i % 1 == 1) echo "</div> <div class = 'row'>";
             $i++;
           }
         

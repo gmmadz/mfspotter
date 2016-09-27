@@ -168,7 +168,7 @@
 
     <!- LOCATION ->
     
-      <div class="modal fade modal-success" id="locationModal">
+      <div class="modal fade modal" id="locationModal">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -178,27 +178,62 @@
             </div>
             <div class="modal-body">
             
-              <div class="col-xs-5">
-                <label class="control-label">Radius:</label>
-                <select id="radiusSelect" style="color: orange;">
-                  <option value="1">1km</option>
-                  <option value="5">5km</option>
-                  <option value="25" selected>25km</option>
-                  <option value="100">100km</option>
-                  <option value="200">200km</option>
-                </select>
-                <label class="control-label">km</label>
+            <div class="box-body">
+              <div class="box-group" id="accordion">
+                <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
+                <div class="panel box box-success">
+                  <div class="box-header with-border">
+                    <h4 class="box-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                        <label class="autoLink" style="display: none;"><b>Current location:</b> <span>not found</span></label>
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="box-body">
+                      <div class="col-xs-12">
+                        
+                        <label class="control-label">Radius:</label>
+                        <select id="radiusSelect" style="color: green;">
+                          <option value="1">1km</option>
+                          <option value="5">5km</option>
+                          <option value="25" selected>25km</option>
+                          <option value="100">100km</option>
+                          <option value="200">200km</option>
+                        </select>
+                        <label class="control-label"> <button type="button" class="btn btn-block btn-danger" onclick="searchLocationsNear()">Search</button>
+                   </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel box box-success">
+                  <div class="box-header with-border">
+                    <h4 class="box-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                        <label>Define Location</label>
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseTwo" class="panel-collapse collapse">
+                    <div class="box-body">
+                      <select id="radiusSelect2" class="form-control" style="color: green;"> </br></br>
+                          <option value="1">1km</option>
+                          <option value="5">5km</option>
+                          <option value="25" selected>25km</option>
+                          <option value="100">100km</option>
+                          <option value="200">200km</option>
+                      </select>
+                     <input id="address" type="text" class="form-control" placeholder="Address">
+                     <button type="button" class="btn btn-block btn-danger" onclick="searchLocationsNearDefine()">Search</button>
+                    </div>
+                  </div>
+                </div>
+              
               </div>
-              </br>
-              <!--
-              <button type="button" class="btn btn-block btn-danger" onclick="searchLocationsNear()">Search</button>
-
-              <button type="button" class="btn btn-block btn-danger btn-lg" onclick="getCurrentLocation()">Search from current location</button>
-              -->
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-outline" onclick="searchLocationsNear()">Search</button>
+
+
             </div>
           </div>
           <!-- /.modal-content -->
@@ -439,6 +474,7 @@
                   <div class="col-md-6">
 
                       <div class="form-group">
+                        
                         <label class="control-label">Radius:</label>
                         <select class="form-control" id="c-radiusSelect">
                           <option value="1">1 km</option>
@@ -600,7 +636,7 @@
       </div>
       <!-- /.modal -->
 
-
+<!--
 
 <div class="modal fade" id="myMapModal">
     <div class="modal-dialog">
@@ -625,12 +661,12 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
-        <!-- /.modal-content -->
+       
     </div>
-    <!-- /.modal-dialog -->
+   
     </div>
-    <!-- /.modal -->
-
+    -->
+<!--
 
 <div class="modal fade" id="myMapModal-each">
     <div class="modal-dialog">
@@ -655,9 +691,9 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
-        <!-- /.modal-content -->
+        
     </div>
-    <!-- /.modal-dialog -->
+    
     </div>
     <!-- /.modal -->
 
@@ -675,9 +711,7 @@
             <h3> Searching a Medical Facility  </h3>
           </div>
 
-          <div class="col-md-8 pull-left">
-            <button type="button" class="btn btn-primary pull-right"  data-toggle="modal" data-target="#myMapModal">View Map </button>
-          </div>
+        
 
         </div>
        
@@ -697,7 +731,7 @@
                           
               <!-****************************************** TABLE SECTION->  
               
-              <div class="col-md-12">   
+              <div class="col-md-5">   
                 <div class="box">
                     <div class="box-header">
                       <h3 class="box-title">List of Facilities</h3>
@@ -705,6 +739,10 @@
                     <!-- /.box-header -->
                     <div class="box-body" id="result"></div>
                 </div>
+              </div>
+
+              <div class="col-md-7">
+                <div id="map" style="width: 100%; height: 100%"></div>
               </div>
 
             </div>
@@ -785,6 +823,9 @@
 <!-- page script -->
 <script>
   $(function () {
+    $('#result').slimScroll({
+        height: '600px'
+    });
     $("#example1").DataTable();
     $('#example2').DataTable({
       "paging": true,
@@ -841,8 +882,50 @@
         mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU}
       });
       infoWindow = new google.maps.InfoWindow();
-
+      if (navigator.geolocation) {
+              // when geolocation is available on your device, run this function
+              navigator.geolocation.getCurrentPosition(foundYou, notFound);
+      } else {
+              // when no geolocation is available, alert this message
+              alert('Geolocation not supported or not enabled.');
+      }
   }
+
+  function geocode(add){
+
+    var geocoder = new google.maps.Geocoder();
+    var address = add;
+
+    geocoder.geocode( { 'address': address}, function(results, status) {
+
+      if (status == google.maps.GeocoderStatus.OK) {
+        var latitude = results[0].geometry.location.lat();
+        var longitude = results[0].geometry.location.lng();
+
+
+        initialize(latitude,longitude,address);
+
+      } 
+
+        }); 
+  }
+   function initialize(latitude,longitude,a) {
+        var latlng = new google.maps.LatLng(latitude,longitude);
+        
+        var myOptions = {
+          zoom: 14,
+          center: latlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          mapTypeControl: false
+        };
+        var map = new google.maps.Map(document.getElementById("map"),myOptions);
+
+        var marker = new google.maps.Marker({
+          position: latlng, 
+          map: map, 
+            title:"location : " + a
+        }); 
+      }
 
   function handleLocationError(browserHasGeolocation, infoWindow, pos) {
         infoWindow.setPosition(pos);
@@ -851,7 +934,83 @@
                               'Error: Your browser doesn\'t support geolocation.');
   }
 
+  function searchLocationsNearDefine(){
+  
+    var add = document.getElementById("address").value;
+    var geocoder = new google.maps.Geocoder();
+    var address = add;
 
+    geocoder.geocode( { 'address': address}, function(results, status) {
+
+      if (status == google.maps.GeocoderStatus.OK) {
+        var latitude = results[0].geometry.location.lat();
+        var longitude = results[0].geometry.location.lng();
+          
+
+
+            var map = new google.maps.Map(document.getElementById("map"), {
+                center: new google.maps.LatLng(latitude , longitude),
+                zoom: 17,
+                icon: "marker1.png",
+                mapTypeId: 'roadmap'
+              });
+
+            var radius = document.getElementById('radiusSelect2').value;
+            var infoWindow = new google.maps.InfoWindow;
+            var searchUrl = 'display.php?lat=' + latitude + '&lng=' + longitude + '&radius=' + radius;
+      
+            // Change this depending on the name of your PHP file
+            downloadUrl(searchUrl, function(data) {
+              var xml = data.responseXML;
+              var markers = xml.documentElement.getElementsByTagName("marker");
+              for (var i = 0; i < markers.length; i++) {
+                var name = markers[i].getAttribute("name");
+                var address = markers[i].getAttribute("address");
+                var type = markers[i].getAttribute("distance");
+                var point = new google.maps.LatLng(
+                    parseFloat(markers[i].getAttribute("lat")),
+                    parseFloat(markers[i].getAttribute("lng")));
+                var html = "<b>" + name + "</b> <br/>" + address;
+                var icon = customIcons[0] || {};
+                var marker = new google.maps.Marker({
+                  map: map,
+                  position: point,
+                  icon: icon.icon
+                });
+                bindInfoWindow(marker, map, infoWindow, html);
+              }
+
+              var coordi = new google.maps.LatLng(
+                parseFloat(latitude),
+                parseFloat(longitude));
+              var mark = new google.map.Marker({
+                map:map,
+                position:coordi,
+                icon: customIcons[0] || {}
+              })
+             bindInfoWindow(mark, map, infoWindow, "im here");
+            });
+           
+
+            $.ajax({  
+                             url:"displayTable.php",  
+                             method:"post",  
+                             data:{lati: latitude, longi: longitude, radi: radius},  
+                             dataType:"text",  
+                             success:function(data)  
+                             {  
+                                  $('#result').html(data);  
+                             }  
+             }); 
+
+
+
+      } 
+      else {alert("Error: Please try again.");}
+
+
+    }); //end geocode
+  }
   function searchLocationsNear() {
 
       if (navigator.geolocation) {
@@ -860,13 +1019,12 @@
               lat: position.coords.latitude,
               lng: position.coords.longitude
             };
-          
+             
 
-              var map = new google.maps.Map(document.getElementById("map"), {
+            var map = new google.maps.Map(document.getElementById("map"), {
                 center: new google.maps.LatLng(pos.lat, pos.lng),
                 zoom: 10,
-                animation: google.maps.Animation.DROP,
-                icon: "marker/marker.png",
+                icon: "marker1.png",
                 mapTypeId: 'roadmap'
               });
 
@@ -895,6 +1053,8 @@
                 });
                 bindInfoWindow(marker, map, infoWindow, html);
               }
+
+              //add geocode here
             });
            
 
@@ -1221,7 +1381,42 @@
 
   }
 
+function foundYou(position) {
+  var geocoder = new google.maps.Geocoder();
+  // convert the position returned by the geolocation API to a google coordinate object
+  var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+  // then try to reverse geocode the location to return a human-readable address
+  geocoder.geocode({'latLng': latlng}, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      // if the geolocation was recognized and an address was found
+      if (results[0]) {
+        // add a marker to the map on the geolocated point
+        
+        /*marker = new google.maps.Marker({
+            position: latlng,
+            map: map
+        });*/
 
+        // compose a string with the address parts
+        var address = results[0].address_components[1].long_name+' '+results[0].address_components[0].long_name+', '+results[0].address_components[3].long_name
+        // set the located address to the link, show the link and add a click event handler
+        $('.autoLink span').html(address).parent().show().click(function(){
+          // onclick, set the geocoded address to the start-point formfield
+          $('#routeStart').val(address);
+          // call the calcRoute function to start calculating the route
+          calcRoute();
+        });
+      }
+    } else {
+      // if the address couldn't be determined, alert and error with the status message
+      alert("Geocoder failed due to: " + status);
+    }
+  });
+}
+
+function notFound(msg) {  
+  alert('Could not find your location :(')
+}
 
 </script>
 

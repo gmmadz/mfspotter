@@ -151,7 +151,9 @@ function getOverallVotePerID($id){
       }
       else
       {
+        
         return number_format(($row['overall'] + $row['oneYearBefore'])/2 ,2);
+        
       }
     }
   }
