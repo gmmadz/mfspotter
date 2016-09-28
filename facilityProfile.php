@@ -30,7 +30,6 @@
   }
 
   //Number of Views
-  //Facility
   $query9 = "SELECT COUNT(viewID) AS viewID FROM `views` WHERE facilityID = " . $facility_id . " ";
 
   $result9 = mysqli_query($connect, $query9); 

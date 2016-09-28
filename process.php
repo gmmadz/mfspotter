@@ -47,6 +47,7 @@ if($type == 'remove')
 {
 	$eventid = $_POST['eventid'];
 
+
 	$delete = mysqli_query($connect,"DELETE FROM calendar where calendarID='$eventid'");
 	if($delete)
 		echo json_encode(array('status'=>'success'));

@@ -395,7 +395,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         });
         },
 
-      /*
+      
       eventDragStop: function (event, jsEvent, ui, view) {
           if (isElemOverDiv()) {
             var con = confirm('Are you sure to delete this event permanently?');
@@ -418,7 +418,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               });
           }   
         }
-      } */
+      } 
     });
 
   function getFreshEvents(){

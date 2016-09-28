@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 27, 2016 at 03:11 PM
+-- Generation Time: Sep 28, 2016 at 04:59 AM
 -- Server version: 5.6.13
 -- PHP Version: 5.4.17
 
@@ -37,14 +37,15 @@ CREATE TABLE IF NOT EXISTS `calendar` (
   `userID` int(11) NOT NULL,
   `facilityID` int(11) NOT NULL,
   PRIMARY KEY (`calendarID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
 --
 -- Dumping data for table `calendar`
 --
 
 INSERT INTO `calendar` (`calendarID`, `title`, `startDate`, `endDate`, `allDay`, `userID`, `facilityID`) VALUES
-(6, 'Cleaning', '2016-09-22', '2016-09-22', 'false', 23, 41);
+(6, 'Cleaning', '2016-09-22', '2016-09-22', 'false', 23, 41),
+(13, 'dfdfsdfds', '2016-09-27T09:30:00', '2016-09-27T15:30:00', 'false', 58, 54);
 
 -- --------------------------------------------------------
 
@@ -81,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `comment` varchar(500) NOT NULL,
   `dateRated` datetime NOT NULL,
   PRIMARY KEY (`commentID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=26 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `comment`
@@ -121,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `facility` (
   `address` varchar(40) NOT NULL,
   `facilityPicture` varchar(30) NOT NULL,
   PRIMARY KEY (`facilityID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=54 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=55 ;
 
 --
 -- Dumping data for table `facility`
@@ -134,7 +135,8 @@ INSERT INTO `facility` (`facilityID`, `facilityName`, `telephoneNumber`, `longhi
 (45, 'maligad dental clinic', '(091) 823-1445', 125.60671761631966, 7.063910406871016, 'art center del rosario building', 'default'),
 (46, 'Magallanes DOCTORS & Laboratory Inc.', '(082) 221-2599', 125.60673236846924, 7.063947672768994, 'Del Rosario Building, Magallanes Street', 'default'),
 (52, 'Dr. Genafe Gumban-Veneracion', '(082) 221-0668', 125.612633228302, 7.071155905681602, 'Aldevinco Shopping Center', 'default'),
-(53, 'Hernaez Mansukhani Dental Clinic', '(082) 222-2244', 125.61275124549866, 7.071017491632897, '2nd Floor, Door #4, Aldevinco Shopping C', 'default');
+(53, 'Hernaez Mansukhani Dental Clinic', '(082) 222-2244', 125.61275124549866, 7.071017491632897, '2nd Floor, Door #4, Aldevinco Shopping C', 'default'),
+(54, 'trial', '(255) 465-4564', 125.61286926269531, 7.069356519813487, 'Davao City', 'default');
 
 -- --------------------------------------------------------
 
@@ -147,7 +149,7 @@ CREATE TABLE IF NOT EXISTS `facilityhasstaff` (
   `facilityID` int(4) NOT NULL,
   `userID` int(4) NOT NULL,
   PRIMARY KEY (`facilityHasStaffID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=39 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=40 ;
 
 --
 -- Dumping data for table `facilityhasstaff`
@@ -160,7 +162,8 @@ INSERT INTO `facilityhasstaff` (`facilityHasStaffID`, `facilityID`, `userID`) VA
 (30, 45, 42),
 (31, 46, 43),
 (37, 52, 55),
-(38, 53, 56);
+(38, 53, 56),
+(39, 54, 58);
 
 -- --------------------------------------------------------
 
@@ -173,7 +176,7 @@ CREATE TABLE IF NOT EXISTS `hasspecialization` (
   `specializationID` int(4) NOT NULL,
   `facilityID` int(4) NOT NULL,
   PRIMARY KEY (`hasSpecializationID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=55 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=56 ;
 
 --
 -- Dumping data for table `hasspecialization`
@@ -195,7 +198,8 @@ INSERT INTO `hasspecialization` (`hasSpecializationID`, `specializationID`, `fac
 (51, 105, 52),
 (52, 1, 53),
 (53, 98, 53),
-(54, 105, 53);
+(54, 105, 53),
+(55, 2, 54);
 
 -- --------------------------------------------------------
 
@@ -232,7 +236,7 @@ CREATE TABLE IF NOT EXISTS `insurancescovered` (
   `facilityID` int(4) NOT NULL,
   `insuranceID` int(4) NOT NULL,
   PRIMARY KEY (`insurancesCoveredID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=43 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=44 ;
 
 --
 -- Dumping data for table `insurancescovered`
@@ -240,7 +244,8 @@ CREATE TABLE IF NOT EXISTS `insurancescovered` (
 
 INSERT INTO `insurancescovered` (`insurancesCoveredID`, `facilityID`, `insuranceID`) VALUES
 (41, 45, 5),
-(42, 53, 6);
+(42, 53, 6),
+(43, 54, 3);
 
 -- --------------------------------------------------------
 
@@ -255,7 +260,7 @@ CREATE TABLE IF NOT EXISTS `operatingperiod` (
   `timeOpened` time NOT NULL,
   `timeClosed` time NOT NULL,
   PRIMARY KEY (`operatingperiodID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=105 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=106 ;
 
 --
 -- Dumping data for table `operatingperiod`
@@ -303,7 +308,8 @@ INSERT INTO `operatingperiod` (`operatingperiodID`, `facilityID`, `dayofweek`, `
 (101, 53, 3, '09:00:00', '17:00:00'),
 (102, 53, 4, '09:00:00', '17:00:00'),
 (103, 53, 5, '09:00:00', '17:00:00'),
-(104, 53, 6, '13:00:00', '17:00:00');
+(104, 53, 6, '13:00:00', '17:00:00'),
+(105, 54, 0, '09:30:00', '09:30:00');
 
 -- --------------------------------------------------------
 
@@ -319,7 +325,7 @@ CREATE TABLE IF NOT EXISTS `rating` (
   `rating` int(2) NOT NULL,
   `dateRated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ratingID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=192 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=196 ;
 
 --
 -- Dumping data for table `rating`
@@ -365,7 +371,19 @@ INSERT INTO `rating` (`ratingID`, `userID`, `facilityID`, `categoryID`, `rating`
 (180, 18, 53, 1, 4, '2016-09-27 07:00:12'),
 (181, 18, 53, 2, 2, '2016-09-27 07:00:12'),
 (182, 18, 53, 3, 1, '2016-09-27 07:00:12'),
-(183, 18, 53, 4, 5, '2016-09-27 07:00:12');
+(183, 18, 53, 4, 5, '2016-09-27 07:00:12'),
+(184, 43, 41, 1, 3, '2016-09-28 01:12:03'),
+(185, 43, 41, 2, 3, '2016-09-28 01:12:03'),
+(186, 43, 41, 3, 4, '2016-09-28 01:12:03'),
+(187, 43, 41, 4, 4, '2016-09-28 01:12:03'),
+(188, 19, 54, 1, 4, '2016-09-28 04:54:40'),
+(189, 19, 54, 2, 4, '2016-09-28 04:54:40'),
+(190, 19, 54, 3, 4, '2016-09-28 04:54:40'),
+(191, 19, 54, 4, 4, '2016-09-28 04:54:40'),
+(192, 18, 54, 1, 1, '2015-09-28 04:55:19'),
+(193, 18, 54, 2, 2, '2015-09-28 04:55:19'),
+(194, 18, 54, 3, 3, '2015-09-28 04:55:19'),
+(195, 18, 54, 4, 4, '2015-09-28 04:55:19');
 
 -- --------------------------------------------------------
 
@@ -379,7 +397,7 @@ CREATE TABLE IF NOT EXISTS `remark` (
   `commentID` int(11) NOT NULL,
   `remarks` varchar(50) NOT NULL,
   PRIMARY KEY (`remarkID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `remark`
@@ -540,7 +558,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `lastName` varchar(30) DEFAULT NULL,
   `picture` varchar(50) NOT NULL,
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=58 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=59 ;
 
 --
 -- Dumping data for table `user`
@@ -570,7 +588,8 @@ INSERT INTO `user` (`userID`, `userType`, `username`, `password`, `firstName`, `
 (51, 'User', 'dyico2016', 'olson2016', 'sophie', 'herrera', 'dy ico', 'default'),
 (55, 'staff', 'ggveneracion', 'ggveneracion', 'Genafe', 'Gumban', 'Veneracion', 'default'),
 (56, 'staff', 'macariño', 'macariño', 'Mercy', 'Ambat', 'Cariño', 'default'),
-(57, 'User', 'joel', 'joel', 'Joel', 'Logatiman', 'Filosopo', 'default');
+(57, 'User', 'joel', 'joel', 'Joel', 'Logatiman', 'Filosopo', 'default'),
+(58, 'staff', 'asd', 'asd', 'trial 1', 'trial 1', 'trial 1', 'default');
 
 -- --------------------------------------------------------
 
@@ -583,7 +602,18 @@ CREATE TABLE IF NOT EXISTS `views` (
   `facilityID` int(11) NOT NULL,
   `userID` int(11) NOT NULL,
   PRIMARY KEY (`viewID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `views`
+--
+
+INSERT INTO `views` (`viewID`, `facilityID`, `userID`) VALUES
+(1, 41, 43),
+(2, 41, 43),
+(3, 46, 43),
+(4, 54, 19),
+(5, 54, 18);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

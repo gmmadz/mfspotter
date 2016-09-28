@@ -276,7 +276,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <div class="timeline-item">
                         <span class="time"><i class="fa fa-clock-o"></i> <?php echo $comments[$i][$y][3] ?></span>
 
-                        <h3 class="timeline-header">You commented on the facility <a href="facilityProfile.php?id=<?php echo $comments[$i][$y][1] ?>"><?php echo $comments[$i][$y][4] ?></a></h3>
+                        <h3 class="timeline-header">You commented on the facility <a href="insertView.php?id=<?php echo $comments[$i][$y][1] ?>"><?php echo $comments[$i][$y][4] ?></a></h3>
 
                         <div class="timeline-body">
                           <?php echo $comments[$i][$y][2] ?>
@@ -307,7 +307,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <div class="timeline-item">
                       <span class="time"><i class="fa fa-clock-o"></i> <?php echo $rates[$i][$z][2] ?></span>
 
-                      <h3 class="timeline-header">You rated a facility <a href="facilityProfile.php?id=<?php echo $rates[$i][$z][1] ?>"><?php echo $rates[$i][$z][3] ?></a></h3>
+                      <h3 class="timeline-header">You rated a facility <a href="insertView.php?id=<?php echo $rates[$i][$z][1] ?>"><?php echo $rates[$i][$z][3] ?></a></h3>
                       
 
    

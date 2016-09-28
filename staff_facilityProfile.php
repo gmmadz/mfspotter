@@ -8,6 +8,8 @@
   $operating_period = array();
   $special = array();
   $insurance_name = array();
+  $viewNums = 0;
+
 
   //Facility
   $query = "SELECT * FROM `facility` WHERE facilityID = " . $facility_id . " ";
@@ -24,6 +26,20 @@
       $facility_lat = $row['latitude'];
       $facility_lng = $row['longhitude'];
       $facility_picture = $row['facilityPicture'];
+    }  
+    
+  }
+
+  //Number of Views
+  $query9 = "SELECT COUNT(viewID) AS viewID FROM `views` WHERE facilityID = " . $facility_id . " ";
+
+  $result9 = mysqli_query($connect, $query9); 
+
+  if(mysqli_num_rows($result9) > 0)  
+  {  
+    while($row9 = mysqli_fetch_array($result9)) 
+    {
+      $viewNums = $row9['viewID'];
     }  
     
   }
@@ -538,6 +554,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <ul class="list-group list-group-unbordered">
 
                 <li class="list-group-item">
+                  <b>Views</b> 
+                      <a class="pull-right">
+                        <?php echo $viewNums ?>
+
+                      </a>
+                </li>
+
+                <li class="list-group-item">
                   <b>Overall Rating</b> 
                       <a class="pull-right">
                         <div class="rateit" data-rateit-value="<?php echo getOverallVotePerID($facility_id)?>"  data-rateit-ispreset="true" data-rateit-readonly="true">
@@ -638,9 +662,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <div class="box box-primary box-success">
             <div class="box-header with-border">
               <h3 class="box-title">About the Facility</h3>
+
+              <!--
               <div class="pull-right hidden-xs">
                 <a href="editFacilityProfile.php?id=<?php echo $facility_id ?>">Edit</a>
-              </div>
+              </div> -->
             </div>
             <!-- /.box-header -->
             <div class="box-body">
