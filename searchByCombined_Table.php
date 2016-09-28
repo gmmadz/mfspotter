@@ -28,7 +28,7 @@ $query = "SELECT f.facilityName AS Facility_Name, DATE_FORMAT(op.timeOpened, '%h
                         (SELECT facilityID 
                         	FROM facility 
                         	WHERE (6371 * acos( cos( radians($latitude) ) * cos( radians( latitude ) ) * cos( radians( longhitude ) - radians($longhitude) ) + sin( radians($latitude) ) * sin( radians( latitude ) ) ) ) < $radius))
-        	";
+          GROUP BY f.facilityID";
 
 
 $result = mysqli_query($connect, $query); 
